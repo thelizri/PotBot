@@ -39,10 +39,6 @@ Robert: rfu@kth.se
 Veronica: nadler@kth.se  
 William: wcar@kth.se  
 
-## Git Rules
-1. Don't commit directly to master  
-2. Don't merge your own commits  
-
 # Arduino 
 Arduino is an open-source electronics platform based on easy-to-use hardware and software. It uses a simplified version of C++ as its programming language. Here is a summary of some of the most important Arduino-specific functions:
 
@@ -69,3 +65,23 @@ To use the Serial Monitor, you need to include Serial communication functions in
 - Serial.println(data): Prints data to the Serial Monitor followed by a newline character, moving to a new line.
 - Serial.available(): Returns the number of bytes available for reading in the Serial buffer.
 - Serial.read(): Reads the oldest byte of incoming data in the Serial buffer and removes it from the buffer.
+
+# Git
+
+## Common Commands
+- git init: Initializes a new Git repository in the current directory.
+- git clone <repository>: Creates a copy of a remote repository on your local machine.
+- git add <file(s)>: Adds file(s) to the staging area, preparing them for a commit.
+- git commit -m "<message>": Commits the staged changes to the repository with a descriptive message.
+- git status: Shows the status of your working directory, including modified, staged, and untracked files.
+- git diff: Shows differences between the working directory and the latest commit.
+- git log: Displays a log of all commits in the repository.
+- git remote add <name> <url>: Adds a remote repository to your local repository with a reference name.
+- git fetch <remote>: Fetches changes from a remote repository but does not merge them.
+- git pull <remote>: Fetches changes from a remote repository and merges them into the current branch.
+- git push <remote> <branch>: Pushes your local commits to the specified remote repository and branch.
+- git branch: Lists all branches in the repository and shows the current branch.
+  
+## Git Rules
+1. Don't commit directly to master  
+2. Don't merge your own commits  
