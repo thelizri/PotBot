@@ -50,10 +50,22 @@ Arduino is an open-source electronics platform based on easy-to-use hardware and
 - digitalWrite(pin, value): Sets the specified pin to either HIGH or LOW, when the pin has been configured as an OUTPUT.
 - digitalRead(pin): Reads the value of the specified digital pin. Returns HIGH or LOW.
 - analogRead(pin): Reads the value from the specified analog pin. Returns an integer value between 0 and 1023, representing a voltage range of 0 to 5 volts (for most Arduino boards).
-- analogWrite(pin, value): Generates a Pulse Width Modulation (PWM) signal on the specified pin, with a duty cycle between 0 (always off) and 255 (always on).
+- analogWrite(pin, value): Generates a Pulse Width Modulation (PWM) signal on the specified pin, with a duty cycle between 0 (always off) and 255 (always on). 0 is the same as outputting 0 volts. And 255 is the same as outputting 5 volts. Writing 127 is approximately the same as outputting 2.5 volts.
 - millis(): Returns the number of milliseconds since the Arduino board started running the current program.
 - micros(): Returns the number of microseconds since the Arduino board started running the current program.
 - delay(ms): Pauses the program for a specified number of milliseconds.
 - delayMicroseconds(us): Pauses the program for a specified number of microseconds.
 - Serial.begin(baudRate): Initializes the serial communication at the specified baud rate.
 - Serial.print(data):
+
+## Serial Monitor
+The Serial Monitor in Arduino is a built-in tool within the Arduino IDE (Integrated Development Environment) that allows you to communicate with your Arduino board through a serial connection. It is used for sending and receiving text-based data between your computer and the Arduino board via the USB cable.
+
+The Serial Monitor is helpful for debugging your Arduino code, displaying sensor readings, or receiving user inputs. It can display data received from the Arduino as well as send data to the Arduino.
+
+To use the Serial Monitor, you need to include Serial communication functions in your Arduino code. Some common Serial functions include:
+- Serial.begin(baudRate): Initializes the Serial communication at the specified baud rate (e.g., 9600 bits per second).
+- Serial.print(data): Prints data to the Serial Monitor without moving to a new line.
+- Serial.println(data): Prints data to the Serial Monitor followed by a newline character, moving to a new line.
+- Serial.available(): Returns the number of bytes available for reading in the Serial buffer.
+- Serial.read(): Reads the oldest byte of incoming data in the Serial buffer and removes it from the buffer.
