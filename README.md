@@ -25,7 +25,7 @@ Overall, the smart plant pot will provide a convenient way to ensure that plants
 - [ ] Build the water delivery system: Connect the water pump to a relay board and connect the relay board to the Raspberry Pi. Use Python code to trigger the relay to turn on the water pump when the soil moisture level falls below a certain threshold.
 - [ ] Build the web interface: Host a web server on the Raspberry Pi using a Python web framework such as Flask. Build a user interface that displays the current values of the sensors and allows the user to set the watering threshold for each plant.
 - [ ] Store the data collected by the sensors in a database. You can use Python code to insert and retrieve data from the database.
-- [ ] Implement alerts: Use Python code to send alerts to the user when the soil moisture level falls below a certain threshold or when the light level is too low. 
+- [ ] Automatic watering: Use Python code to water the plant when the soil moisture level falls below a certain threshold. 
 - [ ] Create code for displaying data in nice graphs and tables. There are several good python libraries for such tasks: Plotly, Matplotlib, or Seaborn for example.
 - [ ] Test and refine: Test the system to make sure it is working as expected. Refine the system by adjusting the watering thresholds, refining the alerts, and improving the user interface.
 
