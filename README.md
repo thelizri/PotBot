@@ -1,4 +1,4 @@
-# SmartPot
+# PotBot
 II1302 VT23 Projects and Project Methods  
 Repository For Group 5
 
