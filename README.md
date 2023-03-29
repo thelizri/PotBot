@@ -81,6 +81,16 @@ To use the Serial Monitor, you need to include Serial communication functions in
 - git pull <remote>: Fetches changes from a remote repository and merges them into the current branch.
 - git push <remote> <branch>: Pushes your local commits to the specified remote repository and branch.
 - git branch: Lists all branches in the repository and shows the current branch.
+
+## Git Merging
+Merging combines two branches. If you have a main branch and a feature branch; you have finished implementing your new updates in the feature branch and now want to add them to the main branch: 
+```
+git checkout main  
+git merge feature  
+```
+This will merge the feature branch into the main branch, without affecting the feature branch.  
+
+On the other hand, if you're working on your feature branch and the main branch is updated; now your feature branch is behind the main branch in commits. It's a good idea to merge the main branch into your feature branch. To do that, type this while inside the feature branch: `git merge main`. This will merge the new updates in main into the feature branch you're working on without affecting main. It's a good idea to do this whenever the main branch is updated, since it minimizes merge conflicts.
   
 ## Git Rules
 1. Don't commit directly to master  
