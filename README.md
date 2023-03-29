@@ -83,14 +83,14 @@ To use the Serial Monitor, you need to include Serial communication functions in
 - git branch: Lists all branches in the repository and shows the current branch.
 
 ## Git Merging
-Merging combines two branches. If you have a main branch and a feature branch; you have finished implementing your new updates in the feature branch and now want to add them to the main branch: 
-```
-git checkout main  
-git merge feature  
-```
-This will merge the feature branch into the main branch, without affecting the feature branch.  
+Merging in Git is the process of combining two branches. If you have a main branch and a feature branch, and you have completed implementing your new updates in the feature branch, you can merge it into the main branch using the following Git commands:
 
-On the other hand, if you're working on your feature branch and the main branch is updated; now your feature branch is behind the main branch in commits. It's a good idea to merge the main branch into your feature branch. To do that, type this while inside the feature branch: `git merge main`. This will merge the new updates in main into the feature branch you're working on without affecting main. It's a good idea to do this whenever the main branch is updated, since it minimizes merge conflicts.
+- Switch to the main branch using the command: `git checkout main`
+- Merge the feature branch into the main branch using the command: `git merge feature`  
+
+This will merge the feature branch into the main branch without affecting the feature branch itself.  
+
+On the other hand, if you are working on a feature branch and the main branch is updated with new changes, it is recommended to merge the main branch into your feature branch. To achieve this, switch to the feature branch and enter the command: `git merge main`. This will merge the new updates in main into the feature branch you are working on, without affecting the main branch. It is a good practice to perform this operation whenever the main branch is updated, as it helps to minimize merge conflicts.
   
 ## Git Rules
 1. Don't commit directly to master  
