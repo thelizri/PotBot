@@ -9,10 +9,13 @@ print("Serial OK")
 
 try:
 	while True:
-		time.sleep(0.01)
-		if port.in_waiting > 0:
-			line = port.readline().decode('utf-8').rstrip()
-			print(line)
+		time.sleep(1)
+		print("Send message to Arduino")
+		port.write("Hello from Raspberry Pi\n".encode("utf-8"))
+		while port.in_waiting <= 0:
+			time.sleep(0.01)
+		response = port.readline().decode('utf-8').rstrip()
+		print(response)
 except KeyboardInterrupt:
 	print("Closing Serial Communication")
 	port.close()
