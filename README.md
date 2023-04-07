@@ -95,3 +95,8 @@ On the other hand, if you are working on a feature branch and the main branch is
 ## Git Rules
 1. Don't commit directly to master  
 2. Don't merge your own commits  
+
+# Raspberry Pi
+
+## Scan for WiFi-Networks
+- Type this in terminal: `sudo iwlist wlan0 scan`
