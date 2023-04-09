@@ -98,6 +98,11 @@ On the other hand, if you are working on a feature branch and the main branch is
 
 # Raspberry Pi
 
+## Access  
+- If you access the device through a LAN-cable, the Raspberry Pi can be reached at this address: 169.254.246.9/16
+- Username: pi
+- Password: group5
+
 ## Install NetworkManager
 - https://linuxhint.com/install-network-manager-raspberry-pi/
 
