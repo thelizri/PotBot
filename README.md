@@ -95,3 +95,20 @@ On the other hand, if you are working on a feature branch and the main branch is
 ## Git Rules
 1. Don't commit directly to master  
 2. Don't merge your own commits  
+
+# Raspberry Pi
+
+## Access  
+- If you access the device through a LAN-cable, the Raspberry Pi can be reached at this address: 169.254.246.9/16
+- Username: pi
+- Password: group5
+
+## Install NetworkManager
+- https://linuxhint.com/install-network-manager-raspberry-pi/
+
+## Scan for WiFi-Networks
+- Type this in terminal: `sudo iwlist wlan0 scan`
+- If network manager is installed and enabled: `nmcli dev wifi list`
+
+## Connect to a WiFi-Network
+- Replace network-ssid and network-password: `sudo nmcli dev wifi connect network-ssid password "network-password"`
