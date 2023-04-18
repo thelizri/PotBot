@@ -15,6 +15,12 @@ def ssid_password():
     
     return f'SSID: {ssid}, Password: {password}'
 
+def shutdown():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
 def write_ssid_and_password_to_file(ssid, password):
     file = open("networkUserAndPassword.txt", "w")
     file.write(ssid)
@@ -23,4 +29,4 @@ def write_ssid_and_password_to_file(ssid, password):
     file.close()
 
 def start_website():
-    app.run(debug=True, host="10.42.0.1", port=80)
+    app.run(debug=True, threaded=True, host="10.42.0.1", port=80)
