@@ -6,8 +6,8 @@ import website
 
 def connect_to_network():
     with open('./Flask/networkUserAndPassword.txt', 'r') as credentials:
-        ssid = credentials.readline()
-        pass_ = credentials.readline()
+        ssid = credentials.readline().strip()
+        pass_ = credentials.readline().strip()
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'])
         subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid, 'password', pass_], stdout=subprocess.PIPE, text=True)
 
