@@ -7,10 +7,11 @@ sys.path.append("Flask")
 import website
 
 def connect_to_network():
-    with open('./Flask/networkUserAndPassword.txt', 'r') as credentials:
+    with open('networkUserAndPassword.txt', 'r') as credentials:
         ssid = credentials.readline().strip()
         pass_ = credentials.readline().strip()
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'])
+        subprocess.run(['nmcli', 'device', 'wifi', 'list'], stdout=subprocess.PIPE, text=True)
         subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid, 'password', pass_], stdout=subprocess.PIPE, text=True)
 
 def enable_hotspot():
@@ -18,11 +19,11 @@ def enable_hotspot():
     website.start_website()
 
 def wait_for_user_wifi():
-    while not exists('./Flask/networkUserAndPassword.txt'):
+    while not exists('networkUserAndPassword.txt'):
         sleep(0.5)
 
 def _main():
-    if not exists('./Flask/networkUserAndPassword.txt'):
+    if not exists('networkUserAndPassword.txt'):
         enable_hotspot()
         process = multiprocessing.Process(target=wait_for_user_wifi)
         process.start()

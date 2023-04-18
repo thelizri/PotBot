@@ -14,7 +14,7 @@ def ssid_password():
     write_ssid_and_password_to_file(ssid, password)
     shutdown()
     
-    return None
+    return render_template('index.html')
 
 def shutdown():
     func = request.environ.get('werkzeug.server.shutdown')
@@ -30,4 +30,4 @@ def write_ssid_and_password_to_file(ssid, password):
     file.close()
 
 def start_website():
-    app.run(debug=True, threaded=True, host="10.42.0.1", port=80)
+    app.run(debug=True, threaded=True, host="10.42.0.1", port=8080)
