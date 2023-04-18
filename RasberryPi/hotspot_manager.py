@@ -13,6 +13,7 @@ def connect_to_network():
 
 def enable_hotspot():
     subprocess.run(['nmcli', 'connection', 'up', 'Hotspot'])
+    website.start_website()
 
 
 def _main():

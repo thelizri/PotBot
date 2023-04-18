@@ -12,7 +12,6 @@ def ssid_password():
     ssid = request.form['ssid']
     password = request.form['password']
     write_ssid_and_password_to_file(ssid, password)
-    connect_to_network()
     
     return f'SSID: {ssid}, Password: {password}'
 
@@ -24,4 +23,4 @@ def write_ssid_and_password_to_file(ssid, password):
     file.close()
 
 def start_website():
-    app.run(debug=True)
+    app.run(debug=True, host="10.42.0.1", port=80)
