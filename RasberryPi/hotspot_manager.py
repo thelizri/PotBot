@@ -1,4 +1,6 @@
 from os.path import exists
+from time import sleep
+import multiprocessing
 import subprocess
 import sys
 sys.path.append("Flask")
@@ -15,12 +17,17 @@ def enable_hotspot():
     subprocess.run(['nmcli', 'connection', 'up', 'Hotspot'])
     website.start_website()
 
+def wait_for_user_wifi():
+    while not exists('./Flask/networkUserAndPassword.txt'):
+        sleep(0.5)
 
 def _main():
-    if exists('./Flask/networkUserAndPassword.txt'):
-        connect_to_network()
-        return
-    enable_hotspot()
+    if not exists('./Flask/networkUserAndPassword.txt'):
+        enable_hotspot()
+        process = multiprocessing.Process(target=wait_for_user_wifi)
+        process.start()
+        process.join()
+    connect_to_network()
 
 if __name__ == '__main__':
     _main()
