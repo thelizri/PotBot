@@ -1,3 +1,4 @@
+from os import remove
 from os.path import exists
 from time import sleep
 import multiprocessing
@@ -13,7 +14,17 @@ def connect_to_network():
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'])
         sleep(5)
         subprocess.run(['nmcli', 'device', 'wifi', 'list'], stdout=subprocess.PIPE, text=True)
-        subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid, 'password', pass_], stdout=subprocess.PIPE, text=True)
+        for i in range(3):
+            output = subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid, 'password', pass_], stderr=subprocess.PIPE, text=True)          
+            if 'Error: No network with SSID' in output.stderr:
+                sleep(0.1)
+                continue
+            else:
+                return True
+    
+    #remove wifi credentials
+    remove('networkUserAndPassword.txt')
+    return False
 
 def enable_hotspot():
     subprocess.run(['nmcli', 'connection', 'up', 'Hotspot'])
@@ -24,16 +35,18 @@ def wait_for_user_wifi():
         sleep(0.5)
 
 def _main():
-    if not exists('networkUserAndPassword.txt'):
-        try:
-            enable_hotspot()
-        except:
-            print('something went wrong')
-        #wait_for_user_wifi()
-        #process = multiprocessing.Process(target=wait_for_user_wifi)
-        #process.start()
-        #process.join()
-    connect_to_network()
+    while True:
+        if not exists('networkUserAndPassword.txt'):
+            try:
+                enable_hotspot()
+            except:
+                print('something went wrong')
+            #wait_for_user_wifi()
+            #process = multiprocessing.Process(target=wait_for_user_wifi)
+            #process.start()
+            #process.join()
+        if connect_to_network():
+            break
 
 if __name__ == '__main__':
     _main()
