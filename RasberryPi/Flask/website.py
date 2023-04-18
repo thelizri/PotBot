@@ -12,8 +12,9 @@ def ssid_password():
     ssid = request.form['ssid']
     password = request.form['password']
     write_ssid_and_password_to_file(ssid, password)
+    shutdown()
     
-    return f'SSID: {ssid}, Password: {password}'
+    return None
 
 def shutdown():
     func = request.environ.get('werkzeug.server.shutdown')
