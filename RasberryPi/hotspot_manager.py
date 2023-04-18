@@ -11,6 +11,7 @@ def connect_to_network():
         ssid = credentials.readline().strip()
         pass_ = credentials.readline().strip()
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'])
+        sleep(5)
         subprocess.run(['nmcli', 'device', 'wifi', 'list'], stdout=subprocess.PIPE, text=True)
         subprocess.run(['nmcli', 'device', 'wifi', 'connect', ssid, 'password', pass_], stdout=subprocess.PIPE, text=True)
 
@@ -24,10 +25,14 @@ def wait_for_user_wifi():
 
 def _main():
     if not exists('networkUserAndPassword.txt'):
-        enable_hotspot()
-        process = multiprocessing.Process(target=wait_for_user_wifi)
-        process.start()
-        process.join()
+        try:
+            enable_hotspot()
+        except:
+            print('something went wrong')
+        #wait_for_user_wifi()
+        #process = multiprocessing.Process(target=wait_for_user_wifi)
+        #process.start()
+        #process.join()
     connect_to_network()
 
 if __name__ == '__main__':
