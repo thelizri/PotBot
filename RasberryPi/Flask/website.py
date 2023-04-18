@@ -23,16 +23,5 @@ def write_ssid_and_password_to_file(ssid, password):
     file.write(password)
     file.close()
 
-def connect_to_network():
-    file = open("networkUserAndPassword.txt", "r")
-    ssid = file.readline().strip()
-    password = file.readline().strip()
-    file.close()
-
-    #nmcli device wifi connect SSID_or_BSSID password password
-    
-    result = subprocess.run(["nmcli", "device", "wifi", "connect", ssid, "password", password], stdout=subprocess.PIPE, text=True)
-    print(result)
-
-if __name__ == '__main__':
+def start_website():
     app.run(debug=True)

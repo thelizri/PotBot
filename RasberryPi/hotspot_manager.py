@@ -1,8 +1,11 @@
 from os.path import exists
 import subprocess
+import sys
+sys.path.append("Flask")
+import website
 
 def connect_to_network():
-    with open('~/Desktop/PotBot/RasberryPi/Flask/networkUserAndPassword.txt', 'r') as credentials:
+    with open('./Flask/networkUserAndPassword.txt', 'r') as credentials:
         ssid = credentials.readline()
         pass_ = credentials.readline()
         subprocess.run(['nmcli', 'device', 'disconnect', 'wlan0'])
@@ -11,8 +14,9 @@ def connect_to_network():
 def enable_hotspot():
     subprocess.run(['nmcli', 'connection', 'up', 'Hotspot'])
 
+
 def _main():
-    if exists('~/Desktop/PotBot/RasberryPi/Flask/networkUserAndPassword.txt'):
+    if exists('./Flask/networkUserAndPassword.txt'):
         connect_to_network()
         return
     enable_hotspot()
