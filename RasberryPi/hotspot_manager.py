@@ -1,11 +1,12 @@
-from os import remove
-from os.path import exists
 from time import sleep
 import multiprocessing
+import os
 import subprocess
 import sys
-sys.path.append("Flask")
 import website
+
+abspath = os.path.dirname(os.path.abspath(__file__))
+os.chdir(abspath)
 
 def connect_to_network():
     with open('networkUserAndPassword.txt', 'r') as credentials:
@@ -23,7 +24,7 @@ def connect_to_network():
                 return True
     
     #remove wifi credentials
-    remove('networkUserAndPassword.txt')
+    os.remove('networkUserAndPassword.txt')
     return False
 
 def enable_hotspot():
@@ -31,12 +32,12 @@ def enable_hotspot():
     website.start_website()
 
 def wait_for_user_wifi():
-    while not exists('networkUserAndPassword.txt'):
+    while not os.path.exists('networkUserAndPassword.txt'):
         sleep(0.5)
 
 def _main():
     while True:
-        if not exists('networkUserAndPassword.txt'):
+        if not os.path.exists('networkUserAndPassword.txt'):
             try:
                 enable_hotspot()
             except:
@@ -45,7 +46,7 @@ def _main():
             #process = multiprocessing.Process(target=wait_for_user_wifi)
             #process.start()
             #process.join()
-        if connect_to_network():
+        if os.path.exists('networkUserAndPassword.txt') and connect_to_network():
             break
 
 if __name__ == '__main__':
