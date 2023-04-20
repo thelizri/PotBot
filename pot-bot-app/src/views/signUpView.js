@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import '../styling/loginView.css'
 import {useAuth} from "../firebaseModel";
+import {writeUserData} from "../databaseFunctions";
 /*
 Todo: Add set display name when sign up is completed.
       Add hashing of password? or is the auth already hashed?
@@ -21,8 +22,9 @@ function SignupView() {
     setError("");
     try {
       await signUp(username, password);
-
-      navigate("/home");//change to Home page when fixed a Home page
+      let user = username.split("@")[0];
+      await writeUserData(user, username);
+      navigate("/home");
     } catch (err) {
       setError(err.message);
     }
