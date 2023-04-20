@@ -1,9 +1,8 @@
-import {db} from "./firebaseConfig";
-import {set, get, ref, push, update, child} from "firebase/database";
-import {auth} from "./firebaseConfig";
+import {getDatabase,set, get, ref, push, update, child} from "firebase/database";
+import {auth, app} from "./firebaseConfig";
 
 
-
+const db = getDatabase(app);
 async function writeUserData( name, email ) {
         //const newPostKey = push(child(ref(db), 'users/')).key;
 

@@ -5,7 +5,9 @@ import { sendPasswordResetEmail, confirmPasswordReset,
     createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile,
 } from "firebase/auth";
 import {auth} from "./firebaseConfig";
-
+/*
+TODO: add functions for reset password
+ */
 /*Import {useAuth} in the other files to use functions for authentication */
 
 const AuthContext = createContext(null);

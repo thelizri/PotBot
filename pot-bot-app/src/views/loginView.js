@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styling/loginView.css'
 import { Link, useNavigate } from 'react-router-dom';
 import {useAuth} from "../firebaseModel";
-import {writeUserData} from "../databaseFunctions";
+
 function LoginView() {
 //Will move this to presenter later on
   const [username, setUsername] = useState('');
