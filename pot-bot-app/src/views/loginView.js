@@ -14,16 +14,16 @@ function LoginView() {
 
   return (
     <div>
-      <h1>PotBot.</h1>
+      {/* <h1>PotBot.</h1>
+      <hr></hr> */}
       <div className="container">
         <p className='pLogin'>Log into your PotBot account</p>
         <form onSubmit={handleSubmit}>
           <input type="email" id="email" name="email" placeholder="E-mail" required />
           <input type="password" id="password" name="password" placeholder="Password" required />
+          <a><small><Link to="/reset">forgot your password?</Link></small></a>
           <button type="submit">Sign in</button>
-          <button className="create-account">
-          <Link to="/signup">Create an account</Link>
-        </button>
+          <button className="create-account"><Link to="/signup">Create an account</Link></button>
         </form>
       </div>
     </div>
