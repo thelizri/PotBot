@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-
+import {BrowserRouter as Router, Route, Routes,} from "react-router-dom";
+import BasePresenter from "./presenters/basePresenter";
+import LoginPresenter from "./presenters/loginPresenter";
+import SignUpPresenter from "./presenters/signUpPresenter";
+import ResetPresenter from "./presenters/resetPsswrdPresenter";
+import {UserAuthContextProvider} from "./firebaseModel";
+import HomePresenter from "./presenters/HomePresenter";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+                <basePresenter/>
+                <Router>
+                    <UserAuthContextProvider>
+                    <Routes>
+                        {/* <Route element={<basePresenter/>}/> */}
+                        <Route path="/" element={<LoginPresenter/>}/>
+                        <Route path="/signup" element={<SignUpPresenter/>}/>
+                        <Route path="/reset" element={<ResetPresenter/>}/>
+                        <Route path="/home" element={<HomePresenter/>}/>
+                    </Routes>
+                    </UserAuthContextProvider>
+                </Router>
+        </div>
+    );
 }
 
 export default App;
