@@ -31,8 +31,7 @@ function SignupView() {
 
   return (
     <div>
-
-<h1>PotBot.</h1>
+    {/* <h1>PotBot.</h1> */}
     <div className="container">
     <h1 className="h1SignIN">Create an account</h1>
       <form onSubmit={handleSubmit}>

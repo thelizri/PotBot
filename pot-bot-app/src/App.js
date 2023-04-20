@@ -8,7 +8,7 @@ import HomePresenter from "./presenters/HomePresenter";
 function App() {
     return (
         <div className="App">
-                <basePresenter/>
+                <BasePresenter/>
                 <Router>
                     <UserAuthContextProvider>
                     <Routes>

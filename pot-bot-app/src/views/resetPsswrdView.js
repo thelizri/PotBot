@@ -10,8 +10,6 @@ function ResetPasswordView() {
 
   return (
     <div>
-      <h1>PotBot.</h1>
-      <hr></hr>
       <div className="container">
         <h2 className='reset'>Forgot your password?</h2>
         <p>Enter your email address and we will send you a reset link.</p>
