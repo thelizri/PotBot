@@ -12,7 +12,6 @@ function App() {
                 <Router>
                     <UserAuthContextProvider>
                     <Routes>
-                        {/* <Route element={<basePresenter/>}/> */}
                         <Route path="/" element={<LoginPresenter/>}/>
                         <Route path="/signup" element={<SignUpPresenter/>}/>
                         <Route path="/reset" element={<ResetPresenter/>}/>
