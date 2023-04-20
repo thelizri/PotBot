@@ -104,11 +104,17 @@ On the other hand, if you are working on a feature branch and the main branch is
 - Password: group5
 
 ## Install NetworkManager
-- https://linuxhint.com/install-network-manager-raspberry-pi/
+- https://linuxhint.com/install-network-manager-raspberry-pi/  
 
-## Scan for WiFi-Networks
-- Type this in terminal: `sudo iwlist wlan0 scan`
-- If network manager is installed and enabled: `nmcli dev wifi list`
+## PotBot
+- Network address: 10.42.0.1:8080
 
-## Connect to a WiFi-Network
-- Replace network-ssid and network-password: `sudo nmcli dev wifi connect network-ssid password "network-password"`
+## Network Manager Commands
+- `nmcli device disconnect wlan0`  
+- `nmcli device wifi list`   
+- `nmcli connection show`  
+- `nmcli connection up name`
+- `nmcli device wifi connect SSID_or_BSSID password password`
+
+## Activate Network Script on Startup
+- Edited rc.local to make script run on startup
