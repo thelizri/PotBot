@@ -8,11 +8,10 @@ import HomePresenter from "./presenters/HomePresenter";
 function App() {
     return (
         <div className="App">
-                <basePresenter/>
+                <BasePresenter/>
                 <Router>
                     <UserAuthContextProvider>
                     <Routes>
-                        {/* <Route element={<basePresenter/>}/> */}
                         <Route path="/" element={<LoginPresenter/>}/>
                         <Route path="/signup" element={<SignUpPresenter/>}/>
                         <Route path="/reset" element={<ResetPresenter/>}/>
