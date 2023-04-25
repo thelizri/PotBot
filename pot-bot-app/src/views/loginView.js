@@ -15,9 +15,7 @@ function LoginView() {
     //console.log('Password:', password);
     try {
       await signIn(username, password);
-
       navigate('/home');
-
     }catch (err) {
       console.log(err);
     }
