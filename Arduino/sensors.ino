@@ -1,17 +1,17 @@
 #include "DHT.h"
 
-//Temperature Sensor
+//Temperature Sensor: 3.3 Volt
 #define DHTPIN 7
 #define DHPTYPE DHT11
 
 DHT dht(DHTPIN, DHPTYPE);
 
-//Water Sensor
-#define POWER_PIN  6
-#define SIGNAL_PIN A1
+//Water Sensor: 3.3 Volt
+#define POWER_PIN 2
+#define WATER_LEVEL_PIN A1
 
 
-int TemperaturePin = 7;
+//UV Sensor: 3.3 Volt
 int UVintensityPin = A0;
 
 void setup() {
@@ -22,15 +22,28 @@ void setup() {
   //Temperature Sensor
   dht.begin();
   //UV Sensor
-  pinMode(ReadUVintensityPin, INPUT);
+  pinMode(UVintensityPin, INPUT);
+  Serial.println("Start");
+}
+
+void loop() {
+  int waterLevel = readWaterSensor();
+  float celsius = readTemperature();
+  Serial.print("Water level: ");
+  Serial.println(waterLevel);
+  Serial.print("Temperature: ");
+  Serial.println(celsius);
+  readUVSensor();
+  Serial.println("---------------------\n");
+  delay(5000);
 }
 
 int readWaterSensor() {
 	digitalWrite(POWER_PIN, HIGH);  // turn the sensor ON
-  	delay(10);                      // wait 10 milliseconds
-  	value = analogRead(SIGNAL_PIN); // read the analog value from sensor
-  	digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
-  	return value;
+  delay(100);                      // wait 10 milliseconds
+  int value = averageAnalogRead(WATER_LEVEL_PIN); // read the analog value from sensor
+  digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
+  return value;
 }
 
 //Returns temperature in Celsius
@@ -38,21 +51,23 @@ int readTemperature() {
 	return dht.readTemperature();
 }
 
-int readUVSensor() {
-	int uvLevel = averageAnalogRead(ReadUVintensityPin); 
+void readUVSensor() {
+	int uvLevel = averageAnalogRead(UVintensityPin); 
  
 	float outputVoltage = 5.0 * uvLevel/1024; 
 	float uvIntensity = mapfloat(outputVoltage, 0.99, 2.9, 0.0, 15.0); 
 
+  /*
 	Serial.print("UVAnalogOutput: "); 
-	Serial.print(uvLevel); 
+	Serial.println(uvLevel); 
 
-	Serial.print(" OutputVoltage: "); 
-	Serial.print(outputVoltage); 
+	Serial.print("OutputVoltage: "); 
+	Serial.println(outputVoltage); 
+  */
 
-	Serial.print(" UV Intensity: "); 
+	Serial.print("UV Intensity: "); 
 	Serial.print(uvIntensity); 
-	Serial.print(" mW/cm^2");
+	Serial.println(" mW/cm^2");
 }
 
 //Takes an average of readings on a given pin 
@@ -67,7 +82,6 @@ int averageAnalogRead(int pinToRead)
   runningValue /= numberOfReadings; 
  
   return(runningValue);   
- 
 } 
 
 //The Arduino Map function but for floats 
