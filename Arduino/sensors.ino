@@ -9,6 +9,7 @@ DHT dht(DHTPIN, DHPTYPE);
 //Water Sensor: 3.3 Volt
 #define POWER_PIN 2
 #define WATER_LEVEL_PIN A1
+#define WATER_THRESHHOLD 60
 
 
 //UV Sensor: 5 Volt
@@ -49,8 +50,14 @@ int readSoilMoisture(){
 void loop() {
   int waterLevel = readWaterSensor();
   float celsius = readTemperature();
+
   Serial.print("Water level: ");
-  Serial.println(waterLevel);
+  if(waterLevel == 0){
+    Serial.println("Out of water. Please refill.");
+  }
+  else {
+    Serial.println("Tank has water.");
+  }
   Serial.print("Temperature: ");
   Serial.print(celsius);
   Serial.println("°C");
@@ -79,7 +86,10 @@ int readWaterSensor() {
   delay(100);                      // wait 10 milliseconds
   int value = averageAnalogRead(WATER_LEVEL_PIN); // read the analog value from sensor
   digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
-  return value;
+  if (value > WATER_THRESHHOLD) {
+    return 1;
+  }
+  return 0;
 }
 
 //Returns temperature in Celsius
