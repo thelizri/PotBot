@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 
 function LoginView({ username, setUsername, password, setPassword, handleSubmit, inputError }) {
   const [showError, setShowError] = useState(false);
-
   function errorHandling() {
-    if (!inputError) {
+    if (!inputError.message) {
       return '';
     }
   
@@ -30,23 +29,18 @@ function LoginView({ username, setUsername, password, setPassword, handleSubmit,
       return "Please enter a password";
     }
   
-    if (inputError.message.includes("auth/user-not-found")) {
-      return "This E-mail adress is not connected to an acccount";
-    }
-  
-    console.log(inputError.message);
     return inputError.message;
   }
 
+
+  
   function handleInputChange() {
-    // Hide the error message when the user changes the input
     setShowError(false);
   }
 
   function handleFormSubmit(e) {
     e.preventDefault();
     handleSubmit(e);
-    // Show the error message if there's an error
     setShowError(!!inputError);
   }
   
@@ -76,6 +70,7 @@ function LoginView({ username, setUsername, password, setPassword, handleSubmit,
             onChange={(e) => { handleInputChange(); setPassword(e.target.value) }}
             required
           />
+           <a><small><Link to="/reset">forgot your password?</Link></small></a>
           <button type="submit">Sign in</button>
         </form>
         <button className="create-account">

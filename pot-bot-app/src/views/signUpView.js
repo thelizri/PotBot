@@ -43,14 +43,15 @@ function SignupView({ username, setUsername, password, setPassword, handleSubmit
       <div className="container">
         <h1 className="h1SignIN">Create an account</h1>
         <div className={`error ${showError ? '' : 'errorhidden'}`}>
-          {errorHandling()}adad
+          {errorHandling()}
         </div>
         <form onSubmit={handleSubmit}>
+         
           <input
             type="text"
             id="username"
             name="username"
-            placeholder="E-Mail"
+            placeholder="Email"
             value={username}
             onChange={(e) => {handleInputChange(); setUsername(e.target.value)}}
             required

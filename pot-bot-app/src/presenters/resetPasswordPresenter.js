@@ -1,6 +1,6 @@
 
 import React from 'react';
-import ResetPasswordView from "../views/resetPsswrdView";
+import ResetPasswordView from "../views/resetPasswordView";
 
 function ResetPresenter() {
     return (
