@@ -16,6 +16,7 @@ int UVintensityPin = A0;
 
 void setup() {
   Serial.begin(9600);
+  while(!Serial){}
   //Water Sensor
   pinMode(POWER_PIN, OUTPUT);
   digitalWrite(POWER_PIN, LOW);
@@ -24,6 +25,8 @@ void setup() {
   //UV Sensor
   pinMode(UVintensityPin, INPUT);
   Serial.println("Start");
+
+  readMessageFromRaspberryPi();
 }
 
 void loop() {
@@ -32,10 +35,18 @@ void loop() {
   Serial.print("Water level: ");
   Serial.println(waterLevel);
   Serial.print("Temperature: ");
-  Serial.println(celsius);
+  Serial.print(celsius);
+  Serial.println("°C");
   readUVSensor();
   Serial.println("---------------------\n");
   delay(5000);
+}
+
+void readMessageFromRaspberryPi(){
+  if(Serial.available() > 0){
+    String message = Serial.readStringUntil('\n');
+    Serial.println(message);
+  }
 }
 
 int readWaterSensor() {
