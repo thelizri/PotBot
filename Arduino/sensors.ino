@@ -19,6 +19,8 @@ DHT dht(DHTPIN, DHPTYPE);
 // Value decreases with greater moisture
 // 350 just watered
 #define SOIL_PIN A2
+#define AIR_VALUE = 685;
+#define WATER_VALUE = 274;
 
 void setup() {
   Serial.begin(9600);
