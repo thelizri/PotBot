@@ -11,7 +11,10 @@ export default function PlantView(props) {
 
     useEffect(() => {
         if (plants.length == 0) {
-            plantPromise.then((data => setPlants(data)));
+            plantPromise.then((data => {
+                setPlants(data)
+                console.log(data)}
+        ));
         }
     }, [user, plants])
 
@@ -23,12 +26,11 @@ export default function PlantView(props) {
             </div>
         )
     }
-
     return (
         <div>
             <h1>Plants</h1>
             <p style={{align: 'center'}}>get plants from db in list</p>
-            {plants && plants.map(x => <p>{x}</p>)}
+            {plants && Object.keys(plants).map(x => <p>{x}</p>)}
 
         </div>
     )

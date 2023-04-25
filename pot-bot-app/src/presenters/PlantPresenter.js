@@ -9,13 +9,13 @@ export default function PlantPresenter() {
     const [plantss, setPlants] = useState([])
     const {user} = useAuth();
     const getPlants = readUserData(user,"plants");
-    console.log(getPlants)
+    //console.log(getPlants)
     let hasPlantPromise = hasPlants(user);
     const [hasPlant, setPlantBool] = useState(false);
     hasPlantPromise.then((v) => {
         console.log(v + " hasPlantPromise");
         setPlantBool(v);
-    })
+    }).catch(err => console.error(err));
     console.log(hasPlant)
 
     return (
