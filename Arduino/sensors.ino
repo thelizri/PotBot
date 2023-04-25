@@ -11,7 +11,7 @@ DHT dht(DHTPIN, DHPTYPE);
 #define WATER_LEVEL_PIN A1
 
 
-//UV Sensor: 3.3 Volt
+//UV Sensor: 5 Volt
 int UVintensityPin = A0;
 
 void setup() {
