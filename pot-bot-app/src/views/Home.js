@@ -1,8 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../firebaseModel";
 import React from "react";
-import {addNewPlant, readUserData, uploadPlantData} from "../databaseFunctions";
-import PlantPresenter from "../presenters/PlantPresenter";
 export default function Home() {
     const {user, logOut, updateProfileName} = useAuth();
     const userName = user.displayName;
@@ -38,13 +36,5 @@ export default function Home() {
     async function changeUserName(){
         let win = await window.open("/name", "_blank", "toolbar=no, resizable=no, height:100, width:200");
     }
-    async function plantHandler(){
-        try {
-            await uploadPlantData(user, "/plants/test2/measureData",{m1:{time: 12, temp: 22, waterlevel: 50}});
-            //const data = await addNewPlant(user, "/plants", "test2");
 
-        }catch (e){
-            console.error(e.message)
-        }
-    }
 }

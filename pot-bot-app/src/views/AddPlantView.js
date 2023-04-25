@@ -1,10 +1,9 @@
-import {Link } from "react-router-dom";
-import {useAuth} from "../firebaseModel";
+
 import React from "react";
-import {addNewPlant, readUserData, uploadPlantData} from "../databaseFunctions";
+import {useAuth} from "../firebaseModel";
 
 export default function AddPlantView(props) {
-    //const {user} = useAuth();
+    const {user} = useAuth();
     const plant = '';
 
     //add function for scrolling plants or carousel images of plants

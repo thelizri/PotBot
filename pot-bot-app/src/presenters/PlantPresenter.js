@@ -1,7 +1,6 @@
 import {Link } from "react-router-dom";
-import {useAuth, readUserData} from "../firebaseModel";
+import {useAuth, readUserData, hasPlants} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
-import {addNewPlant, hasPlants, uploadPlantData} from "../databaseFunctions";
 import PlantView from "../views/PlantView";
 import AddPlantView from "../views/AddPlantView";
 

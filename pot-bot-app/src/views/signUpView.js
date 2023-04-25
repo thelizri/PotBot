@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import '../styling/loginView.css'
-import {useAuth} from "../firebaseModel";
-import {writeUserData} from "../databaseFunctions";
+import {useAuth, writeUserData} from "../firebaseModel";
 /*
 Todo: Add set display name when sign up is completed.
       Add hashing of password? or is the auth already hashed?
