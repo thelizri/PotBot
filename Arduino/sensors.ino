@@ -12,21 +12,36 @@ DHT dht(DHTPIN, DHPTYPE);
 
 
 //UV Sensor: 5 Volt
-int UVintensityPin = A0;
+#define UVintensityPin A0
+
+//Soil Moisture Sensor: 5 Volt
+// 700 about half-moist
+// Value decreases with greater moisture
+// 350 just watered
+#define SOIL_PIN A2
 
 void setup() {
   Serial.begin(9600);
   while(!Serial){}
+
   //Water Sensor
   pinMode(POWER_PIN, OUTPUT);
   digitalWrite(POWER_PIN, LOW);
+
   //Temperature Sensor
   dht.begin();
+
   //UV Sensor
   pinMode(UVintensityPin, INPUT);
-  Serial.println("Start");
 
-  readMessageFromRaspberryPi();
+  //Soil Sensor
+  pinMode(SOIL_PIN, INPUT);
+
+  Serial.println("Start");
+}
+
+int readSoilMoisture(){
+  return averageAnalogRead(SOIL_PIN);
 }
 
 void loop() {
@@ -38,6 +53,13 @@ void loop() {
   Serial.print(celsius);
   Serial.println("°C");
   readUVSensor();
+
+  int soil = readSoilMoisture();
+  Serial.print("Soil Moisture: ");
+  Serial.println(soil);
+
+  readMessageFromRaspberryPi();
+
   Serial.println("---------------------\n");
   delay(5000);
 }
