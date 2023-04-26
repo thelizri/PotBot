@@ -1,11 +1,11 @@
 .Home {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    /* gap: 10px; */
     justify-content: center;
     align-items: center;
 }
-button{
+.logout-btn{
     background-color: transparent;
     border-style: none none solid none;
     border-bottom: 1px solid #444; /* set a dark grey border color */
@@ -13,7 +13,17 @@ button{
     bottom: 0;
     right: 0;
     margin: 20px;
-  }
+}
+.change-username{
+    background-color: transparent;
+    border-style: none none solid none;
+    border-bottom: 1px solid #444; /* set a dark grey border color */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 20px;
+
+}
 button:hover {
     cursor: pointer;
 }
@@ -31,4 +41,8 @@ button:hover {
     width: 300px;
     height: 300px;
     transition: all 0.5s ease;
+}
+.card-title{
+    display: flex;
+    /* flex-direction: column; */
 }
