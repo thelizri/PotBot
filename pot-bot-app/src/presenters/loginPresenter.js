@@ -1,21 +1,38 @@
-/* UseState over here */
-
-import React from 'react';
+import React, { useState } from 'react';
 import LoginView from "../views/loginView";
 import {useAuth} from "../firebaseModel";
 import {useNavigate } from "react-router-dom";
 import HomePresenter from "./HomePresenter";
-/*Todo: set url to /home if user already logged in
-*/
+
 function LoginPresenter() {
-    const {user} = useAuth();
+    const {user,signIn} = useAuth();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [inputError, setInputError] = useState('');
     let navigate = useNavigate("/home");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            await signIn(username, password);
+            navigate('/home');
+        }catch (err) {
+           //console.log(err.message);
+            setInputError(err);
+        }
+    }
 
     return (
         <>
-            {!user && <LoginView/>}
+            {!user && <LoginView
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword}
+                handleSubmit={handleSubmit}
+                inputError={inputError}
+            />}
             {user && <HomePresenter/>}
-
         </>
     );
 }
