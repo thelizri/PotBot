@@ -1,0 +1,35 @@
+{
+    "measurements": [
+      {
+        "timestamp": "2021-04-26T12:00:00Z",
+        "humidity": 55.2,
+        "temperature": 23.8,
+        "water_level": 0.75
+      },
+      {
+        "timestamp": "2021-04-26T12:10:00Z",
+        "humidity": 54.9,
+        "temperature": 23.5,
+        "water_level": 0.77
+      },
+      {
+        "timestamp": "2022-04-26T12:20:00Z",
+        "humidity": 54.5,
+        "temperature": 23.1,
+        "water_level": 0.80
+      },
+      {
+        "timestamp": "2022-04-26T12:30:00Z",
+        "humidity": 54.1,
+        "temperature": 22.8,
+        "water_level": 0.82
+      },
+      {
+        "timestamp": "2020-04-26T12:40:00Z",
+        "humidity": 53.8,
+        "temperature": 22.5,
+        "water_level": 0.85
+      }
+    ]
+  }
+  
