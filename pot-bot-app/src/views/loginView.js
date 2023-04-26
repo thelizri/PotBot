@@ -1,45 +1,84 @@
 import React, { useState } from 'react';
 import '../styling/loginView.css'
-import { Link, useNavigate } from 'react-router-dom';
-import {useAuth} from "../firebaseModel";
+import { Link } from 'react-router-dom';
 
-function LoginView() {
-//Will move this to presenter later on
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const {signIn} = useAuth();
-  let navigate = useNavigate();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    //console.log('Username:', username);
-    //console.log('Password:', password);
-    try {
-      await signIn(username, password);
-      navigate('/home');
-    }catch (err) {
-      console.log(err);
+function LoginView({ username, setUsername, password, setPassword, handleSubmit, inputError }) {
+  const [showError, setShowError] = useState(false);
+  function errorHandling() {
+    if (!inputError.message) {
+      return '';
     }
+  
+    if (inputError.message.includes("auth/email-already-in-use")) {
+      return "Email is already in use";
+    }
+  
+    if (inputError.message.includes("auth/invalid-email")) {
+      return "Email not valid, try again";
+    }
+  
+    if (inputError.message.includes("auth/weak-password")) {
+      return "Password should be at least 6 characters";
+    }
+  
+    if (inputError.message.includes("auth/wrong-password")) {
+      return "Wrong password, please try again";
+    }
+  
+    if (inputError.message.includes("auth/internal-error")) {
+      return "Please enter a password";
+    }
+  
+    return inputError.message;
   }
 
+
+  
+  function handleInputChange() {
+    setShowError(false);
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    handleSubmit(e);
+    setShowError(!!inputError);
+  }
+  
   return (
     <div>
-      {/* <h1>PotBot.</h1>
-      <hr></hr> */}
       <div className="container">
         <p className='pLogin'>Log into your PotBot account</p>
-        <form onSubmit={handleSubmit}>
-          <input type="email" id="email" name="email" placeholder="E-mail"
-                 onChange={(e) => setUsername(e.target.value)} required />
-          <input type="password" id="password" name="password" placeholder="Password"
-                 onChange={(e) => setPassword(e.target.value)} required />
-          <a><small><Link to="/reset">forgot your password?</Link></small></a>
+        <div className={`error ${showError ? '' : 'errorhidden'}`}>
+          {errorHandling()}
+        </div>
+        <form onSubmit={handleFormSubmit}>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="E-mail"
+            value={username}
+            onChange={(e) => { handleInputChange(); setUsername(e.target.value) }}
+            required
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => { handleInputChange(); setPassword(e.target.value) }}
+            required
+          />
+           <a><small><Link to="/reset">forgot your password?</Link></small></a>
           <button type="submit">Sign in</button>
-          <button className="create-account"><Link to="/signup">Create an account</Link></button>
         </form>
+        <button className="create-account">
+          <Link to="/signup">Create an account</Link>
+        </button>
       </div>
     </div>
   );
-  
 }
 
 export default LoginView;
