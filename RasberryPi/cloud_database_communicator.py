@@ -12,7 +12,7 @@ firebase_admin.initialize_app(cred, {
 
 def push_data(data, product_id):
     # Replace 'your_database_path' with the path where you want to push the data
-    ref = db.reference('/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants')
+    ref = db.reference('/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/sensorData')
     child = ref.child(product_id)
     child.push(data)
 
@@ -20,6 +20,10 @@ def read_json_and_push(filepath, product_id):
     file = open(filepath)
     data = json.load(file)
     file.close()
+
+    #Deletes content
+    with open(filepath, 'w'):
+        pass
 
     for measurement in data['measurements']:
         measurement['product-id'] = product_id
