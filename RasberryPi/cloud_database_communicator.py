@@ -12,7 +12,7 @@ firebase_admin.initialize_app(cred, {
 
 def push_data(data, product_id):
     # Replace 'your_database_path' with the path where you want to push the data
-    ref = db.reference('SensorData')
+    ref = db.reference('/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants')
     child = ref.child(product_id)
     child.push(data)
 
