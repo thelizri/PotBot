@@ -10,10 +10,11 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/'
 })
 
-def push_data(data):
+def push_data(data, product_id):
     # Replace 'your_database_path' with the path where you want to push the data
-    ref = db.reference('RaspberryPiSensorData')
-    ref.push(data)
+    ref = db.reference('SensorData')
+    child = ref.child(product_id)
+    child.push(data)
 
 def read_json_and_push(filepath, product_id):
     file = open(filepath)
@@ -22,6 +23,6 @@ def read_json_and_push(filepath, product_id):
 
     for measurement in data['measurements']:
         measurement['product-id'] = product_id
-        push_data(measurement)
+        push_data(measurement, product_id)
 
-read_json_and_push('example.json', '1-test-raspberry')
+read_json_and_push('example.json', 'raspberry-1')

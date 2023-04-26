@@ -1,34 +1,28 @@
 {
     "measurements": [
       {
-        "timestamp": "2021-04-26T12:00:00Z",
-        "humidity": 55.2,
-        "temperature": 23.8,
-        "water_level": 0.75
+        "timestamp": "2023-04-26T10:30:00Z",
+        "temperature": 25.3,
+        "uv_light": 3.2,
+        "water_level": 87,
+        "humidity": 55,
+        "soil_moisture": 68
       },
       {
-        "timestamp": "2021-04-26T12:10:00Z",
-        "humidity": 54.9,
-        "temperature": 23.5,
-        "water_level": 0.77
+        "timestamp": "2023-04-26T11:00:00Z",
+        "temperature": 26.1,
+        "uv_light": 4.5,
+        "water_level": 89,
+        "humidity": 53,
+        "soil_moisture": 71
       },
       {
-        "timestamp": "2022-04-26T12:20:00Z",
-        "humidity": 54.5,
-        "temperature": 23.1,
-        "water_level": 0.80
-      },
-      {
-        "timestamp": "2022-04-26T12:30:00Z",
-        "humidity": 54.1,
-        "temperature": 22.8,
-        "water_level": 0.82
-      },
-      {
-        "timestamp": "2020-04-26T12:40:00Z",
-        "humidity": 53.8,
-        "temperature": 22.5,
-        "water_level": 0.85
+        "timestamp": "2023-04-26T11:30:00Z",
+        "temperature": 27.8,
+        "uv_light": 5.6,
+        "water_level": 91,
+        "humidity": 50,
+        "soil_moisture": 73
       }
     ]
   }
