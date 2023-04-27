@@ -100,5 +100,5 @@ void loop(){
   Serial.print(" "); 
   Serial.println(soil);
 
-  delay(2000);
+  delay(10*1000);
 }
