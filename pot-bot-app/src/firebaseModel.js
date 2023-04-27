@@ -105,6 +105,29 @@ function hasPlants(user){
     }).catch(err => console.error(err.message));
 }
 
+async function savePlantToUser(user, plantName, plantData) {
+    /* 
+     Gets the user's current plants
+     */
+    const userPlantsRef = ref(db, `users/${user.uid}/plants`);
+    const userPlantsSnapshot = await get(userPlantsRef);
+    const userPlants = userPlantsSnapshot.val() || {};
+  
+    /*Checks if the plant is already in the user's plants
+    */
+    if (userPlants.hasOwnProperty(plantName)) {
+      console.log(`Plant with name '${plantName}' already exists in user's plants.`);
+      return;
+    }
+  
+    /* Adds the new plant to the user's plants
+    */
+    userPlants[plantName] = plantData;
+    await set(userPlantsRef, userPlants);
+    console.log(`Plant with name '${plantName}' added to user's plants.`);
+  }
+  
+
 export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData}
 export function useAuth() {
     return useContext(AuthContext);
