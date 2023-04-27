@@ -37,6 +37,7 @@ def read_json_and_push(filepath, product_id):
 
         data['product-id'] = product_id
         push_data(data, product_id)
-        time.sleep(10*60)
+        time.sleep(60)
 
-read_json_and_push('last_measurement.json', 'raspberry-1')
+if __name__ == '__main__':
+    read_json_and_push('last_measurement.json', 'raspberry-1')
