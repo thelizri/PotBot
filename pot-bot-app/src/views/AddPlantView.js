@@ -11,6 +11,8 @@ export default function AddPlantView(props) {
     return(
     <div className="addPlant">
         <h1>Choose your plant to add</h1>
+        
+        
         {/*add functions here*/}
 
 
