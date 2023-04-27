@@ -133,3 +133,6 @@ firebase-key.json
 
 #Measured data
 last_measurement.json
+
+#User network password
+networkUserAndPassword.txt

@@ -32,7 +32,8 @@ def read_json_and_push(filepath, product_id):
             pass
         
         if data is None:
-            return
+            time.sleep(60)
+            continue
 
         data['product-id'] = product_id
         push_data(data, product_id)
