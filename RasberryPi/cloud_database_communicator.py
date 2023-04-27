@@ -41,8 +41,8 @@ def read_json_and_push(filepath, product_id):
         file.close()
 
         #Deletes content
-        with open(filepath, 'w'):
-            pass
+        #with open(filepath, 'w'):
+        #    pass
 
         data['product-id'] = product_id
         push_data(data)
