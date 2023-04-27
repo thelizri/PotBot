@@ -4,7 +4,7 @@ from firebase_admin import db
 import json
 
 # Replace 'path/to/your-service-account-key.json' with the path to the JSON file you downloaded
-cred = credentials.Certificate('C:\\Users\\karlw\\Documents\\Code\\PotBot\\RasberryPi\\firebase-key.json') #Replace with real path for the raspberry pi
+cred = credentials.Certificate('/home/pi/PotBot/RasberryPi/firebase-key.json') #Replace with real path for the raspberry pi
 
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/'
@@ -25,8 +25,7 @@ def read_json_and_push(filepath, product_id):
     with open(filepath, 'w'):
         pass
 
-    for measurement in data['measurements']:
-        measurement['product-id'] = product_id
-        push_data(measurement, product_id)
+    data['product-id'] = product_id
+    push_data(data, product_id)
 
-read_json_and_push('example.json', 'raspberry-1')
+read_json_and_push('last_measurement.json', 'raspberry-1')
