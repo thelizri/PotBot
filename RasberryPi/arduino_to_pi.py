@@ -13,7 +13,7 @@ def storemeasurements(measurements):
         'soilMoisture': f'{measurements[3]}%'
     }
 
-    with open('last_measurements.json', 'w') as file:
+    with open('last_measurement.json', 'w') as file:
         json.dump(measurements, file)
 
 if __name__ == '__main__':

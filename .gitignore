@@ -130,3 +130,6 @@ dmypy.json
 
 #Config files
 firebase-key.json
+
+#Measured data
+last_measurement.json
