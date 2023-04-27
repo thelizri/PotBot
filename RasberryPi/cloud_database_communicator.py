@@ -19,9 +19,13 @@ def push_data(data, product_id):
 def read_json_and_push(filepath, product_id):
     
     while True:
-        file = open(filepath)
-        data = json.load(file)
-        file.close()
+        try:
+            file = open(filepath)
+            data = json.load(file)
+            file.close()
+        except:
+            time.sleep(60)
+            continue
 
         #Deletes content
         with open(filepath, 'w'):
