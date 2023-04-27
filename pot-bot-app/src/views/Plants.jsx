@@ -8,17 +8,29 @@ function Plants({title}) {
 
   const [expanded, setExpanded] = useState(false);
   const [plantObjects, setPlantObjects] = useState([]);
+  const [recentData, setRecentData] = useState({})
   const {user} = useAuth();
 
   useEffect(() => {
     const db = getDatabase();
     const plantRef = ref(db, `users/${user.uid}/plants`);
-    get(plantRef).then((data) => setPlantObjects(Object.values(data.val())))
-  }, []);
+    get(plantRef).then((data) => {
+      const plantObjects = Object.values(data.val())
+      setPlantObjects(plantObjects)
+
+      const measureData = plantObjects[0].measureData
+      const mostRecentData = Object.values(Object.values(measureData)[0])[0]
+
+      setRecentData(mostRecentData)
+
+    })
+  }, [user]);
+
 
   function handleClick() {
     setExpanded(!expanded);
   }
+
 
   return (
     <>
@@ -29,9 +41,9 @@ function Plants({title}) {
           <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{title}</span>
         </div>
         {expanded && <div className="plant-data soil-moisture temperature uv-light">
-          <div>Moisture: dummy</div>
-          <div>Light: dummy</div>
-          <div>Temperature: dummy</div>
+          <div>Moisture: {recentData.soilMoisture}</div>
+          <div>Light: {recentData.uvIntensity}</div>
+          <div>Temperature: {recentData.temperature}</div>
         </div>}
       </div>
       <div className={"addPlant"}>
