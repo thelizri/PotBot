@@ -6,13 +6,11 @@ import time
 
 def storemeasurements(measurements):
     measurements = {
-	'measurements': {
-            'dateAndTime': f'{datetime.now().strftime("%d-%m-%YT%H:%M:%S")}',
-            'waterLevel': measurements[0],
-            'temperature': f'{measurements[1]}°C',
-            'uvIntensity': f'{measurements[2]}mW/cm^2',
-            'soilMoisture': f'{measurements[3]}%'
-	}
+        'dateAndTime': f'{datetime.now().strftime("%d-%m-%YT%H:%M:%S")}',
+        'waterLevel': measurements[0],
+        'temperature': f'{measurements[1]}°C',
+        'uvIntensity': f'{measurements[2]}mW/cm^2',
+        'soilMoisture': f'{measurements[3]}%'
     }
 
     with open('last_measurement.json', 'w') as file:
