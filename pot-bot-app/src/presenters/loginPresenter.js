@@ -8,7 +8,7 @@ function LoginPresenter() {
     const {user,signIn} = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [inputError, setInputError] = useState('');
+    const [error, setError] = useState('');
     let navigate = useNavigate("/home");
 
     const handleSubmit = async (event) => {
@@ -18,7 +18,7 @@ function LoginPresenter() {
             navigate('/home');
         }catch (err) {
            //console.log(err.message);
-            setInputError(err);
+            setError(err);
         }
     }
 
@@ -30,7 +30,7 @@ function LoginPresenter() {
                 password={password}
                 setPassword={setPassword}
                 handleSubmit={handleSubmit}
-                inputError={inputError}
+                error={error}
             />}
             {user && <HomePresenter/>}
         </>

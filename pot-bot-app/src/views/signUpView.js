@@ -5,12 +5,13 @@ import '../styling/loginView.css'
 function SignupView({ username, setUsername, password, setPassword, handleSubmit, error}) {
   const [showError, setShowError] = useState(false);
   function errorHandling() {
+    console.log(error.message)
     if (!error.message) {
       return '';
     }
   
     if (error.message.includes("auth/email-already-in-use")) {
-      return "Email is already in use";
+      return "This E–mail is already in use";
     }
   
     if (error.message.includes("auth/invalid-email")) {
@@ -29,13 +30,18 @@ function SignupView({ username, setUsername, password, setPassword, handleSubmit
       return "Please enter a password";
     }
   
-    console.log(error.message);
     return error.message;
   }
 
 
   function handleInputChange() {
     setShowError(false);
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    handleSubmit(e);
+    setShowError(!!error);
   }
 
   return (
@@ -45,7 +51,7 @@ function SignupView({ username, setUsername, password, setPassword, handleSubmit
         <div className={`error ${showError ? '' : 'errorhidden'}`}>
           {errorHandling()}
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleFormSubmit}>
          
           <input
             type="text"
