@@ -32,17 +32,28 @@ button:hover {
     width: 300px;
     height: 100px;
     background-color: #ccc;
-    transition: all 0.5s ease;
+    transition: all 0.7s ease;
 }
-.expandable-div:hover{
+/* .expandable-div:hover{
     cursor: pointer;
-}
+} */
 .expanded {
     width: 300px;
     height: 300px;
-    transition: all 0.5s ease;
+    transition: all 0.5s ease; /*applies a transition effect: scope, time, transisiton-style*/
+    
 }
 .card-title{
     display: flex;
-    /* flex-direction: column; */
+}
+.card-title > p{
+    align-items: center;
+}
+.expanded .plant-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+    /* transition: all 0.7s ease; */
 }
