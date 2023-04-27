@@ -7,8 +7,8 @@ import time
 def storemeasurements(measurements):
 
     dictionary = {
-        'date': f'{datetime.now().strftime("%d-%m-%Y")}'
-        'time': f'{datetime.now().strftime("%H:%M")}'
+        'date': f'{datetime.now().strftime("%d-%m-%Y")}',
+        'time': f'{datetime.now().strftime("%H:%M")}',
         'waterLevel': measurements[0],
         'temperature': f'{measurements[1]}°C',
         'uvIntensity': f'{measurements[2]}mW/cm^2',
