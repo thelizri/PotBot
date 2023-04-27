@@ -8,7 +8,7 @@ body {
   /* gap: 10px; */
   justify-content: center;
   align-items: start;
-  max-width: 20vmin;
+  max-width: 40vmin;
   margin: 0 auto;
 }
 
@@ -38,7 +38,7 @@ button:hover {
 }
 
 .expandable-div {
-  width: 300px;
+  width: 400px;
   height: 100px;
   background-color: #ccc;
   transition: all 0.7s ease;
@@ -48,8 +48,8 @@ button:hover {
     cursor: pointer;
 } */
 .expanded {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   transition: all 0.5s ease; /*applies a transition effect: scope, time, transisiton-style*/
 
 }
