@@ -11,10 +11,12 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/'
 })
 
-def push_data(data, product_id):
+def push_data(data):
     # Replace 'your_database_path' with the path where you want to push the data
     ref = db.reference('/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants/Parasollpilea/measureData')
-    ref.update(data)
+    child = ref.child(data['date'])
+    grandchild = child.child(data['time'])
+    grandchild.update(data)
 
 def read_json_and_push(filepath, product_id):
     
@@ -38,7 +40,7 @@ def read_json_and_push(filepath, product_id):
             continue
 
         data['product-id'] = product_id
-        push_data(data, product_id)
+        push_data(data)
         time.sleep(5)
 
 if __name__ == '__main__':
