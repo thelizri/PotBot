@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {get, getDatabase, ref} from "firebase/database";
 import elephant from '../styling/images/elefant.jpg'
-import addPlantIcon from '../styling/images/plus-pot.png'
+// import addPlantIcon from '../styling/images/plus-pot.png'
 import {useAuth} from '../firebaseModel'
 
 function Plants({title}) {
@@ -47,7 +47,7 @@ function Plants({title}) {
         </div>}
       </div>
       <div className={"addPlant"}>
-        <img src={addPlantIcon}/>
+        {/* <img src={addPlantIcon}/> */}
       </div>
     </>)
 }

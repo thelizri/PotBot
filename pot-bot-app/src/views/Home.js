@@ -1,21 +1,22 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "../firebaseModel";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../firebaseModel";
 import React from "react";
 import "firebase/database";
 import '../styling/homeView.css';
-import Plants from "./Plants";
+import AddPlantView from './AddPlantView';
 
 export default function Home() {
-  const {user, logOut} = useAuth();
+  const { user, logOut } = useAuth();
   const userName = user.displayName;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="Home">
-      {user && <Welcome/>}
-      {user && <Plants title="Parasollpilea"/>}
-      {user && <LogoutBtn/>}
-      {!user && <Login/>}
+      {user && <Welcome />}
+      {/* {user && <Plants title="Parasollpilea"/>} */}
+      {user && <AddPlantView />}
+      {user && <LogoutBtn />}
+      {!user && <Login />}
     </div>
   );
 
