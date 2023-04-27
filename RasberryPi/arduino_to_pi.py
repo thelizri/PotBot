@@ -4,6 +4,9 @@ import json
 import serial
 import time
 
+abspath = os.path.dirname(os.path.abspath(__file__))
+os.chdir(abspath)
+
 def storemeasurements(measurements):
 
     dictionary = {
