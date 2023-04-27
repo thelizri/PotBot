@@ -1,59 +1,77 @@
+body {
+  box-sizing: border-box;
+}
+
 .Home {
-    display: flex;
-    flex-direction: column;
-    /* gap: 10px; */
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  justify-content: center;
+  align-items: start;
+  max-width: 20vmin;
+  margin: 0 auto;
 }
-.logout-btn{
-    background-color: transparent;
-    border-style: none none solid none;
-    border-bottom: 1px solid #444; /* set a dark grey border color */
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    margin: 20px;
+
+.logout-btn {
+  background-color: transparent;
+  border-style: none none solid none;
+  border-bottom: 1px solid #444; /* set a dark grey border color */
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 20px;
 }
-.change-username{
-    background-color: transparent;
-    border-style: none none solid none;
-    border-bottom: 1px solid #444; /* set a dark grey border color */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    margin: 20px;
+
+.change-username {
+  background-color: transparent;
+  border-style: none none solid none;
+  border-bottom: 1px solid #444; /* set a dark grey border color */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 20px;
 
 }
+
 button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
-  
+
 .expandable-div {
-    width: 300px;
-    height: 100px;
-    background-color: #ccc;
-    transition: all 0.7s ease;
+  width: 300px;
+  height: 100px;
+  background-color: #ccc;
+  transition: all 0.7s ease;
 }
+
 /* .expandable-div:hover{
     cursor: pointer;
 } */
 .expanded {
-    width: 300px;
-    height: 300px;
-    transition: all 0.5s ease; /*applies a transition effect: scope, time, transisiton-style*/
-    
+  width: 300px;
+  height: 300px;
+  transition: all 0.5s ease; /*applies a transition effect: scope, time, transisiton-style*/
+
 }
-.card-title{
-    display: flex;
+
+.card-title {
+  display: flex;
 }
-.card-title > p{
-    align-items: center;
+
+.card-title > p {
+  align-items: center;
 }
+
 .expanded .plant-data {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
-    /* transition: all 0.7s ease; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+  /* transition: all 0.7s ease; */
+}
+
+.addPlant img {
+  width: 80px;
+  padding: 20px 10px;
 }
