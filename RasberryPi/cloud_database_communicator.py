@@ -24,7 +24,8 @@ def read_json_and_push(filepath, product_id):
             data = json.load(file)
             file.close()
         except:
-            time.sleep(60)
+            time.sleep(5)
+            print("Exception opening json file")
             continue
 
         #Deletes content
@@ -32,12 +33,13 @@ def read_json_and_push(filepath, product_id):
             pass
         
         if data is None:
-            time.sleep(60)
+            print("JSON file is empty")
+            time.sleep(5)
             continue
 
         data['product-id'] = product_id
         push_data(data, product_id)
-        time.sleep(60)
+        time.sleep(5)
 
 if __name__ == '__main__':
     read_json_and_push('last_measurement.json', 'raspberry-1')
