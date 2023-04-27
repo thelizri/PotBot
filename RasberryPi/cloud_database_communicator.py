@@ -9,8 +9,8 @@ abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
 # Replace 'path/to/your-service-account-key.json' with the path to the JSON file you downloaded
-#cred = credentials.Certificate('/home/pi/PotBot/RasberryPi/firebase-key.json')
-cred = credentials.Certificate('C:\\Users\\karlw\\Documents\\Code\\PotBot\\firebase-key.json')
+cred = credentials.Certificate('/home/pi/PotBot/RasberryPi/firebase-key.json')
+#cred = credentials.Certificate('C:\\Users\\karlw\\Documents\\Code\\PotBot\\firebase-key.json')
 
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/'
