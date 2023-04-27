@@ -3,6 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import db
 import json
 import time
+import os
 
 # Replace 'path/to/your-service-account-key.json' with the path to the JSON file you downloaded
 cred = credentials.Certificate('/home/pi/PotBot/RasberryPi/firebase-key.json') #Replace with real path for the raspberry pi
@@ -21,23 +22,19 @@ def push_data(data):
 def read_json_and_push(filepath, product_id):
     
     while True:
-        try:
-            file = open(filepath)
-            data = json.load(file)
-            file.close()
-        except:
+        
+        if os.path.getsize(filepath) == 0:
+            print("Empty JSON file")
             time.sleep(5)
-            print("Exception opening json file")
             continue
+        
+        file = open(filepath)
+        data = json.load(file)
+        file.close()
 
         #Deletes content
         with open(filepath, 'w'):
             pass
-        
-        if data is None:
-            print("JSON file is empty")
-            time.sleep(5)
-            continue
 
         data['product-id'] = product_id
         push_data(data)
