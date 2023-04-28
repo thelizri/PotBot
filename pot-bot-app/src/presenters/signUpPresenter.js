@@ -18,8 +18,8 @@ function SignUpPresenter() {
     try {
       await signUp(username, password);
     } catch (err) {
-      setError(err.message);
-     console.log(err);
+      setError(err);
+     //console.log(err);
     }
     if(currentUser!= null){
       navigate("/home");
