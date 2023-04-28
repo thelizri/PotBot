@@ -4,6 +4,7 @@ import json
 import serial
 import time
 import os
+import cloud_database_communicator as cdc
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -39,6 +40,12 @@ if __name__ == '__main__':
                 print(f'{arduino_data}')
                 measurements = arduino_data.split(' ')
             storemeasurements(measurements)
+            cdc.run()
     except KeyboardInterrupt:
         print("Closing Serial Communication")
         port.close()
+
+    #Print runtime exceptions to a log file
+    except Exception as error:
+        log = open('arduino_to_pi_error.log', 'w+')
+        log.write(str(error))
