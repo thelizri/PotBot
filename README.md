@@ -100,6 +100,7 @@ On the other hand, if you are working on a feature branch and the main branch is
 
 ## PotBot
 - Network address: 10.42.0.1:8080
+- Network address: setup.potbot:8080
 
 ## Network Manager Commands
 - `nmcli device disconnect wlan0`  
