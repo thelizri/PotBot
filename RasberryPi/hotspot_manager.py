@@ -31,7 +31,7 @@ def connect_to_network():
                 continue
             else:
                 sleep(30)
-                subprocess.run(["sudo", "python3", "arduino_to_pi.py", "&"])
+                subprocess.run(["sudo", "python3", "arduino_manager.py", "&"])
                 return True
 
     # remove wifi credentials
