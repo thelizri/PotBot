@@ -10,59 +10,56 @@ os.chdir(abspath)
 
 
 def connect_to_network():
-    with open('networkUserAndPassword.txt', 'r') as credentials:
+    with open("networkUserAndPassword.txt", "r") as credentials:
         ssid = credentials.readline().strip()
         pass_ = credentials.readline().strip()
-        subprocess.run(['sudo', 'nmcli', 'device', 'disconnect', 'wlan0'])
+        subprocess.run(["sudo", "nmcli", "device", "disconnect", "wlan0"])
         sleep(5)
-        subprocess.run(['sudo', 'nmcli', 'device', 'wifi', 'list'],
-                       stdout=subprocess.PIPE, text=True)
+        subprocess.run(
+            ["sudo", "nmcli", "device", "wifi", "list"],
+            stdout=subprocess.PIPE,
+            text=True,
+        )
         for i in range(3):
-            output = subprocess.run(['sudo',
-                                     'nmcli',
-                                     'device',
-                                     'wifi',
-                                     'connect',
-                                     ssid,
-                                     'password',
-                                     pass_],
-                                    stderr=subprocess.PIPE,
-                                    text=True)
-            if 'Error: No network with SSID' in output.stderr:
+            output = subprocess.run(
+                ["sudo", "nmcli", "device", "wifi", "connect", ssid, "password", pass_],
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            if "Error: No network with SSID" in output.stderr:
                 sleep(0.1)
                 continue
             else:
                 sleep(30)
-                subprocess.run(['sudo', 'python3', 'arduino_to_pi.py', '&'])
+                subprocess.run(["sudo", "python3", "arduino_to_pi.py", "&"])
                 return True
 
     # remove wifi credentials
-    os.remove('networkUserAndPassword.txt')
+    os.remove("networkUserAndPassword.txt")
     return False
 
 
 def enable_hotspot():
-    subprocess.run(['sudo', 'nmcli', 'connection', 'up', 'Hotspot'])
+    subprocess.run(["sudo", "nmcli", "connection", "up", "Hotspot"])
     website.start_website()
 
 
 def wait_for_user_wifi():
-    while not os.path.exists('networkUserAndPassword.txt'):
+    while not os.path.exists("networkUserAndPassword.txt"):
         sleep(0.5)
 
 
 def _main():
     while True:
-        if not os.path.exists('networkUserAndPassword.txt'):
+        if not os.path.exists("networkUserAndPassword.txt"):
             try:
                 enable_hotspot()
             except BaseException:
-                print('something went wrong')
+                print("something went wrong")
 
-        if os.path.exists(
-                'networkUserAndPassword.txt') and connect_to_network():
+        if os.path.exists("networkUserAndPassword.txt") and connect_to_network():
             break
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main()
