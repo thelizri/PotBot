@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import plantSource from './plantSource';
+import plantSource from '../services/plantSource';
 
 const PlantDetails = ({ commonName }) => {
   const [plantDetails, setPlantDetails] = useState(null);

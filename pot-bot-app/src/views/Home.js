@@ -1,22 +1,23 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../firebaseModel";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "../firebaseModel";
 import React from "react";
 import "firebase/database";
 import '../styling/homeView.css';
+import PlantPresenter from "../presenters/PlantPresenter";
 import AddPlantView from './AddPlantView';
-
+/*TODO: bestämma layout så alla är med på samma logik */
 export default function Home() {
-  const { user, logOut } = useAuth();
+  const {user, logOut} = useAuth();
   const userName = user.displayName;
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <div className="Home">
-      {user && <Welcome />}
-      {/* {user && <Plants title="Parasollpilea"/>} */}
+      {user && <Welcome/>}
+      {user && <PlantPresenter/>}{/*<Plants title="Parasollpilea"/>*/}
+      {user && <LogoutBtn/>}
       {user && <AddPlantView />}
-      {user && <LogoutBtn />}
-      {!user && <Login />}
+      {!user && <Login/>}
     </div>
   );
 
@@ -33,7 +34,7 @@ export default function Home() {
     }
 
     async function changeUserName() {
-      let win = await window.open("/name", "_blank", "toolbar=no, resizable=no, height:100, width:200");
+      await window.open("/name", "_blank", "toolbar=no, resizable=no, height:100, width:200");
     }
 
     return (
@@ -47,13 +48,12 @@ export default function Home() {
     )
   }
 
-  function LogoutBtn() {
-    return (
-      <div className="logout">
-        <button className="logout-btn" to="/" onClick={logOut}>Log out</button>
-      </div>
-    )
-  }
-
+    function LogoutBtn(){
+        return(
+            <div className="logout">
+              <Link to="/"><button className="logout-btn" onClick={logOut}>Logout</button></Link>
+            </div>
+        )
+    }
 
 }
