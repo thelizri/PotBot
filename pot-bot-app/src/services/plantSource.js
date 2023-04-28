@@ -30,11 +30,11 @@ async function searchPlantByCommonName(commonName) {
     return details;
   }
   
-  export {
+  const plantSource ={
     searchPlantByCommonName,
     fetchPlantDetails
   };
-
+export default plantSource;
 // async function searchPlantByCommonName(commonName) {
 //     try {
 //       const searchResponse = await fetch(searchUrl.replace('{{QUERY}}', commonName));
