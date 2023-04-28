@@ -6,7 +6,8 @@ import ResetPresenter from "./presenters/resetPasswordPresenter";
 import {UserAuthContextProvider} from "./firebaseModel";
 import HomePresenter from "./presenters/HomePresenter";
 import ChangeUserName from "./views/ChangeUserName";
-import PlantPresenter from "./presenters/PlantPresenter";
+import AddPlantPresenter from "./presenters/AddPlantPresenter";
+
 function App() {
     return (
         <div className="App">
@@ -18,8 +19,8 @@ function App() {
                         <Route path="/signup" element={<SignUpPresenter/>}/>
                         <Route path="/reset" element={<ResetPresenter/>}/>
                         <Route path="/home" element={<HomePresenter/>}/>
-                        <Route path="/name" element={<ChangeUserName />}/>
-                        <Route path="/home/plants" element={<PlantPresenter/>}/>
+                      <Route path="/name" element={<ChangeUserName/>}/>
+                      <Route path="/addPlant" element={<AddPlantPresenter/>}/>
                     </Routes>
                     </UserAuthContextProvider>
                 </Router>

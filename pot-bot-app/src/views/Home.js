@@ -4,7 +4,6 @@ import React from "react";
 import "firebase/database";
 import '../styling/homeView.css';
 import PlantPresenter from "../presenters/PlantPresenter";
-import AddPlantView from './AddPlantView';
 /*TODO: bestämma layout så alla är med på samma logik */
 export default function Home() {
   const {user, logOut} = useAuth();
@@ -14,9 +13,8 @@ export default function Home() {
   return (
     <div className="Home">
       {user && <Welcome/>}
-      {user && <PlantPresenter/>}{/*<Plants title="Parasollpilea"/>*/}
+      {user && <PlantPresenter/>}
       {user && <LogoutBtn/>}
-      {user && <AddPlantView />}
       {!user && <Login/>}
     </div>
   );
@@ -29,14 +27,9 @@ export default function Home() {
   }
 
   function Welcome() {
-    function handlePlantClick() {
-      navigate("/home/plants")
-    }
-
     async function changeUserName() {
       await window.open("/name", "_blank", "toolbar=no, resizable=no, height:100, width:200");
     }
-
     return (
       <>
         <h2>Welcome {userName}</h2>

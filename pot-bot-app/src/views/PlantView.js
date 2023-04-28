@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PlantView({plants, Plants}) {
+export default function PlantView({plants, Plants, AddPlant}) {
 
   return (
     <div>
@@ -8,7 +8,8 @@ export default function PlantView({plants, Plants}) {
       <ul>
         {/*plants && Object.keys(plants).map(x => <li key={x}>{x}</li>)*/}
       </ul>
-      {plants &&  <Plants/>}
+      {plants && <Plants/>}
+      {plants && <AddPlant/>}
     </div>
   )
 }
