@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import PlantDetails from '../components/PlantDetails';
-import { searchPlantByCommonName } from "../services/plantSource";
+import plantSource from "../services/plantSource";
 
 
 export default function AddPlantView(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
+  const {searchPlantByCommonName} = plantSource.searchPlantByCommonName;
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await searchPlantByCommonName(searchTerm);
@@ -20,8 +19,6 @@ export default function AddPlantView(props) {
       setSearchResults([]);
     }
   };
-  
-
 
   return (
     <div className="addPlant">
