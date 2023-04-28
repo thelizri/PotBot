@@ -2,34 +2,30 @@ import React, { useState } from 'react';
 import '../styling/loginView.css'
 import { Link } from 'react-router-dom';
 
-function LoginView({ username, setUsername, password, setPassword, handleSubmit, inputError }) {
+function LoginView({ username, setUsername, password, setPassword, handleSubmit, error }) {
   const [showError, setShowError] = useState(false);
   function errorHandling() {
-    if (!inputError.message) {
+    if (!error.message) {
       return '';
     }
   
-    if (inputError.message.includes("auth/email-already-in-use")) {
-      return "Email is already in use";
-    }
-  
-    if (inputError.message.includes("auth/invalid-email")) {
+    if (error.message.includes("auth/invalid-email")) {
       return "Email not valid, try again";
     }
   
-    if (inputError.message.includes("auth/weak-password")) {
-      return "Password should be at least 6 characters";
+    if(error.message.includes("auth/user-not-found")) {
+      return "No user is connected to this E–Mail"
     }
   
-    if (inputError.message.includes("auth/wrong-password")) {
+    if (error.message.includes("auth/wrong-password")) {
       return "Wrong password, please try again";
     }
   
-    if (inputError.message.includes("auth/internal-error")) {
+    if (error.message.includes("auth/internal-error")) {
       return "Please enter a password";
     }
   
-    return inputError.message;
+    return error.message;
   }
 
 
@@ -41,7 +37,7 @@ function LoginView({ username, setUsername, password, setPassword, handleSubmit,
   function handleFormSubmit(e) {
     e.preventDefault();
     handleSubmit(e);
-    setShowError(!!inputError);
+    setShowError(!!error);
   }
   
   return (

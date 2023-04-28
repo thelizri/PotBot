@@ -1,22 +1,47 @@
+import React, { useState } from "react";
+import PlantDetails from '../components/PlantDetails';
+import plantSource from "../services/plantSource";
 
-import React from "react";
-import {useAuth} from "../firebaseModel";
 
 export default function AddPlantView(props) {
-    const {user} = useAuth();
-    const plant = '';
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const {searchPlantByCommonName} = plantSource.searchPlantByCommonName;
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const result = await searchPlantByCommonName(searchTerm);
+    if (result) {
+      setSearchResults([result]);
+    } else {
+      setSearchResults([]);
+    }
+  };
 
-    //add function for scrolling plants or carousel images of plants
-    //add function for text search for a plant
-    return(
+  return (
     <div className="addPlant">
-        <h1>Choose your plant to add</h1>
-        {/*add functions here*/}
-
-
+      <h1>Choose your plant to add</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Search for a plant"
+          value={searchTerm}
+          onChange={handleChange}
+        />
+        <button type="submit">Search</button>
+      </form>
+      <div>
+      {searchResults.map((plant) => {
+  console.log('Rendering plant:', plant); // Log the plant object
+  return (
+    <div key={plant.id}>
+      <PlantDetails commonName={plant.common_name} />
     </div>
-
-    )
-
-
+  );
+})}
+      </div>
+    </div>
+  );
 }
