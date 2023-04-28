@@ -1,4 +1,5 @@
 import {useAuth} from "../firebaseModel";
+import AddPlantView from "../views/AddPlantView";
 
 export default function AddPlantPresenter() {
   const {user} = useAuth();
@@ -8,15 +9,14 @@ export default function AddPlantPresenter() {
   //add function for text search for a plant
   return (
     <div className="addPlant">
-      <h1>Choose your plant to add</h1>
-
+      <AddPlantView />
 
       {/*add functions here*/}
 
 
     </div>
 
-  )
+  );
 
 
 }
