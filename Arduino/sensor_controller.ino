@@ -43,6 +43,13 @@ void setup() {
   pinMode(PUMP_PIN, OUTPUT);
 }
 
+String readMessageFromRaspberryPi(){
+  if(Serial.available() > 0){
+    return Serial.readStringUntil('\n');
+  }
+  return "";
+}
+
 int readSoilMoisture(){
   int soilMoisture = averageAnalogRead(SOIL_PIN);
   int soilMoisturePercent = map(soilMoisture, AIR_VALUE, WATER_VALUE, 0, 100);
