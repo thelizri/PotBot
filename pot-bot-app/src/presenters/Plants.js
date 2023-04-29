@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 import {useAuth} from "../firebaseModel";
-//import addPlantIcon from '../styling/images/plus-pot.png'
+import addPlantIcon from '../styling/images/plus-pot.png'
 
 export function Plants({plants, data, today}){
   const [expanded, setExpanded] = useState(false);
@@ -44,7 +45,7 @@ export function Plants({plants, data, today}){
         </div>}
       </div>
     <div className={"addPlant"}>
-      {/*<img src={addPlantIcon}/>*/}
+      <Link to="/addNewPlant"><img src={addPlantIcon}/></Link>
     </div>
     </>)
 }
