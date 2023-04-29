@@ -9,7 +9,6 @@ import {UserAuthContextProvider} from "./firebaseModel";
 import HomePresenter from "./presenters/HomePresenter";
 import ChangeUserName from "./views/ChangeUserName";
 
-
 function App() {
     return (
         <div className="App">

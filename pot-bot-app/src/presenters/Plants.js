@@ -4,15 +4,17 @@ import elephant from "../styling/images/elefant.jpg";
 import {useAuth} from "../firebaseModel";
 import addPlantIcon from '../styling/images/plus-pot.png'
 
-export function Plants({plants, data, today}){
+export function Plants({plant, data, today}) {
   const [expanded, setExpanded] = useState(false);
   const [latest, setLatest] = useState(null)
   const [timeIndex, setTimeIndex] = useState("")
   const {user} = useAuth()
+
   function handleClick() {
     setExpanded(!expanded);
   }
-  useEffect(() =>{
+
+  useEffect(() => {
     let latestDate = today
     //const d = new Date()
     let index = timeIndex
@@ -35,7 +37,7 @@ export function Plants({plants, data, today}){
          onClick={handleClick}>
       <div className="card-title">
         <img src={elephant} width="100" height="100"/>
-        <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{plants}</span>
+        <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{plant}</span>
       </div>
         {expanded && <div className="plant-data">
           <div>Moisture: {latest.soilMoisture} </div>
