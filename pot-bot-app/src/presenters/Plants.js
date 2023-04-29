@@ -46,8 +46,8 @@ export function Plants({plant, data, today}) {
           <div>Waterlevel: {latest.waterLevel}</div>
         </div>}
       </div>
-    <div className={"addPlant"}>
+    {/* <div className={"addPlant"}>
       <Link to="/addNewPlant"><img src={addPlantIcon}/></Link>
-    </div>
+    </div> */}
     </>)
 }

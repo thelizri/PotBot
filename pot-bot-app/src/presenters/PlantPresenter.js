@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import AddPlantView from "../views/AddPlantView";
 import addPlantIcon from '../styling/images/plus-pot.png'
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Plants} from "./Plants";
 
 export default function PlantPresenter() {
@@ -50,9 +50,9 @@ export default function PlantPresenter() {
   function addPlantButton() {
     return (
       <div className={"addPlant"}>
-        <button onClick={buttonHandler}>
+        <Link to="/addNewPlant">
           {<img src={addPlantIcon}/>}
-        </button>
+        </Link>
       </div>)
   }
 
