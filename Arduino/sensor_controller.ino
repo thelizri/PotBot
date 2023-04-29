@@ -53,6 +53,7 @@ void turnOffPump(){
   analogWrite(PUMP_PIN, 0);
 }
 
+//Uses PWM to simulate 3 Volt output
 void turnOnPump(){
   //PWM voltage=(Duty cycle ÷ 256) x 5 V = 3
   //% Duty cycle = (TON/(TON + TOFF))
