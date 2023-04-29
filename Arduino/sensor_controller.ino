@@ -19,6 +19,9 @@ DHT dht(DHTPIN, DHPTYPE);
 #define AIR_VALUE 685
 #define WATER_VALUE 274
 
+//Water Pump: 3 Volt
+#define PUMP_PIN 3
+
 void setup() {
   Serial.begin(115200);
   while(!Serial){}
@@ -35,6 +38,9 @@ void setup() {
 
   //Soil Sensor
   pinMode(SOIL_PIN, INPUT);
+
+  //Water Pump
+  pinMode(PUMP_PIN, OUTPUT);
 }
 
 int readSoilMoisture(){
@@ -43,9 +49,20 @@ int readSoilMoisture(){
   return soilMoisturePercent;
 }
 
+void turnOffPump(){
+  analogWrite(PUMP_PIN, 0);
+}
+
+void turnOnPump(){
+  //PWM voltage=(Duty cycle ÷ 256) x 5 V = 3
+  //% Duty cycle = (TON/(TON + TOFF))
+  //0-255
+  analogWrite(PUMP_PIN, 154);
+}
+
 int readWaterLevel() {
 	digitalWrite(POWER_PIN, HIGH);  // turn the sensor ON
-  delay(100);                      // wait 10 milliseconds
+  delay(100);                      // wait 100 milliseconds
   int value = averageAnalogRead(WATER_LEVEL_PIN); // read the analog value from sensor
   digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
   if (value > WATER_THRESHHOLD) {
