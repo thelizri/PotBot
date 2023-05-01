@@ -35,4 +35,4 @@ def write_ssid_and_password_to_file(ssid, password):
 
 
 def start_website():
-    app.run(debug=True, host="10.42.0.1", port=8080)
+    app.run(debug=True, host="10.42.0.1", port=80)
