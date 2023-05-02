@@ -100,7 +100,7 @@ On the other hand, if you are working on a feature branch and the main branch is
 
 ## PotBot
 - Network address: 10.42.0.1:80
-- Network address: setup.potbot.com
+- Network address: pot.bot
 
 ## DNS
 - Hosts can be found -> /etc/hosts
