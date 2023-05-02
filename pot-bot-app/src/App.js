@@ -7,6 +7,8 @@ import {UserAuthContextProvider} from "./firebaseModel";
 import HomePresenter from "./presenters/HomePresenter";
 import ChangeUserName from "./views/ChangeUserName";
 import AddPlantPresenter from "./presenters/AddPlantPresenter";
+import './testSearch';
+
 
 function App() {
     return (

@@ -15,15 +15,14 @@ export default function AddPlantView(props) {
 
   
   const handleSubmit = async (event) => {
-console.log("plantSource:", plantSource);
-console.log("searchPlants:", searchPlants);
-console.log("fetchPlantDetails:", fetchPlantDetails);
     event.preventDefault();
     const result = await searchPlants(searchTerm);
+    console.log("Search Results:", result);
     if (result && result.length > 0) {
       const plantDetails = await Promise.all(
         result.map((plant) => fetchPlantDetails(plant.id))
       );
+      console.log("Plant Details:", plantDetails);
       setSearchResults(plantDetails);
     } else {
       setSearchResults([]);
@@ -48,8 +47,13 @@ console.log("fetchPlantDetails:", fetchPlantDetails);
         <div key={plant.id}>
           <img src={plant.image_url} alt={plant.common_name} />
           <p>{plant.common_name}</p>
-          <p>{plant.details.watering}</p>
-          <p>{plant.details.sunlight}</p>
+          {plant.details && (
+  <div>
+    {plant.details.watering && <p>Watering: {plant.details.watering}</p>}
+    {plant.details.sunlight && <p>Sunlight: {plant.details.sunlight.join(', ')}</p>}
+  </div>
+)}
+
         </div>
       ))}
     </div>
