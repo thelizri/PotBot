@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import PlantDetails from "../components/PlantDetails";
-import plantSource from "../services/plantSource";
+import {Link, useNavigate} from "react-router-dom";
+import PlantDetails from '../components/PlantDetails';
+import plantSource from '../services/plantSource';
+import '../styling/AddPlant.css'
+
 
 const { searchPlants, fetchPlantDetails } = plantSource;
 
@@ -33,11 +36,14 @@ export default function AddPlantView(props) {
 
   return (
     <div className="addPlant">
-      <h1>Choose your plant to add</h1>
-      <form onSubmit={handleSubmit}>
+      <div className="addPlantDescr">
+        <h2>Connect your plant to the PotBot</h2>
+        <p>First choose what kind of plant you have and we will calibrate the optimal conditions for it</p>
+      </div>
+      <form className="plant-form" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Search for a plant"
+          placeholder="Choose your plant"
           value={searchTerm}
           onChange={handleChange}
         />
