@@ -1,30 +1,35 @@
-
 import React, { useState } from "react";
 import PlantDetails from "../components/PlantDetails";
 import plantSource from "../services/plantSource";
 
+const { searchPlants, fetchPlantDetails } = plantSource;
+
 export default function AddPlantView(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const searchPlantByCommonName = plantSource.searchPlantByCommonName;
-  const fetchPlantDetails = plantSource.fetchPlantDetails;
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+
+  
   const handleSubmit = async (event) => {
+console.log("plantSource:", plantSource);
+console.log("searchPlants:", searchPlants);
+console.log("fetchPlantDetails:", fetchPlantDetails);
     event.preventDefault();
-    const result = await searchPlantByCommonName(searchTerm);
-    if (result && result.data) {
+    const result = await searchPlants(searchTerm);
+    if (result && result.length > 0) {
       const plantDetails = await Promise.all(
-        result.data.map((plant) => fetchPlantDetails(plant.id))
+        result.map((plant) => fetchPlantDetails(plant.id))
       );
       setSearchResults(plantDetails);
     } else {
       setSearchResults([]);
     }
   };
+
   
 
   return (
