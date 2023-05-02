@@ -5,22 +5,34 @@ import plantSource from '../services/plantSource';
 import '../styling/AddPlant.css'
 
 
+const { searchPlants, fetchPlantDetails } = plantSource;
+
 export default function AddPlantView(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const {searchPlantByCommonName} = plantSource.searchPlantByCommonName;
+
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
+
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await searchPlantByCommonName(searchTerm);
-    if (result) {
-      setSearchResults([result]);
+    const result = await searchPlants(searchTerm);
+    console.log("Search Results:", result);
+    if (result && result.length > 0) {
+      const plantDetails = await Promise.all(
+        result.map((plant) => fetchPlantDetails(plant.id))
+      );
+      console.log("Plant Details:", plantDetails);
+      setSearchResults(plantDetails);
     } else {
       setSearchResults([]);
     }
   };
+
+  
 
   return (
     <div className="addPlant">
@@ -37,17 +49,19 @@ export default function AddPlantView(props) {
         />
         <button type="submit">Search</button>
       </form>
-      <div>
-      {searchResults.map((plant) => {
-        console.log('Rendering plant:', plant); // Log the plant object
-        return (
-          <div key={plant.id}>
-            <PlantDetails commonName={plant.common_name} />
-          </div>
-        );
-      })}
-      <Link to="/"><button className="back-btn">Back to your plants</button></Link>
-      </div>
+      {searchResults.map((plant) => (
+        <div key={plant.id}>
+          <img src={plant.image_url} alt={plant.common_name} />
+          <p>{plant.common_name}</p>
+          {plant.details && (
+  <div>
+    {plant.details.watering && <p>Watering: {plant.details.watering}</p>}
+    {plant.details.sunlight && <p>Sunlight: {plant.details.sunlight.join(', ')}</p>}
+  </div>
+)}
+
+        </div>
+      ))}
     </div>
-  );
+  ); 
 }
