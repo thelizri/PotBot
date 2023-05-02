@@ -99,7 +99,12 @@ On the other hand, if you are working on a feature branch and the main branch is
 - https://linuxhint.com/install-network-manager-raspberry-pi/  
 
 ## PotBot
-- Network address: 10.42.0.1:8080
+- Network address: 10.42.0.1:80
+- Network address: setup.potbot.com
+
+## DNS
+- Hosts can be found -> /etc/hosts
+- DNS settings can be found -> /etc/dnsmasq.conf
 
 ## Network Manager Commands
 - `nmcli device disconnect wlan0`  
