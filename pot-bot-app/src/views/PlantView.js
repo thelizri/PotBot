@@ -4,7 +4,7 @@ export default function PlantView({plants, Plants, AddPlant}) {
 
   return (
     <div>
-      <h1>Your plants</h1>
+      <h2>Your plants</h2>
       <ul>
         {/*plants && Object.keys(plants).map(x => <li key={x}>{x}</li>)*/}
       </ul>

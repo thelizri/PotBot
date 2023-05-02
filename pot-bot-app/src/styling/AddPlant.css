@@ -1,0 +1,20 @@
+.addPlantDescr{
+    /* margin-left: 25vw; */
+}
+.plant-form{
+    margin: auto;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border-style: none none none none;
+    margin: auto;
+    padding: 15px;
+}
+
+h2, p{
+    display: block;
+    text-align: center;
+}
