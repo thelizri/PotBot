@@ -17,9 +17,11 @@ export default function AddPlantPresenter() {
     </div>
 
   );
+}
 
 export default function AddPlantPresenter(){
     return (
         <AddPlantView/>
     )
 }
+
