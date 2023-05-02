@@ -1,10 +1,10 @@
 import React from 'react';
 import BaseView from "../views/baseView";
 
-function BasePresenter(){
+function Header(){
     return(
         <BaseView/>
     );
 }
 
-export default BasePresenter;
+export default Header;

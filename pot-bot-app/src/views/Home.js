@@ -12,9 +12,10 @@ export default function Home() {
 
   return (
     <div className="Home">
-      {user && <Welcome/>}
-      {user && <PlantPresenter/>}
+      {/* {user && <Welcome/>} */}
+      {user && <PlantPresenter/>}{/*<Plants title="Parasollpilea"/>*/}
       {user && <LogoutBtn/>}
+      {/* {user && <AddPlantView />} */}
       {!user && <Login/>}
     </div>
   );
@@ -22,7 +23,8 @@ export default function Home() {
   function Login() {
     return (
       <>
-        <h1>To access this page you have to login</h1> <Link to="/"><h2>Back to login</h2></Link>
+        <h2>To access this page you have to login</h2> 
+        <Link to="/">Back to login</Link>
       </>)
   }
 

@@ -18,5 +18,8 @@ export default function AddPlantPresenter() {
 
   );
 
-
+export default function AddPlantPresenter(){
+    return (
+        <AddPlantView/>
+    )
 }
