@@ -1,10 +1,12 @@
 import React from 'react';
-import BaseView from "../views/baseView";
 
-function Header(){
-    return(
-        <BaseView/>
-    );
+function Header() {
+  return (
+    <div>
+      <h1>PotBot.</h1>
+      <hr></hr>
+    </div>
+  );
 }
 
 export default Header;

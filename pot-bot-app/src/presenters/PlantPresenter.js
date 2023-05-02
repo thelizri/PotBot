@@ -4,7 +4,7 @@ import PlantView from "../views/PlantView";
 import AddPlantView from "../views/AddPlantView";
 import addPlantIcon from '../styling/images/plus-pot.png'
 import {Link, useNavigate} from "react-router-dom";
-import {Plants} from "./Plants";
+import {Plant} from "./Plant";
 
 export default function PlantPresenter() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function PlantPresenter() {
     let array = []
     {
       Object.keys(plants).map(name => {
-        return array.push(<Plants className={name} key={name} data={plants[name][meas]} today={today} plant={name}/>)
+        return array.push(<Plant className={name} key={name} data={plants[name][meas]} today={today} plant={name}/>)
       })
     }
     return (<div>{array}</div>)
