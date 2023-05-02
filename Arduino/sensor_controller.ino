@@ -56,6 +56,14 @@ int readSoilMoisture() {
   return soilMoisturePercent;
 }
 
+//12.5 ml / second
+void waterPump(int ml){
+  int milliseconds = (int)ml/12.5*1000;
+  turnOnPump();
+  delay(milliseconds);
+  turnOffPump();
+}
+
 void turnOffPump() {
   analogWrite(PUMP_PIN, 0);
 }
