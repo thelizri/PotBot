@@ -41,6 +41,7 @@ void setup() {
 
   //Water Pump
   pinMode(PUMP_PIN, OUTPUT);
+  digitalWrite(PUMP_PIN, HIGH);
 }
 
 String readMessageFromRaspberryPi() {
@@ -56,16 +57,12 @@ int readSoilMoisture() {
   return soilMoisturePercent;
 }
 
-void turnOffPump() {
-  analogWrite(PUMP_PIN, 0);
-}
-
-//Uses PWM to simulate 3 Volt output
-void turnOnPump() {
-  //PWM voltage=(Duty cycle ÷ 256) x 5 V = 3
-  //% Duty cycle = (TON/(TON + TOFF))
-  //0-255
-  analogWrite(PUMP_PIN, 154);
+//15 ml / second
+void waterPump(int ml){
+  unsigned int milliseconds = (unsigned int)ml/15*1000;
+  digitalWrite(PUMP_PIN, LOW);
+  delay(milliseconds);
+  digitalWrite(PUMP_PIN, HIGH);
 }
 
 int readWaterLevel() {
@@ -111,19 +108,34 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+int counter = 0;
+
 void loop() {
-  int waterLevel = readWaterLevel();
-  float temperature = readTemperature();
-  float uvIntensity = readUVIntensity();
-  int soil = readSoilMoisture();
 
-  Serial.print(waterLevel);
-  Serial.print(" ");
-  Serial.print(temperature);
-  Serial.print(" ");
-  Serial.print(uvIntensity);
-  Serial.print(" ");
-  Serial.println(soil);
+  if (counter > 600){
+    int waterLevel = readWaterLevel();
+    float temperature = readTemperature();
+    float uvIntensity = readUVIntensity();
+    int soil = readSoilMoisture();
 
-  delay(10 * 60 * 1000);
+    Serial.print(waterLevel);
+    Serial.print(" ");
+    Serial.print(temperature);
+    Serial.print(" ");
+    Serial.print(uvIntensity);
+    Serial.print(" ");
+    Serial.println(soil);
+
+    counter = 0;
+  }
+  else{
+    counter += 1;
+    String message = readMessageFromRaspberryPi();
+    if (message.length() > 0){
+      int ml = message.toInt();
+      waterPump(ml);
+    }
+  }
+
+  delay(1000);
 }
