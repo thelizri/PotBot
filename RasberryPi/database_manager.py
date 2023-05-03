@@ -1,5 +1,5 @@
 def handle_errors(error):
-    logfile = open("cloud_database_communicator_error.log", "w+")
+    logfile = open("database_manager_error.log", "w+")
     logfile.write(str(error))
 
 
@@ -33,11 +33,12 @@ def push_data(data):
     # Replace 'your_database_path' with the path where you want to push the
     # data
     ref = db.reference(
-        "/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants/Parasollpilea/measureData"
+        "/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants/Parasollpilea"
     )
-    child = ref.child(data["date"])
-    grandchild = child.child(data["time"])
-    grandchild.update(data)
+    #child = ref.child(data["date"])
+    #grandchild = child.child(data["time"])
+    #grandchild.update(data)
+    ref.child("measureData").update(data)
 
 
 def read_json(filepath, product_id):
@@ -67,3 +68,6 @@ def run():
         read_json("last_measurement.json", "raspberry-1")
     except Exception as error:
         handle_errors(error)
+
+if __name__ == "__main__":
+    run()
