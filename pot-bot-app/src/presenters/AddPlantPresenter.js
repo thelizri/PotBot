@@ -1,19 +1,44 @@
-// pot-bot-app\src\presenters\AddPlantPresenter.js
-
-import { useAuth } from '../firebaseModel';
+import {addNewPlant, useAuth} from '../firebaseModel';
 import AddPlantView from '../views/AddPlantView';
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+//Man bör väl bara kunna lägga till en planta i taget.
+/** Gick igenom er kod och modifierade lite och lyckas skriva till db med användare inloggad.
+ * Men det behöver struktureras upp lite gällande logik. Nu har jag flyttat allt från App.js
+ * TODO:skicka med all data som ska med, typ bild, temp, osv, samt ovan.*/
+export default function AddPlantPresenter() {
+  const {user} = useAuth();
+  const navigate = useNavigate()
+  const [addPlant, setPlant] = useState(false)
+  const [personalPlantList, setPersonalPlantList] = useState();
+  const addPlantToPersonalList = (plant) => {
+    setPersonalPlantList(plant);
+    setPlant(true)
+  };
+  console.log(personalPlantList);
+  useEffect(() => {
+    //function för att extrahera den data vi behöver
+    if (addPlant) {
+      addNewPlant(user, personalPlantList.common_name, {
+        sunlight: personalPlantList.sunlight,
+        watering: personalPlantList.watering,
+        temperatur: '10-30'
+      }).then((p) => {
+        console.log(p)
+        setPersonalPlantList([])
+        setPlant(false)
+        navigate("/home")
 
-export default function AddPlantPresenter({ addPlantToPersonalList }) {
-  const { user } = useAuth();
-  const plant = '';
+      }).catch(err => console.error(err.message))
+    }
+  }, [personalPlantList, user]);
 
-  // add function for scrolling plants or carousel images of plants
-  // add function for text search for a plant
+
   return (
     <div className='addPlant'>
-      <AddPlantView addPlantToPersonalList={addPlantToPersonalList} />
+      <AddPlantView addPlantToPersonalList={addPlantToPersonalList}/>
 
-      {/* add functions here */}
+
     </div>
   );
 }

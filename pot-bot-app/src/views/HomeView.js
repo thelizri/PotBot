@@ -10,10 +10,8 @@ export default function HomeView() {
 
   return (
     <div className="Home">
-      {/* {user && <Welcome/>} */}
-      {user && <PlantPresenter/>}{/*<Plants title="Parasollpilea"/>*/}
+      {user && <PlantPresenter/>}
       {user && <LogoutBtn/>}
-      {/* {user && <AddPlantView />} */}
       {!user && <Login/>}
     </div>
   );

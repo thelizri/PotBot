@@ -8,13 +8,10 @@ import {UserAuthContextProvider} from "./firebaseModel";
 import HomePresenter from "./presenters/HomePresenter";
 import ChangeUserName from "./views/ChangeUserName";
 import './styling/App.css'
-import {useState} from "react";
 
+//Flyttade konstanter till AddPlantPresenter.js
 function App() {
-  const [personalPlantList, setPersonalPlantList] = useState([]);
-  const addPlantToPersonalList = (plant) => {
-    setPersonalPlantList([...personalPlantList, plant]);
-  };
+
   return (
     <div className='App'>
       <Header/>
@@ -25,10 +22,10 @@ function App() {
             <Route path='/signup' element={<SignUpPresenter/>}/>
             <Route path='/reset' element={<ResetPasswordPresenter/>}/>
             <Route path='/name' element={<ChangeUserName/>}/>
-            <Route path='/home' element={<HomePresenter personalPlantList={personalPlantList}/>}/>
+            <Route path='/home' element={<HomePresenter/>}/>
             <Route
               path='/addNewPlant'
-              element={<AddPlantPresenter addPlantToPersonalList={addPlantToPersonalList}/>}
+              element={<AddPlantPresenter/>}
             />
           </Routes>
         </UserAuthContextProvider>

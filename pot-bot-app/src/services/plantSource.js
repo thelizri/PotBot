@@ -34,9 +34,7 @@ const fetchPlantDetails = async (plantId) => {
   }
 };
 
-export default { searchPlants, fetchPlantDetails };
-
-
+export default {searchPlants, fetchPlantDetails};
 
 
 // const apiKey = "sk-vhKW64412e6ecbc88586";
