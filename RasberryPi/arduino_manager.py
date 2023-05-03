@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from datetime import datetime
+from math import floor
 import json
 import serial
 import time
@@ -11,13 +12,19 @@ os.chdir(abspath)
 
 
 def storemeasurements(measurements):
+    measurements[0] = int(measurements[0])
+    measurements[1] = float(measurements[1])
+    measurements[2] = float(measurements[2])
+    measurements[3] = int(measurements[3])
+
     dictionary = {
-        "date": f'{datetime.now().strftime("%d-%m-%Y")}',
-        "time": f'{datetime.now().strftime("%H:%M")}',
-        "waterLevel": measurements[0],
-        "temperature": f"{measurements[1]}°C",
-        "uvIntensity": f"{measurements[2]}mW/cm^2",
-        "soilMoisture": f"{measurements[3]}%",
+	f"{floor(datetime.now().timestamp())}": {
+            "dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
+            "waterLevel": measurements[0],
+            "temperature": measurements[1],
+            "uvIntensity": measurements[2],
+            "soilMoisture": measurements[3],
+        }
     }
 
     with open("last_measurement.json", "w") as file:
@@ -48,5 +55,5 @@ if __name__ == "__main__":
 
     # Print runtime exceptions to a log file
     except Exception as error:
-        log = open("arduino_to_pi_error.log", "w+")
+        log = open("arduino_manager_error.log", "w+")
         log.write(str(error))
