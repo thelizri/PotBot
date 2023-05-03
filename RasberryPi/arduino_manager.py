@@ -42,6 +42,11 @@ def check_settings(port):
         data = json.load(file)
         if data["water"] == 1:
             turn_on_water_pump(data["amount"], port)
+        else:
+            with open("failure.txt", "w") as file2:
+                file2.write("Did not turn on pump")
+                file2.write("Data[water]="+str(data["water"]))
+
 
 if __name__ == "__main__":
     port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
