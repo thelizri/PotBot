@@ -97,12 +97,14 @@ async function updatePlantData(user, path, data) {
 }
 /*
 * boolean to check if user has a plant registred*/
-function hasPlants(user){
+async function hasPlants(user){
     const dbRef = ref(db, `users/${user.uid}`);
-    return get(child(dbRef,`/plants`)).then((response) => {
-        //console.log(response.exists())
+    try {
+        const response = await get(child(dbRef, `/plants`));
         return response.exists();
-    }).catch(err => console.error(err.message));
+    } catch (err) {
+        return console.error(err.message);
+    }
 }
 
 async function savePlantToUser(user, plantName, plantData) {

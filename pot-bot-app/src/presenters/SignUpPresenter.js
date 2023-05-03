@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import SignupView from "../views/signUpView";
+import React, {useState} from 'react';
+import SignUpView from "../views/SignUpView";
 import HomePresenter from "./HomePresenter";
-import { useAuth } from "../firebaseModel";
-import { useNavigate } from "react-router-dom";
+import {useAuth} from "../firebaseModel";
+import {useNavigate} from "react-router-dom";
 
 function SignUpPresenter() {
   const [username, setUsername] = useState("");
@@ -10,7 +10,7 @@ function SignUpPresenter() {
   //const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { user, signUp, currentUser } = useAuth();
+  const {user, signUp, currentUser} = useAuth();
   let navigate = useNavigate("/home");
 
   const handleSubmit = async (e) => {
@@ -19,9 +19,9 @@ function SignUpPresenter() {
       await signUp(username, password);
     } catch (err) {
       setError(err);
-     //console.log(err);
+      //console.log(err);
     }
-    if(currentUser!= null){
+    if (currentUser != null) {
       navigate("/home");
     }
   };
@@ -29,18 +29,16 @@ function SignUpPresenter() {
   return (
     <>
       {!user && (
-        <SignupView
+        <SignUpView
           username={username}
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
-         // confirmPassword={confirmPassword}
-          //setConfirmPassword={setConfirmPassword}
           error={error}
           handleSubmit={handleSubmit}
         />
       )}
-      {user && <HomePresenter />}
+      {user && <HomePresenter/>}
     </>
   );
 }

@@ -1,63 +1,85 @@
 import {hasPlants, readUserData, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import AddPlantView from "../views/AddPlantView";
-import addPlantIcon from '../styling/images/plus-pot.png'
 import {useNavigate} from "react-router-dom";
-import {Plants} from "./Plants";
+import elephant from "../styling/images/elefant.jpg";
 
 export default function PlantPresenter() {
   const navigate = useNavigate();
   const [plants, setPlants] = useState(null);
   const {user} = useAuth();
-  let hasPlantPromise = hasPlants(user);
   const [hasPlant, setPlantBool] = useState(false);
-  hasPlantPromise.then((v) => {
-    //console.log(v + " hasPlantPromise");
-        setPlantBool(v);
+  const hasPlantPromise = hasPlants(user);
+
+  useEffect(() => {
+
+    hasPlantPromise.then((v) => {
+      setPlantBool(v);
     }).catch(err => console.error(err));
+    if (plants === null) {
+      readUserData(user, "plants").then((data => {
+        setPlants(data)
+      })).catch(err => console.error(err));
+    }
+  }, [user])
+
+  /**
+   * TODO: Fix data extraction when db is updated*/
+  function Plant({name, data, today}) {
+    const [expanded, setExpanded] = useState(false);
+    const [latest, setLatest] = useState(null)
+    const [timeIndex, setTimeIndex] = useState("")
+    const {user} = useAuth()
+
+    function handleClick() {
+      setExpanded(!expanded);
+    }
 
     useEffect(() => {
-        if (plants == null) {
-            readUserData(user, "plants").then((data => {
-                setPlants(data)
-            }));
-        }
-    }, [user])
+      let latestDate = Object.keys(data).sort().at(0)
+      console.log(latestDate)
+      let index = timeIndex
+      if (timeIndex === "" && data !== null) {
+        //let time = (`${d.getHours()}:${d.getMinutes()}`)
+        /*Object.keys(data).forEach(key => {
+          if (today !== key) {
+            /*
+             *ändra att den sparar senaste datumet*
+            *nu tar det bara sista i listan om datumet inte finns*
+        })*/
+        index = Object.entries(data[latestDate]).sort().reverse().at(0).at(0)
+      }
+      setLatest(data[latestDate][index])
+      setTimeIndex(index)
+    }, [user, data])
+    console.log(latest)
+    return (
+      <>
+        <div className={`expandable-div ${expanded ? "expanded" : ""}`}
+             onClick={handleClick}>
+          <div className="card-title">
+            <img src={elephant} width="100" height="100"/>
+            <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
+          </div>
+          {expanded && <div className="plant-data">
+            <div>Moisture: {latest.soilMoisture} </div>
+            <div>Light: {latest.uvIntensity}</div>
+            <div>Temperature: {latest.temperature}</div>
+            <div>Waterlevel: {latest.waterLevel}</div>
+          </div>}
+        </div>
+      </>
+    )
+  }
+
+  return <div>
+    {<PlantView user={user} plants={plants} hasPlant={hasPlant} Plant={Plant}/>}
+  </div>
+
   /**
    * DummieButton to add a new plant*/
   function buttonHandler() {
     navigate("/addPlant")
-    //addNewPlant(user, "plants", "Parasollpilea" ).catch(error => {console.error(error)})
+    //addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
   }
-  function renderPlants(){
-    let meas = 'measureData', date = new Date(), month = "0", m = date.getMonth();
-    if (m < 10) {
-      month += `${m + 1}`
-    } else {
-      month = m + 1
-    }
-    let today = (`${date.getDate()}-${month}-${date.getFullYear()}`)
-    let array = []
-    {
-      Object.keys(plants).map(name => {
-        return array.push(<Plants className={name} key={name} data={plants[name][meas]} today={today} plant={name}/>)
-      })
-    }
-    return (<div>{array}</div>)
-  }
-
-  function addPlantButton() {
-    return (
-      <div className={"addPlant"}>
-        <button onClick={buttonHandler}>
-          {<img src={addPlantIcon}/>}
-        </button>
-      </div>)
-  }
-
-  return <div>
-    {hasPlant && plants ? <PlantView plants={plants} AddPlant={addPlantButton} Plants={renderPlants}/> :
-      <AddPlantView buttonHandler={buttonHandler}/>}
-  </div>
 }
