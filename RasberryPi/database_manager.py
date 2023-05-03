@@ -19,7 +19,7 @@ os.chdir(abspath)
 # Replace 'path/to/your-service-account-key.json' with the path to the
 # JSON file you downloaded
 cred = credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json")
-# cred = credentials.Certificate('C:\\Users\\karlw\\Documents\\Code\\PotBot\\firebase-key.json')
+#cred = credentials.Certificate(r'C:\Users\karlw\Documents\Code\PotBot\RasberryPi\firebase-key.json')
 
 firebase_admin.initialize_app(
     cred,
@@ -39,6 +39,13 @@ def push_data(data):
     #grandchild = child.child(data["time"])
     #grandchild.update(data)
     ref.child("measureData").update(data)
+
+def get_settings():
+    ref = db.reference(
+        "/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants/Parasollpilea/settings"
+    )
+    with open("settings.json", "w") as file:
+        json.dump(ref.get(), file)
 
 
 def read_json(filepath, product_id):
@@ -66,6 +73,7 @@ def read_json(filepath, product_id):
 def run():
     try:
         read_json("last_measurement.json", "raspberry-1")
+        get_settings()
     except Exception as error:
         handle_errors(error)
 
