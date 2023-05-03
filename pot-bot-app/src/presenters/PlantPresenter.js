@@ -68,22 +68,23 @@ export default function PlantPresenter() {
               <div className="stats-btn"><Link to="/stats">See growth history</Link></div>
             </div>
             <div className="row">
-              <div className="stats-btn"><button className="water-btn" onClick={setWateredTrue}>Water plant</button></div>
+              <div className="stats-btn"><button type="button" className="water-btn" onClick={()=> setWateredTrue(user)}>Water plant</button></div>
             </div>
           </div>}
         </div>
-      </>)
+      </>) 
 
   }
 
-  return <div>
-    {<PlantView user={user} plants={plants} Plant={Plant}/>}
-  </div>
+  return 
+      (<div>
+        {<PlantView user={user} plants={plants} Plant={Plant}/>}
+      </div>)
 
-  /**
-   * DummieButton to add a new plant*/
-  /*function buttonHandler() {
+  
+  {/* DummieButton to add a new plant */}
+  {/* function buttonHandler() {
     //navigate("/addPlant")
     addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
-  }*/
+  } */}
 }

@@ -16,7 +16,7 @@ export default function PlantView({user, plants, Plant}) {
   }
 
   return (
-    <div>
+    <>
       <h2>Your plants</h2>
       {plants && user && (<div className="plant-data">
         {renderPlants({plants, Plant})}
@@ -29,6 +29,6 @@ export default function PlantView({user, plants, Plant}) {
           </Link>
         </div>
       )}
-    </div>
+    </>
   )
 }
