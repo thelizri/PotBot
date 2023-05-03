@@ -15,10 +15,10 @@ def storemeasurements(measurements):
     dictionary = {
 	f"{floor(datetime.now().timestamp())}": {
             "dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
-            "waterLevel": measurements[0],
-            "temperature": f"{measurements[1]}°C",
-            "uvIntensity": f"{measurements[2]}mW/cm^2",
-            "soilMoisture": f"{measurements[3]}%",
+            "waterLevel": {(int)measurements[0]},
+            "temperature": {(float)measurements[1]},
+            "uvIntensity": {(float)measurements[2]},
+            "soilMoisture": {(int)measurements[3]},
         }
     }
 
