@@ -65,12 +65,13 @@ async function writeUserData(name, email) {
             console.log(err)
         })
 }
-async function addNewPlant(user, path, plantName) {
+
+async function addNewPlant(user, plantName, data) {
     const dbRef = await ref(db, `users/${user.uid}`);
     //Check if the user already has this plant
     //Maybe we should have a error handler here to handle if user has this plant name
     //so the user can add another plant with this name
-    await get(child(dbRef,`/${path}/${plantName}` )).then((response) => {
+    await get(child(dbRef,`/plants/${plantName}` )).then((response) => {
         if(response.exists()){
             console.log(response.val())
             //Plant with this name already exists
@@ -78,18 +79,19 @@ async function addNewPlant(user, path, plantName) {
         else{
             console.log("no data found")
             //Create folder with plants and a folder with this plant name
-            set(ref(db, `users/${user.uid}/${path}/${plantName}`), {
-                SSID: 'plantID',
+            set(ref(db, `users/${user.uid}/plants/${plantName}`), {
+                SSID: 'RaspberryPi',
                 measureData: 'To be added',
-                plantRecommendedVitals: [] }
-            )
+                plantRecommendedVitals: data,
+                water:0,
+                autoWaterEnabled: false
+            })
         }
     }).catch(err => console.error(err))
 }
 /*
-* data is written as this example of a plant measureData object {m1, m2,...}
-* and m1 is then as {timestamp: '2023-04-24 15:00', temp: 22, humidity: 50, ...}
-*
+* data is written as this example of a plant measureData object {timestamp, timestamp2,...}
+* and m1 is then as {date: '2023-04-24 15:00', temp: 22, humidity: 50, ...}
 * */
 async function updatePlantData(user, path, data) {
     const dbRef = await ref(db, `users/${user.uid}/${path}`);
@@ -107,27 +109,6 @@ async function hasPlants(user){
     }
 }
 
-async function savePlantToUser(user, plantName, plantData) {
-    /* 
-     Gets the user's current plants
-     */
-    const userPlantsRef = ref(db, `users/${user.uid}/plants`);
-    const userPlantsSnapshot = await get(userPlantsRef);
-    const userPlants = userPlantsSnapshot.val() || {};
-  
-    /*Checks if the plant is already in the user's plants
-    */
-    if (userPlants.hasOwnProperty(plantName)) {
-      console.log(`Plant with name '${plantName}' already exists in user's plants.`);
-      return;
-    }
-  
-    /* Adds the new plant to the user's plants
-    */
-    userPlants[plantName] = plantData;
-    await set(userPlantsRef, userPlants);
-    console.log(`Plant with name '${plantName}' added to user's plants.`);
-  }
   
 
 export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData}
