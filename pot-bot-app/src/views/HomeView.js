@@ -26,7 +26,6 @@ export default function HomeView() {
       </>)
   }
 
-
   function LogoutBtn() {
     return (
       <div className="logout">

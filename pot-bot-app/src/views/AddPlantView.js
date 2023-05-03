@@ -42,8 +42,6 @@ export default function AddPlantView({addPlantToPersonalList}) {
     }
   };
 
-  
-
   return (
     <div className="addPlant">
       <div className="addPlantDescr">
@@ -62,6 +60,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
           <button className="back-btn">Back to your plants</button>
         </Link>
       </form>
+      <Link to="/home"><button className="back-btn">Back to your plants</button></Link>
       <div className="search-results-grid">
       {searchResults.map((plant) => (
         <div
@@ -84,13 +83,12 @@ export default function AddPlantView({addPlantToPersonalList}) {
             </div>
           )}
           {plant.details && (
-  <div>
-    {plant.details.watering && <p>Watering: {plant.details.watering}</p>}
-    {plant.details.sunlight && <p>Sunlight: {plant.details.sunlight.join(', ')}</p>}
-  </div>
-)}
-
-        </div>
+            <div>
+              {plant.details.watering && <p>Watering: {plant.details.watering}</p>}
+              {plant.details.sunlight && <p>Sunlight: {plant.details.sunlight.join(', ')}</p>}
+            </div>
+          )}
+      </div>
       ))}
       </div>
     </div>

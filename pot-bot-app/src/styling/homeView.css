@@ -71,6 +71,10 @@ button:hover {
   margin: 20px;
   /* transition: all 0.7s ease; */
 }
+.expanded .stats-btn{
+  display: flex;
+  flex-direction: column;
+}
 
 .addPlant img {
   width: 80px;
