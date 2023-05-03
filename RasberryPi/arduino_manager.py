@@ -12,10 +12,10 @@ os.chdir(abspath)
 
 
 def storemeasurements(measurements):
-    measurements[0] = (int)measurements[0]
-    measurements[1] = (float)measurements[1]
-    measurements[2] = (float)measurements[2]
-    measurements[3] = (int)measurements[3]
+    measurements[0] = int(measurements[0])
+    measurements[1] = float(measurements[1])
+    measurements[2] = float(measurements[2])
+    measurements[3] = int(measurements[3])
 
     dictionary = {
 	f"{floor(datetime.now().timestamp())}": {
