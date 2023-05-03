@@ -7,7 +7,6 @@ import AddPlantPresenter from "./presenters/AddPlantPresenter";
 import {UserAuthContextProvider} from "./firebaseModel";
 import HomePresenter from "./presenters/HomePresenter";
 import ChangeUserName from "./views/ChangeUserName";
-import './testSearch';
 
 function App() {
     return (
