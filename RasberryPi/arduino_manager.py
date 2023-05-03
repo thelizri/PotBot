@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from datetime import datetime
+from error_handler import handle_errors
 from math import floor
 import json
 import serial
@@ -55,5 +56,4 @@ if __name__ == "__main__":
 
     # Print runtime exceptions to a log file
     except Exception as error:
-        log = open("arduino_manager_error.log", "w+")
-        log.write(str(error))
+        handle_errors("arduino_manager_error.log", error)
