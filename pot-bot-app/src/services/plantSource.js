@@ -4,6 +4,7 @@ const API_BASE = 'https://perenual.com/api';
 const API_KEY = 'sk-vhKW64412e6ecbc88586';
 
 const searchPlants = async (searchTerm) => {
+  console.log('searchPlants called with:', searchTerm);
   try {
     const response = await axios.get(`${API_BASE}/species-list?key=${API_KEY}`);
     const plants = response.data.data;
