@@ -2,7 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import {useState} from "react";
 import '../styling/loginView.css'
 
-function SignupView({ username, setUsername, password, setPassword, handleSubmit, error}) {
+//TODO: Move logic to presenter
+function SignUpView({ username, setUsername, password, setPassword, handleSubmit, error}) {
   const [showError, setShowError] = useState(false);
   function errorHandling() {
     console.log(error.message)
@@ -81,4 +82,4 @@ function SignupView({ username, setUsername, password, setPassword, handleSubmit
   );
 }
 
-export default SignupView;
+export default SignUpView;

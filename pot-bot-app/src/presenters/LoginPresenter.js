@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LoginView from "../views/loginView";
+import LoginView from "../views/LoginView";
 import {useAuth} from "../firebaseModel";
 import {useNavigate } from "react-router-dom";
 import HomePresenter from "./HomePresenter";
@@ -9,7 +9,7 @@ function LoginPresenter() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    let navigate = useNavigate("/home");
+    let navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
