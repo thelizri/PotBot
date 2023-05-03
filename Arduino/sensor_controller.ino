@@ -41,6 +41,7 @@ void setup() {
 
   //Water Pump
   pinMode(PUMP_PIN, OUTPUT);
+  digitalWrite(PUMP_PIN, HIGH);
 }
 
 String readMessageFromRaspberryPi() {
@@ -58,22 +59,10 @@ int readSoilMoisture() {
 
 //12.5 ml / second
 void waterPump(int ml){
-  int milliseconds = (int)ml/12.5*1000;
-  turnOnPump();
+  unsigned int milliseconds = (unsigned int)ml/12.5*1000;
+  digitalWrite(PUMP_PIN, LOW);
   delay(milliseconds);
-  turnOffPump();
-}
-
-void turnOffPump() {
-  analogWrite(PUMP_PIN, 0);
-}
-
-//Uses PWM to simulate 3 Volt output
-void turnOnPump() {
-  //PWM voltage=(Duty cycle ÷ 256) x 5 V = 3
-  //% Duty cycle = (TON/(TON + TOFF))
-  //0-255
-  analogWrite(PUMP_PIN, 154);
+  digitalWrite(PUMP_PIN, HIGH);
 }
 
 int readWaterLevel() {
@@ -123,7 +112,7 @@ int counter = 0;
 
 void loop() {
 
-  if (counter < 600){
+  if (counter > 600){
     int waterLevel = readWaterLevel();
     float temperature = readTemperature();
     float uvIntensity = readUVIntensity();
