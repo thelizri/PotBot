@@ -61,29 +61,29 @@ export default function PlantPresenter() {
             <img src={elephant} width="100" height="100"/>
             <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
           </div>
-          {expanded && <div className="plant-data">
+          <div className="plant-data">
             <div className="row">
               <div className="col">
-                <div className="circle">{latest.soilMoisture} </div>
+                <div className="circle">{"dummy"/*latest.soilMoisture*/} </div>
                 <p>Moisture</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.uvIntensity}</div>
+                <div className="circle">{"dummy"}</div>
                 <p>Light</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.temperature}</div>
+                <div className="circle">{"dummy"}</div>
                 <p>Temperature</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.waterLevel}</div>
+                <div className="circle">{"dummy"}</div>
                 <p>Waterlevel</p>
               </div>
             </div>
             <div className="row">
               <div className="stats-btn"><Link to="/stats">See growth history</Link></div>
             </div>
-          </div>}
+          </div>
         </div>
       </>)
 

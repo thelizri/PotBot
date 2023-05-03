@@ -1,0 +1,20 @@
+/* Styles that apply to the whole app should go here, e.g. body, a, div, etc.. */
+
+body {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+
+hr {
+  opacity: 50%;
+}
+
+p {
+  font-size: 0.875rem; /* Change the value to adjust the size */
+  text-align: center; /* Optional: center the text horizontally */
+}
+
+input:focus {
+  outline: none;
+}

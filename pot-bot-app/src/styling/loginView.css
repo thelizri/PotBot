@@ -98,10 +98,6 @@
     text-align: center;
   }
   
-  p {
-    font-size: 1.2rem; /* Change the value to adjust the size */
-    text-align: center; /* Optional: center the text horizontally */
-  }
   .pLogin{
     text-align: center;
     font-weight: bold;
@@ -109,9 +105,7 @@
     margin-bottom: 20px;
   }
 
-  input:focus {
-    outline: none;
-  }
+
   
   .error {
     position: fixed;
