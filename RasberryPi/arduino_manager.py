@@ -30,6 +30,18 @@ def storemeasurements(measurements):
     with open("last_measurement.json", "w") as file:
         json.dump(dictionary, file)
 
+def turn_on_water_pump(ml, port):
+    port.write(str(ml)+"\n")
+
+    dictionary = {"dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'}
+    with open("latest_time_plant_was_watered.json", "w") as file:
+        json.dump(dictionary, file)
+
+def check_settings(port):
+    with open("settings.json") as file:
+        data = json.load(file)
+        if data["water"] == 1:
+            turn_on_water_pump(data["amount"], port)
 
 if __name__ == "__main__":
     port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
@@ -49,6 +61,8 @@ if __name__ == "__main__":
                 measurements = arduino_data.split(" ")
             storemeasurements(measurements)
             db.run()
+            #Check settings
+            check_settings(port)
     except KeyboardInterrupt:
         print("Closing Serial Communication")
         port.close()
