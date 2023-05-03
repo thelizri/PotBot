@@ -6,16 +6,27 @@ import '../styling/AddPlant.css'
 
 const { searchPlants, fetchPlantDetails } = plantSource;
 
-export default function AddPlantView(props) {
+export default function AddPlantView({addPlantToPersonalList}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [expandedPlantId, setExpandedPlantId] = useState(null);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  const handlePlantClick = (plantId) => {
+    if (expandedPlantId === plantId) {
+      setExpandedPlantId(null);
+    } else {
+      setExpandedPlantId(plantId);
+    }
+  };
 
-  
+  const handleAddPlantButtonClick = (plant) => {
+    addPlantToPersonalList(plant);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await searchPlants(searchTerm);
@@ -51,10 +62,27 @@ export default function AddPlantView(props) {
           <button className="back-btn">Back to your plants</button>
         </Link>
       </form>
+      <div className="search-results-grid">
       {searchResults.map((plant) => (
+        <div
+          className="plant-card"
+          key={plant.id}
+          onClick={() => handlePlantClick(plant.id)}
+        >
         <div key={plant.id}>
-          <img src={plant.image_url} alt={plant.common_name} />
+          <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100"/>
           <p>{plant.common_name}</p>
+          </div>
+          {expandedPlantId === plant.id && (
+            <div className="plant-dropdown">
+              <button
+                className="add-plant-button"
+                onClick={() => handleAddPlantButtonClick(plant)}
+              >
+                Add to my plants
+              </button>
+            </div>
+          )}
           {plant.details && (
   <div>
     {plant.details.watering && <p>Watering: {plant.details.watering}</p>}
@@ -64,6 +92,7 @@ export default function AddPlantView(props) {
 
         </div>
       ))}
+      </div>
     </div>
   ); 
 }
