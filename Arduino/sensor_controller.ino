@@ -19,9 +19,12 @@ DHT dht(DHTPIN, DHPTYPE);
 #define AIR_VALUE 685
 #define WATER_VALUE 274
 
+//Water Pump: 3 Volt
+#define PUMP_PIN 3
+
 void setup() {
   Serial.begin(115200);
-  while(!Serial){}
+  while (!Serial) {}
 
   //Water Sensor
   pinMode(POWER_PIN, OUTPUT);
@@ -35,19 +38,38 @@ void setup() {
 
   //Soil Sensor
   pinMode(SOIL_PIN, INPUT);
+
+  //Water Pump
+  pinMode(PUMP_PIN, OUTPUT);
+  digitalWrite(PUMP_PIN, HIGH);
 }
 
-int readSoilMoisture(){
+String readMessageFromRaspberryPi() {
+  if (Serial.available() > 0) {
+    return Serial.readStringUntil('\n');
+  }
+  return "";
+}
+
+int readSoilMoisture() {
   int soilMoisture = averageAnalogRead(SOIL_PIN);
   int soilMoisturePercent = map(soilMoisture, AIR_VALUE, WATER_VALUE, 0, 100);
   return soilMoisturePercent;
 }
 
+//15 ml / second
+void waterPump(int ml){
+  unsigned int milliseconds = (unsigned int)ml/15*1000;
+  digitalWrite(PUMP_PIN, LOW);
+  delay(milliseconds);
+  digitalWrite(PUMP_PIN, HIGH);
+}
+
 int readWaterLevel() {
-	digitalWrite(POWER_PIN, HIGH);  // turn the sensor ON
-  delay(100);                      // wait 10 milliseconds
-  int value = averageAnalogRead(WATER_LEVEL_PIN); // read the analog value from sensor
-  digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
+  digitalWrite(POWER_PIN, HIGH);                   // turn the sensor ON
+  delay(100);                                      // wait 100 milliseconds
+  int value = averageAnalogRead(WATER_LEVEL_PIN);  // read the analog value from sensor
+  digitalWrite(POWER_PIN, LOW);                    // turn the sensor OFF
   if (value > WATER_THRESHHOLD) {
     return 1;
   }
@@ -56,49 +78,63 @@ int readWaterLevel() {
 
 //Returns temperature in Celsius
 int readTemperature() {
-	return dht.readTemperature();
+  return dht.readTemperature();
 }
 
 float readUVIntensity() {
-	int uvLevel = averageAnalogRead(UV_INTENSITY_PIN);
- 
-	float outputVoltage = 5.0 * uvLevel/1024; 
-	float uvIntensity = mapfloat(outputVoltage, 0.99, 2.9, 0.0, 15.0); 
+  int uvLevel = averageAnalogRead(UV_INTENSITY_PIN);
+
+  float outputVoltage = 5.0 * uvLevel / 1024;
+  float uvIntensity = mapfloat(outputVoltage, 0.99, 2.9, 0.0, 15.0);
   return uvIntensity;
 }
 
-//Takes an average of readings on a given pin 
-//Returns the average 
-int averageAnalogRead(int pinToRead){
-  byte numberOfReadings = 8; 
-  unsigned int runningValue = 0;  
- 
-  for(int x = 0 ; x < numberOfReadings ; x++)
-  runningValue += analogRead(pinToRead); 
-  runningValue /= numberOfReadings; 
- 
-  return(runningValue);   
+//Takes an average of readings on a given pin
+//Returns the average
+int averageAnalogRead(int pinToRead) {
+  byte numberOfReadings = 8;
+  unsigned int runningValue = 0;
+
+  for (int x = 0; x < numberOfReadings; x++)
+    runningValue += analogRead(pinToRead);
+  runningValue /= numberOfReadings;
+
+  return (runningValue);
 }
 
 //The Arduino Map function but for floats
 //From: http://forum.arduino.cc/index.php?topic=3922.0
-float mapfloat(float x, float in_min, float in_max, float out_min, float out_max){
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-void loop(){
-  int waterLevel = readWaterLevel();
-  float temperature = readTemperature();
-  float uvIntensity = readUVIntensity();
-  int soil = readSoilMoisture();
+int counter = 0;
 
-  Serial.print(waterLevel);
-  Serial.print(" ");
-  Serial.print(temperature);
-  Serial.print(" ");
-	Serial.print(uvIntensity);
-  Serial.print(" "); 
-  Serial.println(soil);
+void loop() {
 
-  delay(10*1000);
-}
+  if (counter > 600){
+    int waterLevel = readWaterLevel();
+    float temperature = readTemperature();
+    float uvIntensity = readUVIntensity();
+    int soil = readSoilMoisture();
+
+    Serial.print(waterLevel);
+    Serial.print(" ");
+    Serial.print(temperature);
+    Serial.print(" ");
+    Serial.print(uvIntensity);
+    Serial.print(" ");
+    Serial.println(soil);
+
+    counter = 0;
+  }
+  else{
+    counter += 1;
+    String message = readMessageFromRaspberryPi();
+    if (message.length() > 0){
+      int ml = message.toInt();
+      waterPump(ml);
+    }
+  }
+
+  delay(1000);
