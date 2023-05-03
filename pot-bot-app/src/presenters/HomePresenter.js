@@ -1,8 +1,8 @@
-import Home from "../views/Home";
+import HomeView from "../views/HomeView";
 
 export default function HomePresenter(){
     return (
-        <Home/>
+        <HomeView/>
     )
 }
 

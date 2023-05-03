@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import {Link, useNavigate} from "react-router-dom";
-import PlantDetails from '../components/PlantDetails';
+import React, {useState} from "react";
+import {Link} from "react-router-dom";
 import plantSource from '../services/plantSource';
 import '../styling/AddPlant.css'
 
@@ -59,6 +58,9 @@ export default function AddPlantView({addPlantToPersonalList}) {
           onChange={handleChange}
         />
         <button type="submit">Search</button>
+        <Link to="/home">
+          <button className="back-btn">Back to your plants</button>
+        </Link>
       </form>
       <div className="search-results-grid">
       {searchResults.map((plant) => (

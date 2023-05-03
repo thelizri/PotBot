@@ -1,10 +1,9 @@
 import {BrowserRouter as Router, Route, Routes,} from "react-router-dom";
 import Header from "./components/Header";
-import LoginPresenter from "./presenters/loginPresenter";
-import SignUpPresenter from "./presenters/signUpPresenter";
-import ResetPresenter from "./presenters/resetPasswordPresenter";
+import LoginPresenter from "./presenters/LoginPresenter";
+import SignUpPresenter from "./presenters/SignUpPresenter";
+import ResetPasswordPresenter from "./presenters/ResetPasswordPresenter";
 import AddPlantPresenter from "./presenters/AddPlantPresenter";
-//import PlantPresenter from "./presenters/PlantPresenter";
 import {UserAuthContextProvider} from "./firebaseModel";
 import HomePresenter from "./presenters/HomePresenter";
 import ChangeUserName from "./views/ChangeUserName";
