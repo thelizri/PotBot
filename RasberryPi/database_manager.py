@@ -48,7 +48,7 @@ def get_settings():
         json.dump(ref.get(), file)
 
 
-def read_json(filepath, product_id):
+def read_json(filepath):
     if True:
         print("Cloud Start")
         if not os.path.exists(filepath):
@@ -65,14 +65,13 @@ def read_json(filepath, product_id):
         data = json.load(file)
         file.close()
 
-        data["product-id"] = product_id
         push_data(data)
         print("Finished with cloud")
 
 
 def run():
     try:
-        read_json("last_measurement.json", "raspberry-1")
+        read_json("last_measurement.json")
         get_settings()
     except Exception as error:
         handle_errors(error)
