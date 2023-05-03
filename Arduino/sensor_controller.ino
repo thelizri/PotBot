@@ -57,9 +57,9 @@ int readSoilMoisture() {
   return soilMoisturePercent;
 }
 
-//12.5 ml / second
+//15 ml / second
 void waterPump(int ml){
-  unsigned int milliseconds = (unsigned int)ml/12.5*1000;
+  unsigned int milliseconds = (unsigned int)ml/15*1000;
   digitalWrite(PUMP_PIN, LOW);
   delay(milliseconds);
   digitalWrite(PUMP_PIN, HIGH);
