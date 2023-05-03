@@ -1,7 +1,7 @@
 import {hasPlants, readUserData, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 
 export default function PlantPresenter() {
@@ -62,14 +62,31 @@ export default function PlantPresenter() {
             <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
           </div>
           {expanded && <div className="plant-data">
-            <div>Moisture: {latest.soilMoisture} </div>
-            <div>Light: {latest.uvIntensity}</div>
-            <div>Temperature: {latest.temperature}</div>
-            <div>Waterlevel: {latest.waterLevel}</div>
+            <div className="row">
+              <div className="col">
+                <div className="circle">{latest.soilMoisture} </div>
+                <p>Moisture</p>
+              </div>
+              <div className="col">
+                <div className="circle">{latest.uvIntensity}</div>
+                <p>Light</p>
+              </div>
+              <div className="col">
+                <div className="circle">{latest.temperature}</div>
+                <p>Temperature</p>
+              </div>
+              <div className="col">
+                <div className="circle">{latest.waterLevel}</div>
+                <p>Waterlevel</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="stats-btn"><Link to="/stats">See growth history</Link></div>
+            </div>
           </div>}
         </div>
-      </>
-    )
+      </>)
+
   }
 
   return <div>
