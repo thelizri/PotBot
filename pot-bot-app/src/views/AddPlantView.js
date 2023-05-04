@@ -3,8 +3,8 @@ import {Link} from "react-router-dom";
 import plantSource from '../services/plantSource';
 import '../styling/AddPlant.css'
 
-
-const { searchPlants, fetchPlantDetails } = plantSource;
+/*TODO:Flytta konstanter till presenter från app */
+const {searchPlants, fetchPlantDetails} = plantSource;
 
 export default function AddPlantView({addPlantToPersonalList}) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,37 +60,37 @@ export default function AddPlantView({addPlantToPersonalList}) {
           <button className="back-btn">Back to your plants</button>
         </Link>
       </form>
-      <Link to="/home"><button className="back-btn">Back to your plants</button></Link>
+
       <div className="search-results-grid">
-      {searchResults.map((plant) => (
-        <div
-          className="plant-card"
-          key={plant.id}
-          onClick={() => handlePlantClick(plant.id)}
-        >
-        <div key={plant.id}>
-          <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100"/>
-          <p>{plant.common_name}</p>
+        {searchResults.map((plant) => (
+          <div
+            className="plant-card"
+            key={plant.id}
+            onClick={() => handlePlantClick(plant.id)}
+          >
+            <div key={plant.id}>
+              <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100"/>
+              <p>{plant.common_name}</p>
+            </div>
+            {expandedPlantId === plant.id && (
+              <div className="plant-dropdown">
+                <button
+                  className="add-plant-button"
+                  onClick={() => handleAddPlantButtonClick(plant)}
+                >
+                  Add to my plants
+                </button>
+              </div>
+            )}
+            {plant.details && (
+              <div>
+                {plant.details.watering && <p>Watering: {plant.details.watering}</p>}
+                {plant.details.sunlight && <p>Sunlight: {plant.details.sunlight.join(', ')}</p>}
+              </div>
+            )}
           </div>
-          {expandedPlantId === plant.id && (
-            <div className="plant-dropdown">
-              <button
-                className="add-plant-button"
-                onClick={() => handleAddPlantButtonClick(plant)}
-              >
-                Add to my plants
-              </button>
-            </div>
-          )}
-          {plant.details && (
-            <div>
-              {plant.details.watering && <p>Watering: {plant.details.watering}</p>}
-              {plant.details.sunlight && <p>Sunlight: {plant.details.sunlight.join(', ')}</p>}
-            </div>
-          )}
-      </div>
-      ))}
+        ))}
       </div>
     </div>
-  ); 
+  );
 }

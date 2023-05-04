@@ -1,14 +1,11 @@
-def handle_errors(error):
-    logfile = open("database_manager_error.log", "w+")
-    logfile.write(str(error))
-
+from error_handler import handle_errors
 
 try:
     import firebase_admin
     from firebase_admin import credentials
     from firebase_admin import db
 except Exception as error:
-    handle_errors(error)
+    handle_errors("database_manager_error.log", error)
 import json
 import time
 import os

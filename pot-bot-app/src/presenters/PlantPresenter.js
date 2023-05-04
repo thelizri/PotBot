@@ -1,34 +1,29 @@
-import {hasPlants, readUserData, useAuth} from "../firebaseModel";
+import {readUserData, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
-
+/*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
-  const navigate = useNavigate();
   const [plants, setPlants] = useState(null);
   const {user} = useAuth();
-  const [hasPlant, setPlantBool] = useState(false);
-  const hasPlantPromise = hasPlants(user);
 
   useEffect(() => {
 
-    hasPlantPromise.then((v) => {
-      setPlantBool(v);
-    }).catch(err => console.error(err));
     if (plants === null) {
-      readUserData(user, "plants").then((data => {
+      fetchData().catch(err => console.error(err.message));
+    }
+
+    async function fetchData() {
+      await readUserData(user, "plants").then((data => {
         setPlants(data)
-      })).catch(err => console.error(err));
+      })).catch(err => console.error(err.message));
     }
   }, [user])
 
-  /**
-   * TODO: Fix data extraction when db is updated*/
-  function Plant({name, data, today}) {
+  function Plant({name, data}) {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState(null)
-    const [timeIndex, setTimeIndex] = useState("")
     const {user} = useAuth()
 
     function handleClick() {
@@ -36,29 +31,18 @@ export default function PlantPresenter() {
     }
 
     useEffect(() => {
-      let latestDate = Object.keys(data).sort().at(0)
-      console.log(latestDate)
-      let index = timeIndex
-      if (timeIndex === "" && data !== null) {
-        //let time = (`${d.getHours()}:${d.getMinutes()}`)
-        /*Object.keys(data).forEach(key => {
-          if (today !== key) {
-            /*
-             *ändra att den sparar senaste datumet*
-            *nu tar det bara sista i listan om datumet inte finns*
-        })*/
-        index = Object.entries(data[latestDate]).sort().reverse().at(0).at(0)
-      }
-      setLatest(data[latestDate][index])
-      setTimeIndex(index)
+      let latestDate = Object.keys(data).map((x) =>
+        parseInt(x)).reduce((a, b) => Math.max(a, b))
+      setLatest(data[latestDate])
     }, [user, data])
     console.log(latest)
+
     return (
       <>
         <div className={`expandable-div ${expanded ? "expanded" : ""}`}
              onClick={handleClick}>
           <div className="card-title">
-            <img src={elephant} width="100" height="100"/>
+            <img src={elephant} width="100" height="100" alt={"Oh no your plantpicture is gone"}/>
             <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
           </div>
           {expanded && <div className="plant-data">
@@ -72,7 +56,7 @@ export default function PlantPresenter() {
                 <p>Light</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.temperature}</div>
+                <div className="circle">{latest.temperatur}</div>
                 <p>Temperature</p>
               </div>
               <div className="col">
@@ -90,13 +74,13 @@ export default function PlantPresenter() {
   }
 
   return <div>
-    {<PlantView user={user} plants={plants} hasPlant={hasPlant} Plant={Plant}/>}
+    {<PlantView user={user} plants={plants} Plant={Plant}/>}
   </div>
 
   /**
    * DummieButton to add a new plant*/
-  function buttonHandler() {
-    navigate("/addPlant")
-    //addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
-  }
+  /*function buttonHandler() {
+    //navigate("/addPlant")
+    addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
+  }*/
 }
