@@ -50,9 +50,6 @@ def check_settings(port):
         json.dump(data, file)
         file.close()
 
-    
-        
-
 
 if __name__ == "__main__":
     port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
