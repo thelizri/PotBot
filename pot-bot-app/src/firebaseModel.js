@@ -132,7 +132,7 @@ function setWateredTrue(user){
     const path = 'plants/Parasollpilea/settings';
     const data = {water: 1};
     console.log("watered plant");
-    updatePlantData(user, path, data).then(console.log);
+    updatePlantData(user, path, data);
 }
   
 

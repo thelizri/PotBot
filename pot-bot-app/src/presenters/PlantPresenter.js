@@ -76,15 +76,14 @@ export default function PlantPresenter() {
 
   }
 
-  return 
-      (<div>
-        {<PlantView user={user} plants={plants} Plant={Plant}/>}
-      </div>)
+  return (
+        <div>
+          {<PlantView user={user} plants={plants} Plant={Plant}/>}
+        </div>)
 
-  
-  {/* DummieButton to add a new plant */}
-  {/* function buttonHandler() {
+  /* DummieButton to add a new plant */
+  /* function buttonHandler() {
     //navigate("/addPlant")
     addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
-  } */}
+  } */
 }
