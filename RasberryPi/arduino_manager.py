@@ -47,7 +47,8 @@ def check_settings(port):
     if data["water"]==1:
         data["water"]=0
         measurements = json.load(open("last_measurement.json"))
-        if data["soil_moisture"] and measurements["soilMoisture"]<data["soil_moisture"]:
+        measurements = measurements.values()[0]
+        if measurements["soilMoisture"]<data["soil_moisture"]:
             turn_on_water_pump(data["amount"], port)
         file = open("settings.json", "w")
         json.dump(data, file)
