@@ -1,7 +1,7 @@
 import React,{ useEffect, useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import HistoryView from "../views/HistoryView";
-import {faker} from '@faker-js/faker';
+
 import {
     Chart as ChartJS,
     CategoryScale,

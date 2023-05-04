@@ -92,11 +92,16 @@ async function addNewPlant(user, plantName, data) {
       console.log("no data found")
       //Create folder with plants and a folder with this plant name
       set(ref(db, `users/${user.uid}/plants/${plantName}`), {
-        SSID: 'RaspberryPi',
+        productID: 'RaspberryPi',
         measureData: 'To be added',
         plantRecommendedVitals: data,
-        water: 0,
-        autoWaterEnabled: false
+        settings:{
+          amount: 100,
+          frequency: "None",
+          soil_moisture: "None",
+          type: "Manual",
+          water:0
+        }
       })
     }
   }).catch(err => console.error(err))

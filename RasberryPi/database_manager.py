@@ -16,7 +16,7 @@ os.chdir(abspath)
 # Replace 'path/to/your-service-account-key.json' with the path to the
 # JSON file you downloaded
 cred = credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json")
-# cred = credentials.Certificate('C:\\Users\\karlw\\Documents\\Code\\PotBot\\firebase-key.json')
+# cred = credentials.Certificate(r'C:\Users\karlw\Documents\Code\PotBot\RasberryPi\firebase-key.json')
 
 firebase_admin.initialize_app(
     cred,
@@ -25,20 +25,40 @@ firebase_admin.initialize_app(
     },
 )
 
+try:
+    uid_file = open("user.id", "r")
+except Exception as error:
+    handle_errors("database_manager_error.log", error)
+
+uid = uid_file.readline().strip()
 
 def push_data(data):
     # Replace 'your_database_path' with the path where you want to push the
     # data
-    ref = db.reference(
-        "/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants/Parasollpilea"
-    )
-    #child = ref.child(data["date"])
-    #grandchild = child.child(data["time"])
-    #grandchild.update(data)
+    ref = db.reference(f"/users/{uid}/plants/Parasollpilea")
+    # child = ref.child(data["date"])
+    # grandchild = child.child(data["time"])
+    # grandchild.update(data)
     ref.child("measureData").update(data)
 
 
-def read_json(filepath, product_id):
+def get_settings():
+    ref = db.reference(
+        f"/users/{uid}/plants/Parasollpilea/settings"
+    )
+    while True:
+        try:
+            with open("settings.json", "w") as file:
+                data = ref.get()
+                json.dump(data, file)
+                data["water"] = 0
+                ref.update(data)
+            time.sleep(30)
+        except KeyboardInterrupt:
+            return None
+
+
+def read_json(filepath):
     if True:
         print("Cloud Start")
         if not os.path.exists(filepath):
@@ -55,16 +75,16 @@ def read_json(filepath, product_id):
         data = json.load(file)
         file.close()
 
-        data["product-id"] = product_id
         push_data(data)
         print("Finished with cloud")
 
 
 def run():
     try:
-        read_json("last_measurement.json", "raspberry-1")
+        read_json("last_measurement.json")
     except Exception as error:
         handle_errors(error)
+
 
 if __name__ == "__main__":
     run()
