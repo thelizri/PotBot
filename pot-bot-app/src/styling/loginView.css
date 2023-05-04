@@ -53,7 +53,7 @@
     border-radius: 0px;
     font-size: 16px;
   }
-  
+
   button[type="submit"] {
     background-color: #444; /* set a dark grey button background color */
     color: #fff;
@@ -90,13 +90,14 @@
     text-decoration: none;
   }
   
-  a {
+  /* moved this to the App.css so it is consistent throughout all views*/
+  /* a{
     margin-top: 10px;
     font-size: 16px;
-    color: #444; /* set a dark grey color for the link */
+    color: #444;
     text-decoration: underline;
     text-align: center;
-  }
+  } */
   
   .pLogin{
     text-align: center;

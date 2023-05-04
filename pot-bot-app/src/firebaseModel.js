@@ -127,10 +127,25 @@ async function hasPlants(user) {
     return console.error(err.message);
   }
 }
+  
+  /**
+   * This function is used by the "water plant"-button
+   * When clicked it sends a "1" to the database
+   * @param {*} user 
+   */
+function setWateredTrue(user){
+    const path = 'plants/Parasollpilea/settings';
+    const data = {water: 1};
+    console.log("watered plant");
+    updatePlantData(user, path, data);
+    /**TODO
+     * Return some sort of confirmation to the user that the plant has been watered 
+     * aka 'water' setting has been changed to 0
+     */
+}
+  
 
-
-export {hasPlants, updatePlantData, addNewPlant, readUserData, writeUserData}
-
+export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue}
 export function useAuth() {
   return useContext(AuthContext);
 }

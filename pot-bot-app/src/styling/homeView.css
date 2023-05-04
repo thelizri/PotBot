@@ -10,9 +10,9 @@
 }
 
 .logout-btn {
-  background-color: transparent;
+  /* background-color: transparent;
   border-style: none none solid none;
-  border-bottom: 1px solid #444; /* set a dark grey border color */
+  border-bottom: 1px solid #444; */
   position: fixed;
   bottom: 0;
   right: 0;
@@ -21,8 +21,9 @@
 
 .change-username {
   background-color: transparent;
-  border-style: none none solid none;
-  border-bottom: 1px solid #444; /* set a dark grey border color */
+  border-style: none none none none;
+  text-decoration: underline;
+  /* border-bottom: 1px solid #444; */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -54,7 +55,7 @@ button:hover {
 
 .expanded {
   width: 500px;
-  height: 300px;
+  height: 350px;
   transition: all 0.5s ease; /*applies a transition effect: scope, time, transisiton-style*/
 }
 

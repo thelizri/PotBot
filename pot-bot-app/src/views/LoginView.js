@@ -91,8 +91,8 @@ function LoginView({username, setUsername, password, setPassword, handleSubmit, 
             }}
             required
           />
-          <a><small><Link to="/reset">forgot your password?</Link></small></a>
-          <button type="submit">Sign in</button>
+           <a><small><Link to="/reset">forgot your password?</Link></small></a>
+          <button className="sign-in" type="submit">Sign in</button>
         </form>
         <button className="create-account">
           <Link to="/signup">Create an account</Link>

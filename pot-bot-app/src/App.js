@@ -4,9 +4,10 @@ import LoginPresenter from "./presenters/LoginPresenter";
 import SignUpPresenter from "./presenters/SignUpPresenter";
 import ResetPasswordPresenter from "./presenters/ResetPasswordPresenter";
 import AddPlantPresenter from "./presenters/AddPlantPresenter";
-import {UserAuthContextProvider} from "./firebaseModel";
 import HomePresenter from "./presenters/HomePresenter";
+import HistoryPresenter from "./presenters/HistoryPresenter";
 import ChangeUserName from "./views/ChangeUserName";
+import {UserAuthContextProvider} from "./firebaseModel";
 import './styling/App.css'
 
 //Flyttade konstanter till AddPlantPresenter.js
@@ -27,6 +28,7 @@ function App() {
               path='/addNewPlant'
               element={<AddPlantPresenter/>}
             />
+            <Route path='/history' element={<HistoryPresenter/>}/>
           </Routes>
         </UserAuthContextProvider>
       </Router>
