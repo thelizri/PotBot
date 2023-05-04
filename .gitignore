@@ -139,3 +139,6 @@ credentials.json
 
 #User network password
 networkUserAndPassword.txt
+
+#All ID files
+*.id

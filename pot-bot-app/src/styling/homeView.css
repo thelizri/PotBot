@@ -1,5 +1,4 @@
 
-
 .Home {
   display: flex;
   flex-direction: column;
@@ -40,17 +39,30 @@ button:hover {
   height: 100px;
   border-radius: 10px;
   background-color: #ccc;
-  transition: all 0.7s ease;
+  transition: all 0.7s ease 100ms;
 }
 
-/* .expandable-div:hover{
-    cursor: pointer;
-} */
+.expandable-div .plant-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  opacity: 0;
+  /*height: 0;*/
+  transition: opacity 0.2s ease;
+}
+
 .expanded {
   width: 500px;
-  height: 400px;
+  height: 300px;
   transition: all 0.5s ease; /*applies a transition effect: scope, time, transisiton-style*/
+}
 
+.expanded .plant-data {
+  display: flex;
+  opacity: 1;
+  height: 100px;
+  transition: all 0.7s ease 0.2s;
 }
 
 .card-title {
@@ -61,18 +73,8 @@ button:hover {
   align-items: center;
 }
 
-.expandable-div .plant-data {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
-  opacity: 0;
-  transition: all 0.3s ease 0s;
-}
-
-.expanded .plant-data {
-  opacity: 1;
-  transition: all 0.7s ease 0.2s;
+.expandable-div:not(.expanded) > .plant-data {
+  pointer-events: none;
 }
 
 .circle {
@@ -83,7 +85,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 4px 2px 6px rgba(143,143,143,0.9);
+  box-shadow: 4px 2px 6px rgba(143, 143, 143, 0.9);
 }
 
 .col {

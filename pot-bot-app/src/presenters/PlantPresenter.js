@@ -1,4 +1,4 @@
-import {readUserData, useAuth} from "../firebaseModel";
+import {readUserData, updatePlantData, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
@@ -23,11 +23,12 @@ export default function PlantPresenter() {
 
   function Plant({name, data}) {
     const [expanded, setExpanded] = useState(false);
-    const [latest, setLatest] = useState(null)
+    const [latest, setLatest] = useState({})
     const {user} = useAuth()
 
-    function handleClick() {
-      setExpanded(!expanded);
+    function handleClick(e) {
+      e.preventDefault()
+      setExpanded(prevState => !prevState);
     }
 
     useEffect(() => {
@@ -45,7 +46,7 @@ export default function PlantPresenter() {
             <img src={elephant} width="100" height="100" alt={"Oh no your plantpicture is gone"}/>
             <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
           </div>
-          {expanded && <div className="plant-data">
+          <div className="plant-data">
             <div className="row">
               <div className="col">
                 <div className="circle">{latest.soilMoisture} </div>
@@ -67,20 +68,27 @@ export default function PlantPresenter() {
             <div className="row">
               <div className="stats-btn"><Link to="/stats">See growth history</Link></div>
             </div>
-          </div>}
+          </div>
         </div>
       </>)
 
   }
 
-  return <div>
+  return <>
     {<PlantView user={user} plants={plants} Plant={Plant}/>}
-  </div>
+  </>
 
   /**
    * DummieButton to add a new plant*/
   /*function buttonHandler() {
     //navigate("/addPlant")
-    addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
+    const data2 = {measureData: 'To be added'}
+    const data = {plantRecommendedVitals: {
+    image: "NaN",
+        sunlight: ["Full sun", "part shade"],
+        temperature:"15",
+        watering:"Average"
+      }}
+    updatePlantData(user, "plants/Parasollpilea", data2 ).catch(error => {console.error(error)})
   }*/
 }
