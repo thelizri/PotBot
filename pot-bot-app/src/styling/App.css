@@ -34,3 +34,12 @@ a, button[type="button"]{
   flex-direction: column;
   gap: 10px;
 }
+
+.graphs{
+display: flex;
+  flex-direction: column;
+}
+/* .moisture-graph, .uv-graph, .temperature-graph{
+  width: 700px;
+  height: auto;
+} */
