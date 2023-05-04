@@ -18,3 +18,28 @@ p {
 input:focus {
   outline: none;
 }
+
+a, button[type="button"]{
+  background-color: transparent;
+  border-style: none none none none;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #444; /* set a dark grey color for the link */
+  text-decoration: underline;
+  text-align: center;
+}
+
+.all-plants{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.graphs{
+display: flex;
+  flex-direction: column;
+}
+/* .moisture-graph, .uv-graph, .temperature-graph{
+  width: 700px;
+  height: auto;
+} */

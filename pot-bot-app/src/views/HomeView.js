@@ -28,7 +28,7 @@ export default function HomeView() {
     return (
       <div className="logout">
         <Link to="/">
-          <button className="logout-btn" onClick={logOut}>Logout</button>
+          <button type="button" className="logout-btn" onClick={logOut}>Logout</button>
         </Link>
       </div>
     )

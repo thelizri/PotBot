@@ -2,6 +2,7 @@
 from datetime import datetime
 from error_handler import handle_errors
 from math import floor
+from threading import Thread
 import json
 import serial
 import time
@@ -31,6 +32,28 @@ def storemeasurements(measurements):
     with open("last_measurement.json", "w") as file:
         json.dump(dictionary, file)
 
+def turn_on_water_pump(ml, port):
+    message = str(ml)+"\n"
+    port.write(message.encode())
+
+    dictionary = {"dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'}
+    with open("latest_time_plant_was_watered.json", "w") as file:
+        json.dump(dictionary, file)
+
+def check_settings(port):
+    file = open("settings.json")
+    data = json.load(file)
+    file.close()
+    if data["water"]==1:
+        data["water"]=0
+        measurements = json.load(open("last_measurement.json"))
+        measurements = list(measurements.values())[0]
+        if measurements["soilMoisture"]<data["soil_moisture"]:
+            turn_on_water_pump(data["amount"], port)
+        file = open("settings.json", "w")
+        json.dump(data, file)
+        file.close()
+
 
 if __name__ == "__main__":
     port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
@@ -40,10 +63,14 @@ if __name__ == "__main__":
 
     try:
         measurements = []
+        #create thread for fetching settings
+        fetcher = Thread(target=db.get_settings)
+        fetcher.start()
         while True:
             time.sleep(1)
             while port.in_waiting <= 0:
-                time.sleep(1)
+                check_settings(port)
+                time.sleep(3)
             arduino_data = port.readline().decode("utf-8").rstrip()
             if arduino_data:
                 print(f"{arduino_data}")
