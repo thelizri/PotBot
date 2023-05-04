@@ -18,14 +18,13 @@ export default function HistoryView({name, data}) {
       },
     },
   };
+  console.log(data)
   return (
     <div>
       <h2>Measurement history for Parasollpilea</h2>
-      <div className="moisture-graph">
+      <div className="measureData">
         {Object.keys(data).length > 0 && <Line options={options} data={data}/>}
       </div>
-      <div className="uv-graph"></div>
-      <div className="temperature-graph"></div>
       <Link to="/home">Back</Link>
     </div>
   )
