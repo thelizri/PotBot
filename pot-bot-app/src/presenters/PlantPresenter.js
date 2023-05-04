@@ -1,4 +1,4 @@
-import {readUserData, useAuth} from "../firebaseModel";
+import {hasPlants, readUserData, useAuth, setWateredTrue} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
@@ -66,6 +66,9 @@ export default function PlantPresenter() {
             </div>
             <div className="row">
               <div className="stats-btn"><Link to="/stats">See growth history</Link></div>
+            </div>
+            <div className="row">
+              <div className="stats-btn"><button className="water-btn" onClick={setWateredTrue}>Water plant</button></div>
             </div>
           </div>}
         </div>

@@ -19,11 +19,18 @@
   right: 0;
   margin: 20px;
 }
+.water-btn{
+  background-color: transparent;
+  border-style: none none solid none;
+  border-bottom: 1px solid #444;
+  /* text-decoration: underline; */
+}
 
 .change-username {
   background-color: transparent;
-  border-style: none none solid none;
-  border-bottom: 1px solid #444; /* set a dark grey border color */
+  border-style: none none none none;
+  text-decoration: underline;
+  /* border-bottom: 1px solid #444; */
   position: fixed;
   bottom: 0;
   left: 0;
