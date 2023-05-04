@@ -3,8 +3,7 @@ import {Link} from "react-router-dom";
 import addPlantIcon from "../styling/images/plus-pot.png";
 
 export default function PlantView({user, plants, Plant}) {
-  /*
-  * TODO:remove date when database is updated and update this function*/
+
   function renderPlants({plants, Plant}) {
     let meas = 'measureData'
     let array = []
@@ -13,7 +12,7 @@ export default function PlantView({user, plants, Plant}) {
         return array.push(<Plant className={name} key={name} data={plants[name][meas]} name={name}/>)
       })
     }
-    return (array)
+    return array
   }
 
   return (
