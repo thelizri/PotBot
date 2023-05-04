@@ -4,9 +4,10 @@ import React from "react";
 import "firebase/database";
 import { Line } from 'react-chartjs-2';
 
-export default function HistoryView({data}) {
+export default function HistoryView({soilMoistureData, uvData, temperatureData,}) {
 
     const options = {
+      maintainAspectRatio: false,
       responsive: true,
       plugins: {
         legend: { //These are only needed if we have several datasets in one graph
@@ -15,20 +16,26 @@ export default function HistoryView({data}) {
         },
         title: {
           display: true,
-          text: 'Your plants soil moisture values over time',
+          // text: 'Your plants soil moisture values over time',
         },
       },
     };
-    console.log(data);
 
     return (
-        <div>
+        <div className="graphs">
             <h2>Measurement history for Parasollpilea</h2>
+            <p>Your plants soil moisture values over time</p>
             <div className="moisture-graph">
-                {Object.keys(data).length > 0 && <Line options={options} data={data} />}
+                {Object.keys(soilMoistureData).length > 0 && <Line options={options} data={soilMoistureData} />}
             </div>
-            <div className="uv-graph"></div>
-            <div className="temperature-graph"></div>
+            <p>Your plants exposure to sunlight over time</p>
+            <div className="uv-graph">
+              {Object.keys(uvData).length > 0 && <Line options={options} data={uvData} />}
+            </div>
+            <p>Your plants temperature exposure over time</p>
+            <div className="temperature-graph">
+              {Object.keys(temperatureData).length > 0 && <Line options={options} data={temperatureData} />}
+            </div>
             <Link to="/home">Back</Link>
         </div>
     )
