@@ -1,4 +1,4 @@
-import {readUserData, useAuth, setWateredTrue, removePlant} from "../firebaseModel";
+import {readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
@@ -7,6 +7,7 @@ import elephant from "../styling/images/elefant.jpg";
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
   const {user} = useAuth();
+
 
   useEffect(() => {
 
@@ -25,6 +26,7 @@ export default function PlantPresenter() {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
     const {user} = useAuth()
+    const [watering, setWatering] = useState(null);
 
     function handleClick(e) {
       e.preventDefault()
@@ -35,8 +37,8 @@ export default function PlantPresenter() {
       let latestDate = Object.keys(data).map((x) =>
         parseInt(x)).reduce((a, b) => Math.max(a, b))
       setLatest(data[latestDate])
+      setWatering(plants[name.toString()].settings.water)
     }, [user, data])
-
     return (
       <>
         <div id={name} className={`expandable-div ${expanded ? "expanded" : ""}`}
@@ -56,7 +58,7 @@ export default function PlantPresenter() {
                 <p>Light</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.temperatur}</div>
+                <div className="circle">{latest.temperature}</div>
                 <p>Temperature</p>
               </div>
               <div className="col">
@@ -65,14 +67,24 @@ export default function PlantPresenter() {
               </div>
             </div>
             <div className="row">
-              <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
+              <div className="stats-btn"><Link to="/history" state={{name: name, data}}>See growth history</Link></div>
             </div>
             <div className="row">
-              <div className="stats-btn"><button type="button" className="water-btn" onClick={()=> setWateredTrue(user)}>Water plant</button><button type={"button"} onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete this plant</button></div>
+              <div className="stats-btn">
+                {!watering ? <button type="button" className="water-btn"
+                                     onClick={() => setWateredTrue(user, name).then(() => setWatering(true))}>Water
+                  plant
+                </button> : <p>Watering plant</p>} </div>
+              <div className="stats-btn">
+                <button type={"button"}
+                        onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete
+                  this plant
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </>) 
+      </>)
 
   }
 

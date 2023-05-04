@@ -7,10 +7,10 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  updateProfile,
+  updateProfile
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, ref, set, update, remove} from "firebase/database";
+import {child, get, getDatabase, ref, remove, set, update} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -95,12 +95,12 @@ async function addNewPlant(user, plantName, data) {
         productID: 'RaspberryPi',
         measureData: 'To be added',
         plantRecommendedVitals: data,
-        settings:{
+        settings: {
           amount: 100,
           frequency: "None",
           soil_moisture: "None",
           type: "Manual",
-          water:0
+          water: 0
         }
       })
     }
@@ -116,8 +116,8 @@ async function updatePlantData(user, path, data) {
   return await update(dbRef, data);
 }
 
-async function removePlant(name){
-  if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
+async function removePlant(name) {
+  if (!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
   const {uid} = auth.currentUser;
   const dbRef = await ref(db, `users/${uid}/plants/${name}`);
   return await remove(dbRef)
@@ -134,25 +134,29 @@ async function hasPlants(user) {
     return console.error(err.message);
   }
 }
-  
-  /**
-   * This function is used by the "water plant"-button
-   * When clicked it sends a "1" to the database
-   * @param {*} user 
-   */
-function setWateredTrue(user){
-    const path = 'plants/Parasollpilea/settings';
-    const data = {water: 1};
-    console.log("watered plant");
-    updatePlantData(user, path, data);
-    /**TODO
-     * Return some sort of confirmation to the user that the plant has been watered 
-     * aka 'water' setting has been changed to 0
-     */
-}
-  
 
-export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant}
+/**
+ * This function is used by the "water plant"-button
+ * When clicked it sends a "1" to the database
+ * Maybe a listener for the water value, think that onValue could do this. Need to read
+ * about it.
+ * @param {*} user
+ */
+function setWateredTrue(user, name) {
+  const path = `plants/${name}/settings`;
+  const data = {water: 1};
+  console.log("watered plant");
+
+  return updatePlantData(user, path, data);
+  /**TODO
+   * Return some sort of confirmation to the user that the plant has been watered
+   * aka 'water' setting has been changed to 0
+   */
+}
+
+
+export {hasPlants, updatePlantData, addNewPlant, readUserData, writeUserData, setWateredTrue, removePlant}
+
 export function useAuth() {
   return useContext(AuthContext);
 }
