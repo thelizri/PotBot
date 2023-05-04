@@ -65,7 +65,7 @@ export default function PlantPresenter() {
               </div>
             </div>
             <div className="row">
-              <div className="stats-btn"><Link to="/history">See growth history</Link></div>
+              <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
             </div>
             <div className="row">
               <div className="stats-btn"><button type="button" className="water-btn" onClick={()=> setWateredTrue(user)}>Water plant</button></div>
