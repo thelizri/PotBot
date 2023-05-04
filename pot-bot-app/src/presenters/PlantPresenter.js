@@ -1,4 +1,4 @@
-import {readUserData, useAuth} from "../firebaseModel";
+import {readUserData, updatePlantData, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
@@ -81,6 +81,13 @@ export default function PlantPresenter() {
    * DummieButton to add a new plant*/
   /*function buttonHandler() {
     //navigate("/addPlant")
-    addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
+    const data2 = {measureData: 'To be added'}
+    const data = {plantRecommendedVitals: {
+    image: "NaN",
+        sunlight: ["Full sun", "part shade"],
+        temperature:"15",
+        watering:"Average"
+      }}
+    updatePlantData(user, "plants/Parasollpilea", data2 ).catch(error => {console.error(error)})
   }*/
 }
