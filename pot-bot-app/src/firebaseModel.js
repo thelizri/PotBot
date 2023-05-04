@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, ref, set, update} from "firebase/database";
+import {child, get, getDatabase, ref, set, update, remove} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -116,6 +116,13 @@ async function updatePlantData(user, path, data) {
   return await update(dbRef, data);
 }
 
+async function removePlant(name){
+  if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
+  const {uid} = auth.currentUser;
+  const dbRef = await ref(db, `users/${uid}/plants/${name}`);
+  return await remove(dbRef)
+}
+
 /*
 * boolean to check if user has a plant registred*/
 async function hasPlants(user) {
@@ -145,7 +152,7 @@ function setWateredTrue(user){
 }
   
 
-export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue}
+export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant}
 export function useAuth() {
   return useContext(AuthContext);
 }

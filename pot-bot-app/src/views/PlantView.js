@@ -18,7 +18,7 @@ export default function PlantView({user, plants, Plant}) {
   return (
     <>
       <h2>Your plants</h2>
-      <div>
+      <div className={"all-plants"}>
         {plants && user && renderPlants({plants, Plant})}
 
         <div className={"addPlant"}>

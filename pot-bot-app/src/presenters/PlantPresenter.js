@@ -1,4 +1,4 @@
-import {hasPlants, readUserData, useAuth, setWateredTrue, updatePlantData} from "../firebaseModel";
+import {readUserData, useAuth, setWateredTrue, removePlant} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
@@ -36,11 +36,10 @@ export default function PlantPresenter() {
         parseInt(x)).reduce((a, b) => Math.max(a, b))
       setLatest(data[latestDate])
     }, [user, data])
-    console.log(latest)
 
     return (
       <>
-        <div className={`expandable-div ${expanded ? "expanded" : ""}`}
+        <div id={name} className={`expandable-div ${expanded ? "expanded" : ""}`}
              onClick={handleClick}>
           <div className="card-title">
             <img src={elephant} width="100" height="100" alt={"Oh no your plantpicture is gone"}/>
@@ -69,7 +68,7 @@ export default function PlantPresenter() {
               <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
             </div>
             <div className="row">
-              <div className="stats-btn"><button type="button" className="water-btn" onClick={()=> setWateredTrue(user)}>Water plant</button></div>
+              <div className="stats-btn"><button type="button" className="water-btn" onClick={()=> setWateredTrue(user)}>Water plant</button><button type={"button"} onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete this plant</button></div>
             </div>
           </div>
         </div>
