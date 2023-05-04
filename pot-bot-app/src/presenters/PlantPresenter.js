@@ -2,7 +2,7 @@ import {readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseMod
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
-import elephant from "../styling/images/elefant.jpg";
+import elephant from "../styling/images/elefant.jpg"
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
@@ -39,12 +39,15 @@ export default function PlantPresenter() {
       setLatest(data[latestDate])
       setWatering(plants[name.toString()].settings.water)
     }, [user, data])
+    let image = plants[name.toString()].plantRecommendedVitals.image.trim();
+    console.log(image)
     return (
       <>
         <div id={name} className={`expandable-div ${expanded ? "expanded" : ""}`}
              onClick={handleClick}>
           <div className="card-title">
-            <img src={elephant} width="100" height="100" alt={"Oh no your plantpicture is gone"}/>
+            <img src={image !== "NaN" ? image : elephant} width="100" height="100"
+                 alt={"Oh no your plantpicture is gone"}/>
             <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
           </div>
           <div className="plant-data">
