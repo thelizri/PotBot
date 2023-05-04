@@ -137,5 +137,5 @@ last_measurement.json
 #User network password
 networkUserAndPassword.txt
 
-#Product ID
-product_id.txt
+#All ID files
+*.id
