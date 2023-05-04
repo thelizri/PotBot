@@ -44,8 +44,16 @@ def get_settings():
     ref = db.reference(
         "/users/ffJEWDC2nfMi6BFu7fS1mKkRXnC3/plants/Parasollpilea/settings"
     )
-    with open("settings.json", "w") as file:
-        json.dump(ref.get(), file)
+    while True:
+        try:
+            with open("settings.json", "w") as file:
+                data = ref.get()
+                json.dump(data, file)
+                data["water"]=0
+                ref.update(data)
+            time.sleep(30)
+        except KeyboardInterrupt:
+            return None
 
 
 def read_json(filepath):
@@ -72,7 +80,6 @@ def read_json(filepath):
 def run():
     try:
         read_json("last_measurement.json")
-        get_settings()
     except Exception as error:
         handle_errors(error)
 

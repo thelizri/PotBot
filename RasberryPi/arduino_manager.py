@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from datetime import datetime
 from math import floor
+from threading import Thread
 import json
 import serial
 import time
@@ -38,14 +39,18 @@ def turn_on_water_pump(ml, port):
         json.dump(dictionary, file)
 
 def check_settings(port):
-    with open("settings.json") as file:
-        data = json.load(file)
-        if data["water"] == 1:
-            turn_on_water_pump(data["amount"], port)
-        else:
-            with open("failure.txt", "w") as file2:
-                file2.write("Did not turn on pump")
-                file2.write("Data[water]="+str(data["water"]))
+    file = open("settings.json")
+    data = json.load(file)
+    file.close()
+    if data["water"]==1:
+        data["water"]=0
+        turn_on_water_pump(data["amount"], port)
+        file = open("settings.json", "w")
+        json.dump(data, file)
+        file.close()
+
+    
+        
 
 
 if __name__ == "__main__":
@@ -56,18 +61,20 @@ if __name__ == "__main__":
 
     try:
         measurements = []
+        #create thread for fetching settings
+        fetcher = Thread(target=db.get_settings)
+        fetcher.start()
         while True:
             time.sleep(1)
             while port.in_waiting <= 0:
-                time.sleep(1)
+                check_settings(port)
+                time.sleep(3)
             arduino_data = port.readline().decode("utf-8").rstrip()
             if arduino_data:
                 print(f"{arduino_data}")
                 measurements = arduino_data.split(" ")
             storemeasurements(measurements)
             db.run()
-            #Check settings
-            check_settings(port)
     except KeyboardInterrupt:
         print("Closing Serial Communication")
         port.close()
