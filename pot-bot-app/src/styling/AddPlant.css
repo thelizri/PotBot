@@ -43,3 +43,7 @@ h2, p {
   text-align: center;
   margin-top: 0.5rem;
 }
+.moisture-graph{
+  height: 25%;
+  width: auto;
+}
