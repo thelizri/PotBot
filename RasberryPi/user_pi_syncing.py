@@ -23,7 +23,7 @@ def link_pi_with_user():
 
         ref = db.reference("/potbots")
 
-        product_id_file = open("product_id.txt", "r")
+        product_id_file = open("product.id", "r")
         product_id = product_id_file.readline().strip()
         ref.update({
             product_id: ""
@@ -33,7 +33,7 @@ def link_pi_with_user():
             sleep(10)
 
         uid = ref.child(product_id).get()
-        user_id_file = open("user_id.txt", "w")
+        user_id_file = open("user.id", "w")
         user_id_file.write(uid)
 
         ref.child(product_id).delete()
