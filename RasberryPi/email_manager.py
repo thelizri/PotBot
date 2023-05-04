@@ -66,12 +66,22 @@ def send_email(service, to, subject, body, attachment=None):
         send_message = None
     return send_message
 
+def send_notification():
+    service = create_gmail_service()
+
+    to = "ottoeh@kth.se, wcar@kth.se, mahadah@kth.se, kinnmark@kth.se, afranke@kth.se, rfu@kth.se, nadler@kth.se"
+    subject = "PotBot"
+    body = "Please refill water tank. Water level is low."
+    attachment = None  # Replace with file path if you want to attach a file
+    
+    send_email(service, to, subject, body, attachment)
+
 if __name__ == '__main__':
     service = create_gmail_service()
 
     to = "ottoeh@kth.se, wcar@kth.se, mahadah@kth.se, kinnmark@kth.se, afranke@kth.se, rfu@kth.se, nadler@kth.se"
     subject = "PotBot"
-    body = "Yall want your plants watered?"
+    body = "Dawg, yall want some weed?"
     attachment = None  # Replace with file path if you want to attach a file
     try:
         send_email(service, to, subject, body, attachment)
