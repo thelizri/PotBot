@@ -37,6 +37,64 @@ export default function PlantPresenter() {
     }, [user, data])
     console.log(latest)
 
+    function getMoistureColor(actual, optimal) {
+      const lowerLimit = optimal * 0.8;
+      const upperLimit = optimal * 1.2;
+    
+      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+    
+    function getLightColor(actual, optimal) {
+      const lowerLimit = optimal * 0.8;
+      const upperLimit = optimal * 1.2;
+    
+      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+
+    function wateringToValue(watering) {
+      switch (watering) {
+        case 'frequent':
+          return 75;
+        case 'average':
+          return 50;
+        case 'minimum':
+          return 25;
+        case 'none':
+          return 0;
+        default:
+          return 0;
+      }
+    }
+    
+    function sunlightToValue(sunlight) {
+      if (!Array.isArray(sunlight)) {
+        return 0;
+      }
+      let total = 0;
+      sunlight.forEach((element) => {
+        switch (element) {
+          case 'full_shade':
+            total += 2;
+            break;
+          case 'part_shade':
+            total += 5;
+            break;
+          case 'sun-part_shade':
+            total += 7;
+            break;
+          case 'full_sun':
+            total += 10;
+            break;
+          default:
+            break;
+        }
+      })
+      return total / sunlight.length;
+    }
+
+    let wateringValue = wateringToValue(watering);
+    let sunlightValue = sunlightToValue(sunlight);
+
     return (
       <>
         <div className={`expandable-div ${expanded ? "expanded" : ""}`}
@@ -48,11 +106,11 @@ export default function PlantPresenter() {
           {expanded && <div className="plant-data">
             <div className="row">
               <div className="col">
-                <div className="circle">{latest.soilMoisture} </div>
+              <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
                 <p>Moisture</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.uvIntensity}</div>
+              <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
                 <p>Light</p>
               </div>
               <div className="col">
@@ -76,11 +134,11 @@ export default function PlantPresenter() {
   return <div>
     {<PlantView user={user} plants={plants} Plant={Plant}/>}
   </div>
-
+}
   /**
    * DummieButton to add a new plant*/
   /*function buttonHandler() {
     //navigate("/addPlant")
     addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
   }*/
-}
+
