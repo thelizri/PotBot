@@ -16,19 +16,17 @@ export default function PlantView({user, plants, Plant}) {
   }
 
   return (
-    <div>
+    <>
       <h2>Your plants</h2>
-      {plants && user && (<div className="plant-data">
-        {renderPlants({plants, Plant})}
-      </div>)}
+      <div>
+        {plants && user && renderPlants({plants, Plant})}
 
-      {(
         <div className={"addPlant"}>
           <Link to="/addNewPlant">
             {<img src={addPlantIcon}/>}
           </Link>
         </div>
-      )}
-    </div>
+      </div>
+    </>
   )
 }
