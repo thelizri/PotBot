@@ -29,3 +29,8 @@ a, button[type="button"]{
   text-align: center;
 }
 
+.all-plants{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
