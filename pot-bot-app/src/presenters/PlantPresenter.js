@@ -21,7 +21,7 @@ export default function PlantPresenter() {
     }
   }, [user])
 
-  function Plant({name, data}) {
+  function Plant({name, data, imageURL, watering, sunlight}) {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState(null)
     const {user} = useAuth()
@@ -42,7 +42,7 @@ export default function PlantPresenter() {
         <div className={`expandable-div ${expanded ? "expanded" : ""}`}
              onClick={handleClick}>
           <div className="card-title">
-            <img src={elephant} width="100" height="100" alt={"Oh no your plantpicture is gone"}/>
+          <img src={(imageURL && imageURL.trim() !== "" && imageURL !== "NaN") ? imageURL : elephant} width="100" height="100" alt={"Oh no your plant picture is gone"}/>
             <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
           </div>
           {expanded && <div className="plant-data">
