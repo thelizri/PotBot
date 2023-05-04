@@ -32,7 +32,8 @@ def storemeasurements(measurements):
         json.dump(dictionary, file)
 
 def turn_on_water_pump(ml, port):
-    port.write(str(ml)+"\n")
+    message = str(ml)+"\n"
+    port.write(message.encode())
 
     dictionary = {"dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'}
     with open("latest_time_plant_was_watered.json", "w") as file:
