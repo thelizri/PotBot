@@ -27,15 +27,17 @@ firebase_admin.initialize_app(
 
 try:
     uid_file = open("user.id", "r")
+    plant_id_file = open("plant.id", "r")
 except Exception as error:
     handle_errors("database_manager_error.log", error)
 
 uid = uid_file.readline().strip()
+plant_id = plant_id_file.readline().strip()
 
 def push_data(data):
     # Replace 'your_database_path' with the path where you want to push the
     # data
-    ref = db.reference(f"/users/{uid}/plants/Parasollpilea")
+    ref = db.reference(f"/users/{uid}/plants/{plant_id}")
     # child = ref.child(data["date"])
     # grandchild = child.child(data["time"])
     # grandchild.update(data)
@@ -44,7 +46,7 @@ def push_data(data):
 
 def get_settings():
     ref = db.reference(
-        f"/users/{uid}/plants/Parasollpilea/settings"
+        f"/users/{uid}/plants/{plant_id}/settings"
     )
     while True:
         try:
