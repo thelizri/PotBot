@@ -115,6 +115,15 @@ async function updatePlantData(user, path, data) {
   const dbRef = await ref(db, `users/${user.uid}/${path}`);
   return await update(dbRef, data);
 }
+/**
+ * Connect the potBot to the users currentPlant
+ * @param {string} potBotKey
+ * @param {Object} data
+ */
+async function connectPotBot(potBotKey, data) {
+  const dbRef = await ref(db, `potbots/${key}`);
+  return await update(dbRef, data);
+}
 
 async function removePlant(name){
   if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
@@ -152,7 +161,7 @@ function setWateredTrue(user){
 }
   
 
-export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant}
+export {connectPotBot,hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant}
 export function useAuth() {
   return useContext(AuthContext);
 }
