@@ -114,7 +114,7 @@ export default function PlantPresenter() {
                 <p>Light</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.temperatur}</div>
+                <div className="circle">{latest.temperature}</div>
                 <p>Temperature</p>
               </div>
               <div className="col">
