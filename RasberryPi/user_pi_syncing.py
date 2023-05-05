@@ -32,9 +32,13 @@ def link_pi_with_user():
         while ref.child(product_id).get() == "":
             sleep(10)
 
-        uid = ref.child(product_id).get()
+        uid = ref.child(product_id).child("uid").get()
         user_id_file = open("user.id", "w")
         user_id_file.write(uid)
+
+        plant = ref.child(product_id).child("plant").get()
+        plant_file = open("plant.id", "w")
+        plant_file.write(plant)
 
         ref.child(product_id).delete()
     except Exception as error:
