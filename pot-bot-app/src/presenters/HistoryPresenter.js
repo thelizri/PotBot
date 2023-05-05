@@ -43,7 +43,7 @@ export default function HistoryPresenter(){
             datasets: [
                 {
                 label,
-                data: labels.map(() => y),
+                data: labels.map((v,i) => y.at(i)),
                 borderColor,
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
                 },
