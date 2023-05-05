@@ -121,7 +121,7 @@ async function updatePlantData(user, path, data) {
  * @param {Object} data
  */
 async function connectPotBot(potBotKey, data) {
-  const dbRef = await ref(db, `potbots/${key}`);
+  const dbRef = await ref(db, `potbots/${potBotKey}`);
   return await update(dbRef, data);
 }
 
