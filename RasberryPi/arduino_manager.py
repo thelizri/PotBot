@@ -40,22 +40,7 @@ def turn_on_water_pump(ml, port):
     with open("latest_time_plant_was_watered.json", "w") as file:
         json.dump(dictionary, file)
 
-def check_settings(port):
-    file = open("settings.json")
-    data = json.load(file)
-    file.close()
-    if data["water"]==1:
-        data["water"]=0
-        measurements = json.load(open("last_measurement.json"))
-        measurements = list(measurements.values())[0]
-        if measurements["soilMoisture"]<data["soil_moisture"]:
-            turn_on_water_pump(data["amount"], port)
-        file = open("settings.json", "w")
-        json.dump(data, file)
-        file.close()
-
-
-if __name__ == "__main__":
+def check_for_messages():
     port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
     time.sleep(3)
     port.reset_input_buffer()
@@ -63,13 +48,9 @@ if __name__ == "__main__":
 
     try:
         measurements = []
-        #create thread for fetching settings
-        fetcher = Thread(target=db.get_settings)
-        fetcher.start()
         while True:
             time.sleep(1)
             while port.in_waiting <= 0:
-                check_settings(port)
                 time.sleep(3)
             arduino_data = port.readline().decode("utf-8").rstrip()
             if arduino_data:
