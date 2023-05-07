@@ -3,6 +3,9 @@ import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTint, faSun } from '@fortawesome/free-solid-svg-icons';
+
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
@@ -107,10 +110,12 @@ export default function PlantPresenter() {
             <div className="row">
               <div className="col">
               <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
+              <FontAwesomeIcon icon={faTint} title={watering} />
                 <p>Moisture</p>
               </div>
               <div className="col">
               <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
+              <FontAwesomeIcon icon={faSun} title={sunlight.join(', ')} />
                 <p>Light</p>
               </div>
               <div className="col">

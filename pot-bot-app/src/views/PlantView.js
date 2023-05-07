@@ -24,6 +24,8 @@ export default function PlantView({user, plants, Plant}) {
           data={plantData[meas]}
           name={name}
           imageURL={imageURL}
+          watering={plantVitals.watering}
+          sunlight={plantVitals.sunlight}
           />
         );
       });
