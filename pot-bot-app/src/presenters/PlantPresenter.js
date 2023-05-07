@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTint, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faThermometerHalf } from '@fortawesome/free-solid-svg-icons';
 
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
@@ -52,6 +53,10 @@ export default function PlantPresenter() {
       const upperLimit = optimal * 1.2;
     
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+
+    function getTemperatureColor(temperature) {
+      return (temperature >= 0 && temperature <= 30) ? 'green' : 'red';
     }
 
     function wateringToValue(watering) {
@@ -109,17 +114,16 @@ export default function PlantPresenter() {
           <div className="plant-data">
             <div className="row">
               <div className="col">
-              <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
-              <FontAwesomeIcon icon={faTint} title={watering} />
+              <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}><FontAwesomeIcon icon={faTint} title={watering} />{latest.soilMoisture} </div>
                 <p>Moisture</p>
               </div>
               <div className="col">
-              <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
-              <FontAwesomeIcon icon={faSun} title={sunlight.join(', ')} />
+              <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}><FontAwesomeIcon icon={faSun} title={sunlight.join(', ')} />{latest.uvIntensity}</div>
+              
                 <p>Light</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.temperature}</div>
+                <div className="circle" style={{ color: getTemperatureColor(latest.temperature) }}><FontAwesomeIcon icon={faThermometerHalf} />{latest.temperature}</div>
                 <p>Temperature</p>
               </div>
               <div className="col">
