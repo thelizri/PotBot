@@ -1,21 +1,27 @@
 from tkinter import *
 from tkinter import ttk
 
+bg_color = "#94C973"
+fg_color = "#000209"
+
 window = Tk()
 window.attributes('-fullscreen', True)
 window.title("PotBot")
-window.configure(bg='green')
+window.configure(bg=bg_color)
 
-frame = ttk.Frame(window, padding=10)
+style = ttk.Style()
+style.configure('TFrame', background=bg_color)
+
+frame = ttk.Frame(window, padding=10, style="TFrame")
 frame.grid()
 
-myfont = ('Times New Roman', 17, 'bold')
+myfont = ('Times New Roman', 22, 'bold')
 
 labels_text = ["Water Level: ", "UV light: ", "Soil moisture: ", "Temperature: "]
 
 for i, text in enumerate(labels_text):
-    label = Label(frame, text=text, font=myfont, bg='green', fg='white')
-    label.grid(column=0, row=i, pady=5, padx=(0, 10), sticky='e')
+    label = Label(frame, text=text, font=myfont, bg=bg_color, fg=fg_color)
+    label.grid(column=0, row=i, pady=5, padx=(0, 10), sticky='w')
 
 ttk.Button(frame, text="Quit", command=window.destroy).grid(column=0, row=4, pady=10)
 
