@@ -1,31 +1,39 @@
 import {BrowserRouter as Router, Route, Routes,} from "react-router-dom";
-import BasePresenter from "./presenters/basePresenter";
-import LoginPresenter from "./presenters/loginPresenter";
-import SignUpPresenter from "./presenters/signUpPresenter";
-import ResetPresenter from "./presenters/resetPasswordPresenter";
-import {UserAuthContextProvider} from "./firebaseModel";
-import HomePresenter from "./presenters/HomePresenter";
-import ChangeUserName from "./views/ChangeUserName";
+import Header from "./components/Header";
+import LoginPresenter from "./presenters/LoginPresenter";
+import SignUpPresenter from "./presenters/SignUpPresenter";
+import ResetPasswordPresenter from "./presenters/ResetPasswordPresenter";
 import AddPlantPresenter from "./presenters/AddPlantPresenter";
+import HomePresenter from "./presenters/HomePresenter";
+import HistoryPresenter from "./presenters/HistoryPresenter";
+import ChangeUserName from "./views/ChangeUserName";
+import {UserAuthContextProvider} from "./firebaseModel";
+import './styling/App.css'
 
+//Flyttade konstanter till AddPlantPresenter.js
 function App() {
-    return (
-        <div className="App">
-                <BasePresenter/>
-                <Router>
-                    <UserAuthContextProvider>
-                    <Routes>
-                        <Route path="/" element={<LoginPresenter/>}/>
-                        <Route path="/signup" element={<SignUpPresenter/>}/>
-                        <Route path="/reset" element={<ResetPresenter/>}/>
-                        <Route path="/home" element={<HomePresenter/>}/>
-                      <Route path="/name" element={<ChangeUserName/>}/>
-                      <Route path="/addPlant" element={<AddPlantPresenter/>}/>
-                    </Routes>
-                    </UserAuthContextProvider>
-                </Router>
-        </div>
-    );
+
+  return (
+    <div className='App'>
+      <Header/>
+      <Router>
+        <UserAuthContextProvider>
+          <Routes>
+            <Route path='/' element={<LoginPresenter/>}/>
+            <Route path='/signup' element={<SignUpPresenter/>}/>
+            <Route path='/reset' element={<ResetPasswordPresenter/>}/>
+            <Route path='/name' element={<ChangeUserName/>}/>
+            <Route path='/home' element={<HomePresenter/>}/>
+            <Route
+              path='/addNewPlant'
+              element={<AddPlantPresenter/>}
+            />
+            <Route path='/history' element={<HistoryPresenter/>}/>
+          </Routes>
+        </UserAuthContextProvider>
+      </Router>
+    </div>
+  );
 }
 
 export default App;

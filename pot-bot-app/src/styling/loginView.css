@@ -13,6 +13,10 @@
     font-size: 3rem;
     margin-bottom: 0px;
   }
+  h2{
+    display: block;
+    text-align: left;
+  }
 
   .h1SignIN{
     text-align: center;
@@ -49,7 +53,7 @@
     border-radius: 0px;
     font-size: 16px;
   }
-  
+
   button[type="submit"] {
     background-color: #444; /* set a dark grey button background color */
     color: #fff;
@@ -86,18 +90,15 @@
     text-decoration: none;
   }
   
-  a {
+  /* moved this to the App.css so it is consistent throughout all views*/
+  /* a{
     margin-top: 10px;
     font-size: 16px;
-    color: #444; /* set a dark grey color for the link */
+    color: #444;
     text-decoration: underline;
     text-align: center;
-  }
+  } */
   
-  p {
-    font-size: 1.2rem; /* Change the value to adjust the size */
-    text-align: center; /* Optional: center the text horizontally */
-  }
   .pLogin{
     text-align: center;
     font-weight: bold;
@@ -105,9 +106,7 @@
     margin-bottom: 20px;
   }
 
-  input:focus {
-    outline: none;
-  }
+
   
   .error {
     position: fixed;

@@ -1,15 +1,48 @@
 import React from "react";
+import {Link} from "react-router-dom";
+import addPlantIcon from "../styling/images/plus-pot.png";
+import elephant from "../styling/images/elefant.jpg";
 
-export default function PlantView({plants, Plants, AddPlant}) {
+export default function PlantView({user, plants, Plant}) {
+
+  function renderPlants({plants, Plant}) {
+    let meas = 'measureData';
+    let array = [];
+    {
+      Object.keys(plants).map(name => {
+        const plantData = plants[name];
+        const plantVitals = plantData.plantRecommendedVitals;
+      let imageURL;
+      if (plantVitals) {
+        imageURL = plantVitals.image || plantVitals.imageUrl || elephant;
+      }
+        console.log("Plant data:", plantData);
+        return array.push(
+        <Plant
+          className={name}
+          key={name}
+          data={plantData[meas]}
+          name={name}
+          imageURL={imageURL}
+          />
+        );
+      });
+    }
+    return array;
+  }
 
   return (
-    <div>
-      <h1>Your plants</h1>
-      <ul>
-        {/*plants && Object.keys(plants).map(x => <li key={x}>{x}</li>)*/}
-      </ul>
-      {plants && <Plants/>}
-      {plants && <AddPlant/>}
-    </div>
+    <>
+      <h2>Your plants</h2>
+      <div className={"all-plants"}>
+        {plants && user && renderPlants({plants, Plant})}
+
+        <div className={"addPlant"}>
+          <Link to="/addNewPlant">
+            {<img src={addPlantIcon}/>}
+          </Link>
+        </div>
+      </div>
+    </>
   )
 }

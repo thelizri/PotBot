@@ -1,63 +1,151 @@
-import {hasPlants, readUserData, useAuth} from "../firebaseModel";
+import {readUserData, useAuth, setWateredTrue, removePlant} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import AddPlantView from "../views/AddPlantView";
-import addPlantIcon from '../styling/images/plus-pot.png'
-import {useNavigate} from "react-router-dom";
-import {Plants} from "./Plants";
-
+import {Link} from "react-router-dom";
+import elephant from "../styling/images/elefant.jpg";
+/*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
-  const navigate = useNavigate();
   const [plants, setPlants] = useState(null);
   const {user} = useAuth();
-  let hasPlantPromise = hasPlants(user);
-  const [hasPlant, setPlantBool] = useState(false);
-  hasPlantPromise.then((v) => {
-    //console.log(v + " hasPlantPromise");
-        setPlantBool(v);
-    }).catch(err => console.error(err));
+
+  useEffect(() => {
+
+    if (plants === null) {
+      fetchData().catch(err => console.error(err.message));
+    }
+
+    async function fetchData() {
+      await readUserData(user, "plants").then((data => {
+        setPlants(data)
+      })).catch(err => console.error(err.message));
+    }
+  }, [user])
+
+  function Plant({name, data, imageURL, watering, sunlight}) {
+    const [expanded, setExpanded] = useState(false);
+    const [latest, setLatest] = useState({})
+    const {user} = useAuth()
+
+    function handleClick(e) {
+      e.preventDefault()
+      setExpanded(prevState => !prevState);
+    }
 
     useEffect(() => {
-        if (plants == null) {
-            readUserData(user, "plants").then((data => {
-                setPlants(data)
-            }));
+      let latestDate = Object.keys(data).map((x) =>
+        parseInt(x)).reduce((a, b) => Math.max(a, b))
+      setLatest(data[latestDate])
+    }, [user, data])
+
+    function getMoistureColor(actual, optimal) {
+      const lowerLimit = optimal * 0.8;
+      const upperLimit = optimal * 1.2;
+    
+      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+    
+    function getLightColor(actual, optimal) {
+      const lowerLimit = optimal * 0.8;
+      const upperLimit = optimal * 1.2;
+    
+      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+
+    function wateringToValue(watering) {
+      switch (watering) {
+        case 'frequent':
+          return 75;
+        case 'average':
+          return 50;
+        case 'minimum':
+          return 25;
+        case 'none':
+          return 0;
+        default:
+          return 0;
+      }
+    }
+    
+    function sunlightToValue(sunlight) {
+      if (!Array.isArray(sunlight)) {
+        return 0;
+      }
+      let total = 0;
+      sunlight.forEach((element) => {
+        switch (element) {
+          case 'full_shade':
+            total += 2;
+            break;
+          case 'part_shade':
+            total += 5;
+            break;
+          case 'sun-part_shade':
+            total += 7;
+            break;
+          case 'full_sun':
+            total += 10;
+            break;
+          default:
+            break;
         }
-    }, [user])
-  /**
-   * DummieButton to add a new plant*/
-  function buttonHandler() {
-    navigate("/addPlant")
-    //addNewPlant(user, "plants", "Parasollpilea" ).catch(error => {console.error(error)})
-  }
-  function renderPlants(){
-    let meas = 'measureData', date = new Date(), month = "0", m = date.getMonth();
-    if (m < 10) {
-      month += `${m + 1}`
-    } else {
-      month = m + 1
-    }
-    let today = (`${date.getDate()}-${month}-${date.getFullYear()}`)
-    let array = []
-    {
-      Object.keys(plants).map(name => {
-        return array.push(<Plants className={name} key={name} data={plants[name][meas]} today={today} plant={name}/>)
       })
+      return total / sunlight.length;
     }
-    return (<div>{array}</div>)
-  }
 
-  function addPlantButton() {
+    let wateringValue = wateringToValue(watering);
+    let sunlightValue = sunlightToValue(sunlight);
+
     return (
-      <div className={"addPlant"}>
-        <button onClick={buttonHandler}>
-          {<img src={addPlantIcon}/>}
-        </button>
-      </div>)
+      <>
+        <div id={name} className={`expandable-div ${expanded ? "expanded" : ""}`}
+             onClick={handleClick}>
+          <div className="card-title">
+          <img src={(imageURL && imageURL.trim() !== "" && imageURL !== "NaN") ? imageURL : elephant} width="100" height="100" alt={"Oh no your plant picture is gone"}/>
+            <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
+          </div>
+          <div className="plant-data">
+            <div className="row">
+              <div className="col">
+              <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
+                <p>Moisture</p>
+              </div>
+              <div className="col">
+              <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
+                <p>Light</p>
+              </div>
+              <div className="col">
+                <div className="circle">{latest.temperature}</div>
+                <p>Temperature</p>
+              </div>
+              <div className="col">
+                <div className="circle">{latest.waterLevel}</div>
+                <p>Waterlevel</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
+            </div>
+            <div className="row">
+              <div className="stats-btn"><button type="button" className="water-btn" onClick={()=> setWateredTrue(user)}>Water plant</button><button type={"button"} onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete this plant</button></div>
+            </div>
+          </div>
+        </div>
+      </>) 
+
   }
 
-  return <div>
-    {hasPlant && plants ? <PlantView plants={plants} AddPlant={addPlantButton} Plants={renderPlants}/> :
-      <AddPlantView buttonHandler={buttonHandler}/>}
-  </div>
-}
+  return <PlantView user={user} plants={plants} Plant={Plant}/>}
+
+  /* DummieButton to add a new plant */
+  /* function buttonHandler() {
+    //navigate("/addPlant")
+    const data2 = {measureData: 'To be added'}
+    const data = {plantRecommendedVitals: {
+    image: "NaN",
+        sunlight: ["Full sun", "part shade"],
+        temperature:"15",
+        watering:"Average"
+      }}
+    updatePlantData(user, "plants/Parasollpilea", data2 ).catch(error => {console.error(error)})
+  }*/
+
