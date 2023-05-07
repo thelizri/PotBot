@@ -9,6 +9,7 @@ import os
 import database_manager
 import arduino_manager
 import email_manager
+import user_pi_syncing
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -43,6 +44,9 @@ def check_water_level():
     
 
 def run():
+    #Get the correct ids from the database
+    user_pi_syncing.link_pi_with_user()
+
     #Fetches commands from the database
     fetcher = Thread(target=database_manager.get_settings)
     fetcher.start()

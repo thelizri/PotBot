@@ -2,12 +2,11 @@
 from datetime import datetime
 from error_handler import handle_errors
 from math import floor
-from threading import Thread
 import json
 import serial
 import time
 import os
-import database_manager as db
+import database_manager
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -57,7 +56,7 @@ def check_for_messages():
                 print(f"{arduino_data}")
                 measurements = arduino_data.split(" ")
             storemeasurements(measurements)
-            db.run()
+            database_manager.run()
     except KeyboardInterrupt:
         print("Closing Serial Communication")
         port.close()
