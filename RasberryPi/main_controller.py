@@ -28,15 +28,18 @@ def check_settings(port):
         file.close()
 
 def check_water_level():
-    file = open("last_measurement.json")
-    data = json.load(file)
-    file.close()
+    while True:
+        file = open("last_measurement.json")
+        data = json.load(file)
+        file.close()
 
-    data = list(data.values())[0]
-    waterLevel = data["waterLevel"]
+        data = list(data.values())[0]
+        waterLevel = data["waterLevel"]
 
-    if waterLevel == 0:
-        email_manager.send_notification()
+        if waterLevel == 0:
+            email_manager.send_notification()
+        
+        time.sleep(600)
     
 
 def run():
@@ -47,6 +50,10 @@ def run():
     #Takes measurements from the arduino
     arduino = Thread(target=arduino_manager.check_for_messages)
     arduino.start()
+
+    #Checks water level periodically
+    water = Thread(target=check_water_level)
+    water.start()
 
     while True:
         check_settings()
