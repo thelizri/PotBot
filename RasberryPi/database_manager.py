@@ -14,26 +14,30 @@ import utils
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
-# Replace 'path/to/your-service-account-key.json' with the path to the
-# JSON file you downloaded
-cred = credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json")
-# cred = credentials.Certificate(r'C:\Users\karlw\Documents\Code\PotBot\RasberryPi\firebase-key.json')
+cred, uid, plant_id = None, None, None
 
-firebase_admin.initialize_app(
-    cred,
-    {
-        "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
-    },
-)
+def setup():
+    global cred, uid, plant_id
+    # Replace 'path/to/your-service-account-key.json' with the path to the
+    # JSON file you downloaded
+    cred = credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json")
+    # cred = credentials.Certificate(r'C:\Users\karlw\Documents\Code\PotBot\RasberryPi\firebase-key.json')
 
-try:
-    uid_file = open("user.id", "r")
-    plant_id_file = open("plant.id", "r")
-except Exception as error:
-    handle_errors("database_manager_error.log", error)
+    firebase_admin.initialize_app(
+        cred,
+        {
+            "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
+        },
+    )
 
-uid = uid_file.readline().strip()
-plant_id = plant_id_file.readline().strip()
+    try:
+        uid_file = open("user.id", "r")
+        plant_id_file = open("plant.id", "r")
+    except Exception as error:
+        handle_errors("database_manager_error.log", error)
+
+    uid = uid_file.readline().strip()
+    plant_id = plant_id_file.readline().strip()
 
 def push_data(data):
     # Replace 'your_database_path' with the path where you want to push the
