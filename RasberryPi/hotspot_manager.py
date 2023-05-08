@@ -5,6 +5,8 @@ import subprocess
 import sys
 import website
 import error_handler
+from threading import Thread
+import main_controller
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -32,7 +34,8 @@ def connect_to_network():
                 continue
             else:
                 sleep(30)
-                subprocess.run(["python3", "main_controller.py", "&"])
+                themain = Thread(target=main_controller.run)
+                themain.start()
                 return True
 
     # remove wifi credentials
