@@ -85,7 +85,7 @@ def check_water_level():
 
         if waterLevel == 0:
             # email_manager.send_notification()
-            print("Low water level")
+            print("The water level is low. Sending notification")
 
         time.sleep(600)
 
