@@ -36,6 +36,7 @@ def is_linked_with_user():
         return ref.child("productID").get() == product_id
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
+        return False
 
 def link_pi_with_user():
     try:
@@ -60,7 +61,12 @@ def link_pi_with_user():
         ref.child(product_id).delete()
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
+    
+def run():
+    __setup()
+    if not is_linked_with_user():
+        link_pi_with_user()
+
 
 if __name__ == "__main__":
-    __setup()
-    print(is_linked_with_user())
+    run()
