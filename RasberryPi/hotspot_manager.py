@@ -59,7 +59,7 @@ def _main():
         if not os.path.exists("networkUserAndPassword.txt"):
             try:
                 enable_hotspot()
-            except BaseException as error:
+            except Exception as error:
                 print("something went wrong")
                 error_handler.handle_errors("hotspot_manager_error.log", error)
 
