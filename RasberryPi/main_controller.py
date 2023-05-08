@@ -16,6 +16,9 @@ def check_settings():
     if not os.path.exists("settings.json"):
         print("Settings file does not exist")
         return None
+    if os.path.getsize(filepath) == 0:
+        print("Empty settings file")
+        return None
 
     file = open("settings.json")
     data = json.load(file)
