@@ -12,6 +12,12 @@ import user_pi_syncing
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
+def check_if_file_exist_and_is_not_empty(filepath):
+    if os.path.exists(filepath):
+        if os.path.getsize(filepath) != 0:
+            return True
+    return False
+
 def check_settings():
     if not os.path.exists("settings.json"):
         print("Settings file does not exist")
