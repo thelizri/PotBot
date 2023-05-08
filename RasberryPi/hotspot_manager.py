@@ -36,6 +36,7 @@ def connect_to_network():
                 sleep(30)
                 themain = Thread(target=main_controller.run)
                 themain.start()
+                themain.join()
                 return True
 
     # remove wifi credentials
