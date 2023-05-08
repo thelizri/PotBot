@@ -6,7 +6,7 @@ import time
 import os
 import database_manager
 import arduino_manager
-#import email_manager
+import email_manager
 import user_pi_syncing
 
 abspath = os.path.dirname(os.path.abspath(__file__))
@@ -50,7 +50,7 @@ def check_water_level():
         waterLevel = data["waterLevel"]
 
         if waterLevel == 0:
-            #email_manager.send_notification()
+            email_manager.send_notification()
             print("Low water level")
         
         time.sleep(600)
