@@ -56,7 +56,6 @@ def run():
     user_pi_syncing.run()
 
     #Fetches commands from the database
-    database_manager.setup()
     fetcher = Thread(target=database_manager.get_settings)
     fetcher.start()
 
