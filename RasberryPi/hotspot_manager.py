@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import website
+import error_handler
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -54,8 +55,9 @@ def _main():
         if not os.path.exists("networkUserAndPassword.txt"):
             try:
                 enable_hotspot()
-            except BaseException:
+            except BaseException as error:
                 print("something went wrong")
+                error_handler.handle_errors("hotspot_manager_error.log", error)
 
         if os.path.exists("networkUserAndPassword.txt") and connect_to_network():
             break
