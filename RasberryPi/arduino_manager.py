@@ -14,6 +14,7 @@ os.chdir(abspath)
 port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
 time.sleep(3)
 
+
 def storemeasurements(measurements):
     measurements[0] = int(measurements[0])
     measurements[1] = float(measurements[1])
@@ -21,7 +22,7 @@ def storemeasurements(measurements):
     measurements[3] = int(measurements[3])
 
     dictionary = {
-	f"{floor(datetime.now().timestamp())}": {
+        f"{floor(datetime.now().timestamp())}": {
             "dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
             "waterLevel": measurements[0],
             "temperature": measurements[1],
@@ -33,13 +34,15 @@ def storemeasurements(measurements):
     with open("last_measurement.json", "w") as file:
         json.dump(dictionary, file)
 
+
 def turn_on_water_pump(ml):
-    message = str(ml)+"\n"
+    message = str(ml) + "\n"
     port.write(message.encode())
 
     dictionary = {"dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'}
     with open("latest_time_plant_was_watered.json", "w") as file:
         json.dump(dictionary, file)
+
 
 def check_for_messages():
     port.reset_input_buffer()

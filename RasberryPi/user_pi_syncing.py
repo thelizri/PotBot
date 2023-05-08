@@ -1,6 +1,7 @@
 from error_handler import handle_errors
 from time import sleep
 import os
+
 try:
     import firebase_admin
     from firebase_admin import credentials
@@ -10,6 +11,7 @@ try:
     os.chdir(abspath)
 except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
+
 
 def __setup():
     try:
@@ -22,6 +24,7 @@ def __setup():
         )
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
+
 
 def is_linked_with_user():
     try:
@@ -38,14 +41,13 @@ def is_linked_with_user():
         handle_errors("user_pi_syncing_error.log", error)
         return False
 
+
 def link_pi_with_user():
     try:
         ref = db.reference("/potbots")
         product_id_file = open("product.id", "r")
         product_id = product_id_file.readline().strip()
-        ref.update({
-            product_id: ""
-        })
+        ref.update({product_id: ""})
 
         while ref.child(product_id).get() == "":
             print("Sleep 10")
@@ -60,12 +62,11 @@ def link_pi_with_user():
         plant_file.write(plant)
 
         ref.child(product_id).delete()
-        db.reference(f"/users/{uid}/plants/{plant}").update({
-            "productID": product_id
-        })
+        db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
-    
+
+
 def run():
     __setup()
     if not is_linked_with_user():

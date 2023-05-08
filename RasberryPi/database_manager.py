@@ -17,6 +17,7 @@ os.chdir(abspath)
 setupComplete = False
 cred, uid, plant_id = None, None, None
 
+
 def setup(name):
     global cred, uid, plant_id, setupComplete
     # Replace 'path/to/your-service-account-key.json' with the path to the
@@ -29,7 +30,7 @@ def setup(name):
         {
             "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
         },
-        name=name
+        name=name,
     )
 
     try:
@@ -43,6 +44,7 @@ def setup(name):
 
     setupComplete = True
 
+
 def push_data(data):
     if not setupComplete:
         setup("pusher")
@@ -55,9 +57,7 @@ def push_data(data):
 def get_settings():
     if not setupComplete:
         setup("fetcher")
-    ref = db.reference(
-        f"/users/{uid}/plants/{plant_id}/settings"
-    )
+    ref = db.reference(f"/users/{uid}/plants/{plant_id}/settings")
     while True:
         try:
             with open("settings.json", "w") as file:
