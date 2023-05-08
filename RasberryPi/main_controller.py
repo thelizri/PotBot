@@ -1,17 +1,21 @@
-from datetime import datetime
-from error_handler import handle_errors
-from threading import Thread
-import json
-import time
-import os
-import database_manager
-import arduino_manager
-import email_manager
-import user_pi_syncing
-import utils
+try:
+    from datetime import datetime
+    from error_handler import handle_errors
+    from threading import Thread
+    import json
+    import time
+    import os
+    import database_manager
+    import arduino_manager
+    import email_manager
+    import user_pi_syncing
+    import utils
 
-abspath = os.path.dirname(os.path.abspath(__file__))
-os.chdir(abspath)
+
+    abspath = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(abspath)
+except Exception as error:
+    handle_errors("main_controller_error.log", error)
 
 
 def check_settings():
