@@ -33,7 +33,7 @@ def is_linked_with_user():
         plant_name = plant_name_file.readline().strip()
 
         ref = db.reference(f"/users/{uid}/plants/{plant_name}")
-        return ref.child("productID").equal_to(product_id)
+        return ref.child("productID").get() == product_id
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
 
