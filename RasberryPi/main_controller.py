@@ -23,6 +23,7 @@ def check_settings():
     file = open("settings.json")
     data = json.load(file)
     file.close()
+    print("Opened settings file successfully")
     if data["water"]==1:
         data["water"]=0
         measurements = json.load(open("last_measurement.json"))
