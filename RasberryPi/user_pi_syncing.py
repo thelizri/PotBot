@@ -67,6 +67,7 @@ def link_pi_with_user():
 def run():
     __setup()
     if not is_linked_with_user():
+        print("Is not linked with user")
         link_pi_with_user()
 
 
