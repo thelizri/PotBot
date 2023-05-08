@@ -39,9 +39,6 @@ def push_data(data):
     # Replace 'your_database_path' with the path where you want to push the
     # data
     ref = db.reference(f"/users/{uid}/plants/{plant_id}")
-    # child = ref.child(data["date"])
-    # grandchild = child.child(data["time"])
-    # grandchild.update(data)
     ref.child("measureData").update(data)
 
 
