@@ -60,6 +60,7 @@ def run():
     try:
         run_test_file = open("testrun.txt", "w")
         run_test_file.write(f"run was successfully at {datetime.now().strftime('%H:%M')}")
+        run_test_file.close()
         # Get the correct ids from the database
         user_pi_syncing.run()
 
