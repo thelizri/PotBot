@@ -27,6 +27,7 @@ def check_settings():
         measurements = list(measurements.values())[0]
         if measurements["soilMoisture"]<data["soil_moisture"]:
             arduino_manager.turn_on_water_pump(data["amount"])
+            print("Turned on water pump")
         file = open("settings.json", "w")
         json.dump(data, file)
         file.close()
