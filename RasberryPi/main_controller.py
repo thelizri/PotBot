@@ -65,16 +65,16 @@ def run():
         user_pi_syncing.run()
 
         # Fetches commands from the database
-        #fetcher = Thread(target=database_manager.get_settings)
-        #fetcher.start()
+        fetcher = Thread(target=database_manager.get_settings)
+        fetcher.start()
 
         # Takes measurements from the arduino
-        #arduino = Thread(target=arduino_manager.check_for_messages)
-        #arduino.start()
+        arduino = Thread(target=arduino_manager.check_for_messages)
+        arduino.start()
 
         # Checks water level periodically
-        #water = Thread(target=check_water_level)
-        #water.start()
+        water = Thread(target=check_water_level)
+        water.start()
 
         while True:
             check_settings()
