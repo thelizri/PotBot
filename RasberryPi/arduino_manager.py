@@ -11,6 +11,8 @@ import database_manager
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
+port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
+time.sleep(3)
 
 def storemeasurements(measurements):
     measurements[0] = int(measurements[0])
@@ -31,7 +33,7 @@ def storemeasurements(measurements):
     with open("last_measurement.json", "w") as file:
         json.dump(dictionary, file)
 
-def turn_on_water_pump(ml, port):
+def turn_on_water_pump(ml):
     message = str(ml)+"\n"
     port.write(message.encode())
 
@@ -40,8 +42,6 @@ def turn_on_water_pump(ml, port):
         json.dump(dictionary, file)
 
 def check_for_messages():
-    port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
-    time.sleep(3)
     port.reset_input_buffer()
     print("Serial OK")
 
