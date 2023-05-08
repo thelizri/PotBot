@@ -62,7 +62,9 @@ def link_pi_with_user():
         plant_file.write(plant)
 
         ref.child(product_id).delete()
-        db.reference(f"/users/{uid}/plants/{plant}/productID").update(product_id)
+        db.reference(f"/users/{uid}/plants/{plant}").update({
+            "productID": product_id
+        })
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
     
