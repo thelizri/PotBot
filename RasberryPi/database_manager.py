@@ -65,7 +65,7 @@ def get_settings():
                 json.dump(data, file)
                 data["water"] = 0
                 ref.update(data)
-            time.sleep(30)
+            time.sleep(10)
         except KeyboardInterrupt:
             return None
 
