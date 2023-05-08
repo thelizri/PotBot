@@ -14,10 +14,11 @@ import utils
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
+setupComplete = False
 cred, uid, plant_id = None, None, None
 
 def setup():
-    global cred, uid, plant_id
+    global cred, uid, plant_id, setupComplete
     # Replace 'path/to/your-service-account-key.json' with the path to the
     # JSON file you downloaded
     cred = credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json")
@@ -39,7 +40,11 @@ def setup():
     uid = uid_file.readline().strip()
     plant_id = plant_id_file.readline().strip()
 
+    setupComplete = True
+
 def push_data(data):
+    if not setupComplete:
+        setup()
     # Replace 'your_database_path' with the path where you want to push the
     # data
     ref = db.reference(f"/users/{uid}/plants/{plant_id}")
@@ -47,6 +52,8 @@ def push_data(data):
 
 
 def get_settings():
+    if not setupComplete:
+        setup()
     ref = db.reference(
         f"/users/{uid}/plants/{plant_id}/settings"
     )
