@@ -46,7 +46,20 @@ def check_settings():
             print("Turned on water pump")
 
     def frequency():
-        pass
+        if utils.check_if_file_exist_and_is_not_empty(
+            "latest_time_plant_was_watered.json"
+        ):
+            savedTime = utils.read_timestamp_from_file(
+                "latest_time_plant_was_watered.json"
+            )
+            currentTime = utils.get_timestamp()
+            difference = utils.time_difference_in_hours(savedTime, currentTime)
+            if difference >= data["frequency"]:
+                arduino_manager.turn_on_water_pump(data["amount"])
+                print("Turned on water pump")
+        else:
+            arduino_manager.turn_on_water_pump(data["amount"])
+            print("Turned on water pump")
 
     if data["type"] == "Manual":
         manual()

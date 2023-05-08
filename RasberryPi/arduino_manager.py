@@ -7,6 +7,7 @@ import serial
 import time
 import os
 import database_manager
+import utils
 
 port = None
 
@@ -46,9 +47,7 @@ def turn_on_water_pump(ml):
     message = str(ml) + "\n"
     port.write(message.encode())
 
-    dictionary = {"dateTime": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}'}
-    with open("latest_time_plant_was_watered.json", "w") as file:
-        json.dump(dictionary, file)
+    utils.save_timestamp_to_file("latest_time_plant_was_watered.json")
 
 
 def check_for_messages():
