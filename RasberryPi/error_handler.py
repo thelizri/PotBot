@@ -10,3 +10,4 @@ def handle_errors(log_file, error):
     logfile.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S: "))
     logfile.write(str(error))
     logfile.write(f"\n{format_exc()}")
+    logfile.close()
