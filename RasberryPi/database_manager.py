@@ -9,6 +9,7 @@ except Exception as error:
 import json
 import time
 import os
+import utils
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -63,15 +64,9 @@ def get_settings():
 def read_json(filepath):
     if True:
         print("Cloud Start")
-        if not os.path.exists(filepath):
-            print("JSON file not found")
+        if not utils.check_if_file_exist_and_is_not_empty(filepath):
             time.sleep(5)
-            return
-
-        if os.path.getsize(filepath) == 0:
-            print("Empty JSON file")
-            time.sleep(5)
-            return
+            return None
 
         file = open(filepath)
         data = json.load(file)
