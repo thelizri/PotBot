@@ -1,9 +1,7 @@
 from datetime import datetime
 from error_handler import handle_errors
-from math import floor
 from threading import Thread
 import json
-import serial
 import time
 import os
 import database_manager as db
