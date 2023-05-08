@@ -1,13 +1,13 @@
-import {readUserData, useAuth, setWateredTrue, removePlant} from "../firebaseModel";
+import {readUserData, useAuth, setWateredTrue, removePlant, updatePlantData, connectPotBot} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
+import * as user from "chart.js/helpers";
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
   const {user} = useAuth();
-
   useEffect(() => {
 
     if (plants === null) {
@@ -24,6 +24,7 @@ export default function PlantPresenter() {
   function Plant({name, data, imageURL, watering, sunlight}) {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
+    const [connected, setConnected] = useState({})
     const {user} = useAuth()
 
     function handleClick(e) {
@@ -91,6 +92,17 @@ export default function PlantPresenter() {
       })
       return total / sunlight.length;
     }
+    function connectPotBotHandler() {
+      //navigate("/addPlant")
+      const data = {uid: user.uid, plant: name}
+      /*const data2 = {plantRecommendedVitals: {
+          image: "NaN",
+          sunlight: ["Full sun", "part shade"],
+          temperature:"15",
+          watering:"Average"
+        }}*/
+      connectPotBot( '6c4c1c', data ).then((v) => console.log("Successful adding")).catch(error => {console.error(error)})
+    }
 
     let wateringValue = wateringToValue(watering);
     let sunlightValue = sunlightToValue(sunlight);
@@ -114,7 +126,7 @@ export default function PlantPresenter() {
                 <p>Light</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.temperatur}</div>
+                <div className="circle">{latest.temperature}</div>
                 <p>Temperature</p>
               </div>
               <div className="col">
@@ -123,6 +135,7 @@ export default function PlantPresenter() {
               </div>
             </div>
             <div className="row">
+              <button onClick={connectPotBotHandler}>TestUpdate potbots</button>
               <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
             </div>
             <div className="row">
@@ -134,18 +147,9 @@ export default function PlantPresenter() {
 
   }
 
-  return <PlantView user={user} plants={plants} Plant={Plant}/>}
+  return <PlantView user={user} plants={plants} Plant={Plant}/>
+}
 
   /* DummieButton to add a new plant */
-  /* function buttonHandler() {
-    //navigate("/addPlant")
-    const data2 = {measureData: 'To be added'}
-    const data = {plantRecommendedVitals: {
-    image: "NaN",
-        sunlight: ["Full sun", "part shade"],
-        temperature:"15",
-        watering:"Average"
-      }}
-    updatePlantData(user, "plants/Parasollpilea", data2 ).catch(error => {console.error(error)})
-  }*/
+
 

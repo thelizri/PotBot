@@ -78,7 +78,12 @@ async function readUserData(user, path) {
     console.log(err)
   })
 }
-
+/*
+ * @param {Object} data contains all plantVitals from API, need to get this from user when API not working
+ * @param {String} plantName plants name taken from API, need to get this from user when API not working
+ * @param {Object} user this user
+ ** Setting for frequency and soil_moisture need to be taken from the data object *
+ * */
 async function addNewPlant(user, plantName, data) {
   const dbRef = await ref(db, `users/${user.uid}`);
   //Check if the user already has this plant
@@ -115,10 +120,11 @@ async function updatePlantData(user, path, data) {
   const dbRef = await ref(db, `users/${user.uid}/${path}`);
   return await update(dbRef, data);
 }
-/**
+/*
  * Connect the potBot to the users currentPlant
- * @param {string} potBotKey
- * @param {Object} data
+ * @param {string} potBotKey input from user
+ * @param {Object} data {uid: user.uid, plant: name}
+ * when potBot is connected it will write the productID to user plant
  */
 async function connectPotBot(potBotKey, data) {
   const dbRef = await ref(db, `potbots/${potBotKey}`);
@@ -133,7 +139,7 @@ async function removePlant(name){
 }
 
 /*
-* boolean to check if user has a plant registred*/
+* boolean to check if user has a plant registered*/
 async function hasPlants(user) {
   const dbRef = ref(db, `users/${user.uid}`);
   try {
