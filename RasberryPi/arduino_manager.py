@@ -40,6 +40,8 @@ def storemeasurements(measurements):
 
 
 def turn_on_water_pump(ml):
+    if port is None:
+        setup()
     message = str(ml) + "\n"
     port.write(message.encode())
 
