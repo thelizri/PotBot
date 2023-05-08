@@ -8,11 +8,14 @@ import time
 import os
 import database_manager
 
-abspath = os.path.dirname(os.path.abspath(__file__))
-os.chdir(abspath)
+port = None
 
-port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
-time.sleep(3)
+def setup():
+    abspath = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(abspath)
+
+    port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
+    time.sleep(3)
 
 
 def storemeasurements(measurements):
@@ -45,6 +48,8 @@ def turn_on_water_pump(ml):
 
 
 def check_for_messages():
+    if port is None:
+        setup()
     port.reset_input_buffer()
     print("Serial OK")
 
