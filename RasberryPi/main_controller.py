@@ -13,6 +13,10 @@ abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
 def check_settings():
+    if not os.path.exists("settings.json"):
+        print("Settings file does not exist")
+        return None
+
     file = open("settings.json")
     data = json.load(file)
     file.close()
