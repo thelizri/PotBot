@@ -53,7 +53,7 @@ def check_water_level():
 
 def run():
     #Get the correct ids from the database
-    user_pi_syncing.link_pi_with_user()
+    user_pi_syncing.run()
 
     #Fetches commands from the database
     fetcher = Thread(target=database_manager.get_settings)
