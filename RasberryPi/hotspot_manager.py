@@ -34,9 +34,6 @@ def connect_to_network():
                 continue
             else:
                 sleep(30)
-                themain = Thread(target=main_controller.run)
-                themain.start()
-                themain.join()
                 return True
 
     # remove wifi credentials
@@ -65,6 +62,7 @@ def _main():
 
         if os.path.exists("networkUserAndPassword.txt") and connect_to_network():
             break
+    main_controller.run()
 
 
 if __name__ == "__main__":
