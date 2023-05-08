@@ -14,6 +14,7 @@ def setup():
     abspath = os.path.dirname(os.path.abspath(__file__))
     os.chdir(abspath)
 
+    global port
     port = serial.Serial("/dev/ttyACM0", 115200, timeout=1.0)
     time.sleep(3)
 
