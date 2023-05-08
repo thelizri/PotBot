@@ -8,22 +8,13 @@ import database_manager
 import arduino_manager
 import email_manager
 import user_pi_syncing
+import utils
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
-def check_if_file_exist_and_is_not_empty(filepath):
-    if os.path.exists(filepath):
-        if os.path.getsize(filepath) != 0:
-            return True
-    return False
-
 def check_settings():
-    if not os.path.exists("settings.json"):
-        print("Settings file does not exist")
-        return None
-    if os.path.getsize("settings.json") == 0:
-        print("Empty settings file")
+    if not utils.check_if_file_exist_and_is_not_empty("settings.json"):
         return None
 
     file = open("settings.json")
@@ -42,6 +33,9 @@ def check_settings():
 
 def check_water_level():
     while True:
+        if not utils.check_if_file_exist_and_is_not_empty("last_measurement.json"):
+            time.sleep(15)
+            continue
         file = open("last_measurement.json")
         data = json.load(file)
         file.close()
