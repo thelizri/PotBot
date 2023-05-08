@@ -48,6 +48,7 @@ def link_pi_with_user():
         })
 
         while ref.child(product_id).get() == "":
+            print("Sleep 10")
             sleep(10)
 
         uid = ref.child(product_id).child("uid").get()
