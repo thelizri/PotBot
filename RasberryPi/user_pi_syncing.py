@@ -27,7 +27,7 @@ def is_linked_with_user():
     try:
         user_id_file = open("user.id", "r")
         uid = user_id_file.readline().strip()
-        product_id_file = open("product_id", "r")
+        product_id_file = open("product.id", "r")
         product_id = product_id_file.readline().strip()
         plant_name_file = open("plant.id", "r")
         plant_name = plant_name_file.readline().strip()
