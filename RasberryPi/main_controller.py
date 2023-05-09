@@ -92,21 +92,16 @@ def check_water_level():
 
 def run():
     try:
-        run_test_file = open("testrun.txt", "w")
-        run_test_file.write(
-            f"run was successfull at {datetime.now().strftime('%H:%M')}"
-        )
-        run_test_file.close()
         # Get the correct ids from the database
         user_pi_syncing.run()
-
-        # Fetches commands from the database
-        fetcher = Thread(target=database_manager.get_settings)
-        fetcher.start()
 
         # Takes measurements from the arduino
         arduino = Thread(target=arduino_manager.check_for_messages)
         arduino.start()
+
+        # Fetches commands from the database
+        fetcher = Thread(target=database_manager.get_settings)
+        fetcher.start()
 
         # Checks water level periodically
         water = Thread(target=check_water_level)
@@ -118,7 +113,8 @@ def run():
 
         while True:
             check_settings()
-            time.sleep(15)
+            print("Checked settings")
+            time.sleep(20)
     except Exception as error:
         handle_errors("main_controller_error.log", error)
 

@@ -59,6 +59,7 @@ def get_settings():
         setup("fetcher")
     ref = db.reference(f"/users/{uid}/plants/{plant_id}/settings")
     while True:
+        print("Fetching settings online")
         try:
             with open("settings.json", "w") as file:
                 data = ref.get()
@@ -89,7 +90,7 @@ def run():
     while True:
         try:
             read_json("last_measurement.json")
-            time.sleep(600)
+            time.sleep(60)
         except Exception as error:
             handle_errors(error)
 
