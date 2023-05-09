@@ -46,7 +46,7 @@ def run():
     frame = ttk.Frame(window, padding=10, style="TFrame")
     frame.grid()
 
-    myfont = ("Times New Roman", 22, "bold")
+    myfont = ("Times New Roman", 15, "bold")
 
     labels_text = ["Water Level: ", "UV light: ", "Soil moisture: ", "Temperature: "]
     label_vars = []
