@@ -16,7 +16,7 @@ def update_labels(label_vars, window):
 
     water = "Full" if data["waterLevel"] else "Empty"
 
-    label_vars[0].set("Water Level: " + str(data["waterLevel"]) + " " + str(counter))
+    label_vars[0].set("Water Level: " + water + " " + str(counter))
     label_vars[1].set(
         "UV Light: " + str(data["uvIntensity"]) + " mW/cm2 " + str(counter)
     )
