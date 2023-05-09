@@ -2,12 +2,8 @@ from tkinter import *
 from tkinter import ttk
 import json
 
-counter = 0
-
 
 def update_labels(label_vars, window):
-    global counter
-    counter += 1
     data = None
 
     with open("last_measurement.json", "r") as file:
@@ -16,16 +12,10 @@ def update_labels(label_vars, window):
 
     water = "Full" if data["waterLevel"] else "Empty"
 
-    label_vars[0].set("Water Level: " + water + " " + str(counter))
-    label_vars[1].set(
-        "UV Light: " + str(data["uvIntensity"]) + " mW/cm2 " + str(counter)
-    )
-    label_vars[2].set(
-        "Soil Moisture: " + str(int(data["soilMoisture"])) + "% " + str(counter)
-    )
-    label_vars[3].set(
-        "Temperature: " + str(int(data["temperature"])) + " °C " + str(counter)
-    )
+    label_vars[0].set("Water Level: " + water)
+    label_vars[1].set("UV Light: " + str(data["uvIntensity"]) + " mW/cm2")
+    label_vars[2].set("Soil Moisture: " + str(int(data["soilMoisture"])) + "%")
+    label_vars[3].set("Temperature: " + str(int(data["temperature"])) + " °C")
 
     # Schedule the next update
     window.after(1000, lambda: update_labels(label_vars, window))
