@@ -12,7 +12,7 @@ def update_labels(label_vars, window):
 
     with open("last_measurement.json", "r") as file:
         data = json.load(file)
-        data = data.values()[0]
+        data = list(data.values())[0]
 
     label_vars[0].set("Water Level: " + str(data["waterLevel"]) + " " + str(counter))
     label_vars[1].set("UV Light: " + str(data["uvIntensity"]) + " " + str(counter))
