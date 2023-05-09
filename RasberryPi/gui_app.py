@@ -18,9 +18,11 @@ def update_labels(label_vars, window):
 
     label_vars[0].set("Water Level: " + str(data["waterLevel"]) + " " + str(counter))
     label_vars[1].set("UV Light: {:.2f} mW/cm2 {}".format(data["uvIntensity"], counter))
-    label_vars[2].set("Soil Moisture: {:.2f}% {}".format(data["soilMoisture"], counter))
+    label_vars[2].set(
+        "Soil Moisture: {:d}% {}".format(int(data["soilMoisture"]), counter)
+    )
     label_vars[3].set(
-        "Temperature: {:.2f} Celsius {}".format(data["temperature"], counter)
+        "Temperature: {:.1f} Celsius {}".format(data["temperature"], counter)
     )
 
     # Schedule the next update
