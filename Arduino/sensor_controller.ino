@@ -53,7 +53,7 @@ String readMessageFromRaspberryPi() {
 
 int readSoilMoisture() {
   int soilMoisture = averageAnalogRead(SOIL_PIN);
-  int soilMoisturePercent = map(soilMoisture, AIR_VALUE, WATER_VALUE, 0, 100);
+  int soilMoisturePercent = constrain(map(soilMoisture, AIR_VALUE, WATER_VALUE, 0, 100), 0, 100);
   return soilMoisturePercent;
 }
 
