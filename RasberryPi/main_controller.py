@@ -98,22 +98,28 @@ def run():
         user_pi_syncing.run()
 
         # Takes measurements from the arduino
+        print("Creating arduino thread")
         arduino = Thread(target=arduino_manager.check_for_messages)
         arduino.start()
 
         # Fetches commands from the database
+        print("Creating fetcher of settings")
         fetcher = Thread(target=database_manager.get_settings)
         fetcher.start()
 
         # Checks water level periodically
+        print("Create water level checker")
         water = Thread(target=check_water_level)
         water.start()
 
         # Pushes data to cloud database
+        print("Create database runner. Pushes data to database")
         pusher = Thread(target=database_manager.run())
         pusher.start()
 
+        print("Created all threads")
         while True:
+            print("inside while loop")
             pump_controller()
             print("Pump controller finished")
             time.sleep(20)
