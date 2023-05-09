@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import plantSource from '../services/plantSource';
-import { ThreeDots } from 'react-loader-spinner'
-import '../styling/AddPlant.css';
+import plantSource from "../services/plantSource";
+import { ThreeDots } from "react-loader-spinner";
+import "../styling/AddPlant.css";
 import speciesData from "../services/species_data.json";
 import elephant from "../styling/images/elefant.jpg";
 
 /*TODO:Flytta konstanter till presenter från app */
-const {searchPlants, fetchPlantDetails} = plantSource;
-
+const { searchPlants, fetchPlantDetails } = plantSource;
 
 export default function AddPlantView({ addPlantToPersonalList }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,8 +16,7 @@ export default function AddPlantView({ addPlantToPersonalList }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [, setIsSearchMade] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [isLoading,setIsLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const observer = useRef();
   const loaderRef = useRef();
@@ -98,7 +96,9 @@ export default function AddPlantView({ addPlantToPersonalList }) {
 
   useEffect(() => {
     if (observer.current && searchResults.length > 0) {
-      observer.current.observe(document.querySelector(".plant-card:last-child"));
+      observer.current.observe(
+        document.querySelector(".plant-card:last-child")
+      );
     }
   }, [searchResults]);
 
@@ -106,7 +106,10 @@ export default function AddPlantView({ addPlantToPersonalList }) {
     <div className="addPlant">
       <div className="addPlantDescr">
         <h2>Connect your plant to the PotBot</h2>
-        <p>First choose what kind of plant you have and we will calibrate the optimal conditions for it</p>
+        <p>
+          First choose what kind of plant you have and we will calibrate the
+          optimal conditions for it
+        </p>
       </div>
       <form className="plant-form" onSubmit={handleSubmit}>
         <input
@@ -157,7 +160,12 @@ export default function AddPlantView({ addPlantToPersonalList }) {
             )}
             {isLoading && (
               <div className="loading">
-                <ThreeDots type="ThreeDots" color="#2BAD60" height={40} width={40} />
+                <ThreeDots
+                  type="ThreeDots"
+                  color="#2BAD60"
+                  height={40}
+                  width={40}
+                />
               </div>
             )}
           </div>
