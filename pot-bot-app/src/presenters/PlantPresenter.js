@@ -1,71 +1,89 @@
-import {readUserData, useAuth} from "../firebaseModel";
-import React, {useEffect, useState} from "react";
+import { readUserData, useAuth } from "../firebaseModel";
+import React, { useEffect, useState } from "react";
 import PlantView from "../views/PlantView";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 /*TODO: Check why sometimes getting an uncaught error */
+
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-
     if (plants === null) {
-      fetchData().catch(err => console.error(err.message));
+      fetchData().catch((err) => console.error(err.message));
     }
 
     async function fetchData() {
-      await readUserData(user, "plants").then((data => {
-        setPlants(data)
-      })).catch(err => console.error(err.message));
+      await readUserData(user, "plants")
+        .then((data) => {
+          setPlants(data);
+        })
+        .catch((err) => console.error(err.message));
     }
-  }, [user])
+  }, [user]);
 
-  function Plant({name, data, imageURL, watering, sunlight}) {
+  function Plant({ name, data, imageURL, defaultImage, watering, sunlight }) {
     const [expanded, setExpanded] = useState(false);
-    const [latest, setLatest] = useState(null)
-    const {user} = useAuth()
+    const [latest, setLatest] = useState(null);
+    const { user } = useAuth();
 
     function handleClick() {
       setExpanded(!expanded);
     }
 
     useEffect(() => {
-      let latestDate = Object.keys(data).map((x) =>
-        parseInt(x)).reduce((a, b) => Math.max(a, b))
-      setLatest(data[latestDate])
-    }, [user, data])
-    console.log(latest)
+      let latestDate = Object.keys(data)
+        .map((x) => parseInt(x))
+        .reduce((a, b) => Math.max(a, b));
+      setLatest(data[latestDate]);
+    }, [user, data]);
+    console.log(latest);
 
     function getMoistureColor(actual, optimal) {
       const lowerLimit = optimal * 0.8;
       const upperLimit = optimal * 1.2;
-    
-      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+
+      return actual >= lowerLimit && actual <= upperLimit ? "green" : "red";
     }
-    
+
     function getLightColor(actual, optimal) {
       const lowerLimit = optimal * 0.8;
       const upperLimit = optimal * 1.2;
-    
-      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+
+      return actual >= lowerLimit && actual <= upperLimit ? "green" : "red";
     }
 
     function wateringToValue(watering) {
       switch (watering) {
-        case 'frequent':
+        case "frequent":
           return 75;
-        case 'average':
+        case "average":
           return 50;
-        case 'minimum':
+        case "minimum":
           return 25;
-        case 'none':
+        case "none":
           return 0;
         default:
           return 0;
       }
     }
-    
+
+    function valueToWatering(value) {
+      switch (value) {
+        case 75:
+          return "frequent";
+        case 50:
+          return "average";
+        case 25:
+          return "minimum";
+        case 0:
+          return "none";
+        default:
+          return "unknown";
+      }
+    }
+
     function sunlightToValue(sunlight) {
       if (!Array.isArray(sunlight)) {
         return 0;
@@ -73,81 +91,134 @@ export default function PlantPresenter() {
       let total = 0;
       sunlight.forEach((element) => {
         switch (element) {
-          case 'full_shade':
+          case "full_shade":
             total += 2;
             break;
-          case 'part_shade':
+          case "part_shade":
             total += 5;
             break;
-          case 'sun-part_shade':
+          case "sun-part_shade":
             total += 7;
             break;
-          case 'full_sun':
+          case "full_sun":
             total += 10;
             break;
           default:
             break;
         }
-      })
+      });
       return total / sunlight.length;
+    }
+
+    function valueToSunlight(value) {
+      if (value >= 0 && value <= 2) {
+        return "full_shade";
+      } else if (value > 2 && value <= 5) {
+        return "part_shade";
+      } else if (value > 5 && value <= 7) {
+        return "sun-part_shade";
+      } else if (value > 7 && value <= 10) {
+        return "full_sun";
+      } else {
+        return "unknown";
+      }
     }
 
     let wateringValue = wateringToValue(watering);
     let sunlightValue = sunlightToValue(sunlight);
 
+    let formattedMoisture = wateringValue === 0 ? "" : "%";
+    let formattedSunlight = sunlightValue === 0 ? "" : "%";
+    
     return (
       <>
-        <div className={`expandable-div ${expanded ? "expanded" : ""}`}
-             onClick={handleClick}>
+        <div
+          className={`expandable-div ${expanded ? "expanded" : ""}`}
+          onClick={handleClick}
+        >
           <div className="card-title">
-          <img
-  src={
-    (imageURL && imageURL.trim() !== "" && imageURL !== "NaN")
-      ? imageURL
-      : elephant
-  }
-  width="100"
-  height="100"
-  alt={"Oh no your plant picture is gone"}
-/>
-            <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
+            <img
+              src={
+                imageURL && imageURL.trim() !== "" && imageURL !== "NaN"
+                  ? imageURL
+                  : defaultImage &&
+                    defaultImage.trim() !== "" &&
+                    defaultImage !== "NaN"
+                  ? defaultImage
+                  : elephant
+              }
+              width="100"
+              height="100"
+              alt={"Oh no your plant picture is gone"}
+            />
+            <span style={{ fontFamily: "sans-serif", padding: "0.5em" }}>
+              {name}
+            </span>
           </div>
-          {expanded && <div className="plant-data">
-            <div className="row">
-              <div className="col">
-              <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
-                <p>Moisture</p>
+          {expanded && (
+            <div className="plant-data">
+              <div className="row">
+                <div className="col">
+                  <div
+                    className="circle"
+                    style={{
+                      color: getMoistureColor(
+                        latest.soilMoisture,
+                        wateringValue
+                      ),
+                    }}
+                  >
+                    {latest.soilMoisture}{" "} {formattedMoisture} {valueToWatering(wateringValue)}
+                  </div>
+                  <p>Moisture</p>
+                </div>
+                <div className="col">
+                  <div
+                    className="circle"
+                    style={{
+                      color: getLightColor(latest.uvIntensity, sunlightValue),
+                    }}
+                  >
+                    {latest.uvIntensity} {formattedSunlight} {valueToSunlight(sunlightValue)}
+                  </div>
+                  <p>Light</p>
+                </div>
+                <div className="col">
+                  <div className="circle">{latest.temperatur}</div>
+                  <p>Temperature</p>
+                </div>
+                <div className="col">
+                  <div className="circle">{latest.waterLevel}</div>
+                  <p>Waterlevel</p>
+                </div>
               </div>
-              <div className="col">
-              <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
-                <p>Light</p>
-              </div>
-              <div className="col">
-                <div className="circle">{latest.temperatur}</div>
-                <p>Temperature</p>
-              </div>
-              <div className="col">
-                <div className="circle">{latest.waterLevel}</div>
-                <p>Waterlevel</p>
+              <div className="row">
+                <div className="stats-btn">
+                  <Link to="/stats">See growth history</Link>
+                </div>
               </div>
             </div>
-            <div className="row">
-              <div className="stats-btn"><Link to="/stats">See growth history</Link></div>
-            </div>
-          </div>}
+          )}
         </div>
-      </>)
-
+      </>
+    );
   }
 
-  return <div>
-    {<PlantView user={user} plants={plants} Plant={Plant}/>}
-  </div>
+  return (
+    <div>
+      {
+        <PlantView
+          user={user}
+          plants={plants}
+          Plant={Plant}
+        />
+      }
+    </div>
+  );
 }
-  /**
-   * DummieButton to add a new plant*/
-  /*function buttonHandler() {
+/**
+ * DummieButton to add a new plant*/
+/*function buttonHandler() {
     //navigate("/addPlant")
     addNewPlant(user, "plants", "Elefant-ear" ).catch(error => {console.error(error)})
   }*/
-
