@@ -50,9 +50,9 @@ def run():
         label.grid(column=0, row=i, pady=5, padx=(0, 10), sticky="w")
         label_vars.append(label_var)
 
-    ttk.Button(frame, text="Quit", command=window.destroy).grid(
-        column=0, row=4, pady=10
-    )
+    # ttk.Button(frame, text="Quit", command=window.destroy).grid(
+    #    column=0, row=4, pady=10
+    # )
 
     # Centering the frame on the window
     frame.update_idletasks()
