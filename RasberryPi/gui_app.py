@@ -38,7 +38,7 @@ def run():
     window = Tk()
     window.attributes("-fullscreen", True)
     window.title("PotBot")
-    window.configure(bg=bg_color)
+    window.configure(bg=bg_color, cursor="none")
 
     style = ttk.Style()
     style.configure("TFrame", background=bg_color)
