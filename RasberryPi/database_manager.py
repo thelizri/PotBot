@@ -86,10 +86,12 @@ def read_json(filepath):
 
 
 def run():
-    try:
-        read_json("last_measurement.json")
-    except Exception as error:
-        handle_errors(error)
+    while True:
+        try:
+            read_json("last_measurement.json")
+            time.sleep(600)
+        except Exception as error:
+            handle_errors(error)
 
 
 if __name__ == "__main__":

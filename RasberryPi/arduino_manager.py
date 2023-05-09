@@ -67,7 +67,6 @@ def check_for_messages():
                 print(f"{arduino_data}")
                 measurements = arduino_data.split(" ")
             storemeasurements(measurements)
-            database_manager.run()
     except KeyboardInterrupt:
         print("Closing Serial Communication")
         port.close()

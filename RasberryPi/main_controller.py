@@ -112,6 +112,10 @@ def run():
         water = Thread(target=check_water_level)
         water.start()
 
+        # Checks water level periodically
+        pusher = Thread(target=database_manager.run())
+        pusher.start()
+
         while True:
             check_settings()
             time.sleep(15)
