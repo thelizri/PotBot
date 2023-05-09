@@ -10,6 +10,7 @@ import pump_controller
 import email_manager
 import user_pi_syncing
 import utils
+import gui_app
 
 try:
     abspath = os.path.dirname(os.path.abspath(__file__))
@@ -67,6 +68,11 @@ def run():
         print("Create pump controller runner")
         pump = Thread(target=pump_controller.run)
         pump.start()
+
+        # Turns on the graphical interface
+        print("Turning on GUI app")
+        gui = Thread(target=gui_app.run)
+        gui.start()
 
         print("Created all threads")
     except Exception as error:
