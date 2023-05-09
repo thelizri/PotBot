@@ -14,12 +14,15 @@ def update_labels(label_vars, window):
         data = json.load(file)
         data = list(data.values())[0]
 
+    water = "Full" if data["waterLevel"] else "Empty"
+
     label_vars[0].set("Water Level: " + str(data["waterLevel"]) + " " + str(counter))
-    label_vars[1].set("UV Light: " + str(data["uvIntensity"]) + " " + str(counter))
-    label_vars[2].set(
-        "Soil Moisture: " + str(data["soilMoisture"]) + " " + str(counter)
+    label_vars[1].set("UV Light: {:.2f} mW/cm2 {}".format(data["uvIntensity"], counter))
+    label_vars[2].set("Soil Moisture: {:.2f}% {}".format(data["soilMoisture"], counter))
+    label_vars[3].set(
+        "Temperature: {:.2f} Celsius {}".format(data["temperature"], counter)
     )
-    label_vars[3].set("Temperature: " + str(data["temperature"]) + " " + str(counter))
+
     # Schedule the next update
     window.after(1000, lambda: update_labels(label_vars, window))
 
