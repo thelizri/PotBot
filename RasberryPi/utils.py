@@ -50,3 +50,18 @@ def get_hours_since_plant_was_watered():
         return time_difference_in_hours(savedTime, currentTime)
     else:
         return float("inf")
+
+def should_plant_be_watered(interval):
+    if check_if_file_exist_and_is_not_empty(
+        "latest_time_plant_was_watered.json"                                                      
+    ):
+        last_time_watered = read_timestamp_from_file(
+            "latest_time_plant_was_watered.json"
+        )
+        current_time = get_timestamp()
+        difference = time_difference_in_hours(last_time_watered, current_time)
+        if (difference >= interval):
+            return True
+        else:
+            return False
+    return True
