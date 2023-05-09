@@ -45,6 +45,15 @@ def setup(name):
     setupComplete = True
 
 
+def fetch_user_email():
+    if not setupComplete:
+        setup("email_fetcher")
+    ref = db.reference(f"/users/{uid}/email")
+    data = ref.get()
+    with open("email.id", "w") as file:
+        file.write(data)
+
+
 def push_data(data):
     if not setupComplete:
         setup("pusher")
