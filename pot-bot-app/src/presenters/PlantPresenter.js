@@ -1,9 +1,8 @@
-import {readUserData, useAuth, setWateredTrue, removePlant, updatePlantData, connectPotBot} from "../firebaseModel";
+import {connectPotBot, readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
-import * as user from "chart.js/helpers";
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
@@ -21,11 +20,13 @@ export default function PlantPresenter() {
     }
   }, [user])
 
-  function Plant({name, data, imageURL, watering, sunlight}) {
+  function Plant({name, data, watering, sunlight, productID}) {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
-    const [connected, setConnected] = useState({})
+    const [connected, setConnected] = useState(false)
     const {user} = useAuth()
+    let n = useNavigate()
+
 
     function handleClick(e) {
       e.preventDefault()
@@ -36,37 +37,41 @@ export default function PlantPresenter() {
       let latestDate = Object.keys(data).map((x) =>
         parseInt(x)).reduce((a, b) => Math.max(a, b))
       setLatest(data[latestDate])
-    }, [user, data])
+      if (productID !== 'RaspberryPi') {
+        setConnected(true)
+      }
+    }, [user, data, productID])
 
     function getMoistureColor(actual, optimal) {
       const lowerLimit = optimal * 0.8;
       const upperLimit = optimal * 1.2;
-    
+
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
-    
+
     function getLightColor(actual, optimal) {
       const lowerLimit = optimal * 0.8;
       const upperLimit = optimal * 1.2;
-    
+
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
     function wateringToValue(watering) {
+
       switch (watering) {
-        case 'frequent':
+        case 'Frequent':
           return 75;
-        case 'average':
+        case 'Average':
           return 50;
-        case 'minimum':
+        case 'Minimum':
           return 25;
-        case 'none':
+        case 'None':
           return 0;
         default:
           return 0;
       }
     }
-    
+
     function sunlightToValue(sunlight) {
       if (!Array.isArray(sunlight)) {
         return 0;
@@ -92,64 +97,97 @@ export default function PlantPresenter() {
       })
       return total / sunlight.length;
     }
-    function connectPotBotHandler() {
-      //navigate("/addPlant")
+
+    function connectPotBotHandler(productID, name) {
+      console.log(productID.target, name);
+
       const data = {uid: user.uid, plant: name}
+
+      //n('/home');
       /*const data2 = {plantRecommendedVitals: {
           image: "NaN",
           sunlight: ["Full sun", "part shade"],
           temperature:"15",
           watering:"Average"
         }}*/
-      connectPotBot( '6c4c1c', data ).then((v) => console.log("Successful adding")).catch(error => {console.error(error)})
+      connectPotBot(productID.target, data).then((v) => console.log("Successful adding")).catch(error => {
+        console.error(error)
+      })
     }
 
     let wateringValue = wateringToValue(watering);
+    console.log(wateringValue)
     let sunlightValue = sunlightToValue(sunlight);
-
+    let image = plants[name].plantRecommendedVitals.image;
+    if (!image || image === "NaN") {
+      image = elephant
+    }
     return (
       <>
-        <div id={name} className={`expandable-div ${expanded ? "expanded" : ""}`}
-             onClick={handleClick}>
-          <div className="card-title">
-          <img src={(imageURL && imageURL.trim() !== "" && imageURL !== "NaN") ? imageURL : elephant} width="100" height="100" alt={"Oh no your plant picture is gone"}/>
-            <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
-          </div>
-          <div className="plant-data">
-            <div className="row">
-              <div className="col">
-              <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
-                <p>Moisture</p>
+        {connected ?
+          <div id={name} className={`expandable-div ${expanded && connected ? "expanded" : ""}`}
+               onClick={handleClick}>
+            <div className="card-title">
+              <img src={image} width="100" height="100"
+                   alt={"Oh no your plant picture is gone"}/>
+              <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
+            </div>
+            <div className="plant-data">
+
+              <div className="row">
+                <div className="col">
+                  <div className="circle"
+                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
+                  <p>Moisture</p>
+                </div>
+                <div className="col">
+                  <div className="circle"
+                       style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
+                  <p>Light</p>
+                </div>
+                <div className="col">
+                  <div className="circle">{latest.temperature}</div>
+                  <p>Temperature</p>
+                </div>
+                <div className="col">
+                  <div className="circle">{latest.waterLevel}</div>
+                  <p>Waterlevel</p>
+                </div>
               </div>
-              <div className="col">
-              <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
-                <p>Light</p>
+              <div className="row">
+
+                <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
               </div>
-              <div className="col">
-                <div className="circle">{latest.temperature}</div>
-                <p>Temperature</p>
-              </div>
-              <div className="col">
-                <div className="circle">{latest.waterLevel}</div>
-                <p>Waterlevel</p>
+              <div className="row">
+                <div className="stats-btn">
+                  <button type="button" className="water-btn" onClick={() => setWateredTrue(user)}>Water plant</button>
+                  <button type={"button"}
+                          onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete
+                    this plant
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="row">
-              <button onClick={connectPotBotHandler}>TestUpdate potbots</button>
-              <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
+          </div> :
+          <div id={name} className={`expandable-div ${false} ? "expanded" : ""}`}>
+            <div className="card-title">
+              <img src={image} width="100" height="100"
+                   alt={"Oh no your plant picture is gone"}/>
+              <form className='expandable-div'
+              >Enter your
+                code and press connect<input type='text' name='productID' required/>
+              </form>
+              <button type='button' className='expandable-div'>Connect {name}
+              </button>
             </div>
-            <div className="row">
-              <div className="stats-btn"><button type="button" className="water-btn" onClick={()=> setWateredTrue(user)}>Water plant</button><button type={"button"} onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete this plant</button></div>
-            </div>
-          </div>
-        </div>
-      </>) 
+          </div>}
+      </>)
 
   }
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>
 }
 
-  /* DummieButton to add a new plant */
+/* DummieButton to add a new plant */
 
 
