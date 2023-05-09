@@ -17,12 +17,14 @@ def update_labels(label_vars, window):
     water = "Full" if data["waterLevel"] else "Empty"
 
     label_vars[0].set("Water Level: " + str(data["waterLevel"]) + " " + str(counter))
-    label_vars[1].set("UV Light: {:.2f} mW/cm2 {}".format(data["uvIntensity"], counter))
+    label_vars[1].set(
+        "UV Light: " + str(data["uvIntensity"]) + "mW/cm2 " + str(counter)
+    )
     label_vars[2].set(
-        "Soil Moisture: {:d}% {}".format(int(data["soilMoisture"]), counter)
+        "Soil Moisture: " + str(int(data["soilMoisture"])) + "% " + str(counter)
     )
     label_vars[3].set(
-        "Temperature: {:.1f} Celsius {}".format(data["temperature"], counter)
+        "Temperature: " + str(int(data["temperature"])) + " °C " + str(counter)
     )
 
     # Schedule the next update
