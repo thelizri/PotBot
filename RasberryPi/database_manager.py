@@ -18,7 +18,7 @@ setupComplete = False
 cred, uid, plant_id = None, None, None
 
 
-def setup(name):
+def setup(db_name):
     global cred, uid, plant_id, setupComplete
     # Replace 'path/to/your-service-account-key.json' with the path to the
     # JSON file you downloaded
@@ -30,7 +30,7 @@ def setup(name):
         {
             "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
         },
-        name=name,
+        name=db_name,
     )
 
     try:
