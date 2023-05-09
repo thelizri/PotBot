@@ -59,7 +59,7 @@ def get_settings():
         setup("fetcher")
     ref = db.reference(f"/users/{uid}/plants/{plant_id}/settings")
     while True:
-        print("Fetching settings online")
+        print("get_settings()")
         try:
             with open("settings.json", "w") as file:
                 data = ref.get()
@@ -73,7 +73,6 @@ def get_settings():
 
 def read_json(filepath):
     if True:
-        print("Cloud Start")
         if not utils.check_if_file_exist_and_is_not_empty(filepath):
             time.sleep(5)
             return None
@@ -83,11 +82,11 @@ def read_json(filepath):
         file.close()
 
         push_data(data)
-        print("Finished with cloud")
 
 
 def run():
     while True:
+        print("database_mangager.run()")
         try:
             read_json("last_measurement.json")
             time.sleep(60)

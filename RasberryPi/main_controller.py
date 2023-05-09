@@ -19,6 +19,7 @@ except Exception as error:
 
 
 def pump_controller():
+    print("pump_controller")
     if not utils.check_if_file_exist_and_is_not_empty("settings.json"):
         return None
 
@@ -73,6 +74,7 @@ def pump_controller():
 
 def check_water_level():
     while True:
+        print("check_water_level")
         if not utils.check_if_file_exist_and_is_not_empty("last_measurement.json"):
             time.sleep(15)
             continue
