@@ -58,8 +58,8 @@ def run():
     frame.update_idletasks()
     frm_width = frame.winfo_width()
     frm_height = frame.winfo_height()
-    window_width = window.winfo_width()
-    window_height = window.winfo_height()
+    window_width = 480
+    window_height = 320
     x_offset = (window_width - frm_width) // 2
     y_offset = (window_height - frm_height) // 2
 
