@@ -1,14 +1,14 @@
 import fs from "fs";
 import fetch from "node-fetch";
 
-const API_KEY = "sk-MV5g643fcb2a3c98d558";
+const API_KEY = "sk-vhKW64412e6ecbc88586";
 const totalPages = 337;
 const speciesList = [];
 
 const fetchSpecies = async (page) => {
   try {
     const response = await fetch(
-      `https://perenual.com/api/species-list?page=${page}&key=sk-MV5g643fcb2a3c98d558`
+      `https://perenual.com/api/species-list?page=${page}&key=${API_KEY}`
     );
 
     if (response.ok) {

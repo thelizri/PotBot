@@ -17,19 +17,26 @@ export default function AddPlantPresenter() {
   };
   console.log(personalPlantList);
   useEffect(() => {
-    //function för att extrahera den data vi behöver
     if (addPlant) {
-      addNewPlant(user, personalPlantList.common_name, {
-        sunlight: personalPlantList.sunlight,
-        watering: personalPlantList.watering,
-        temperatur: '10-30'
-      }).then((p) => {
-        console.log(p)
-        setPersonalPlantList([])
-        setPlant(false)
-        navigate("/home")
-
-      }).catch(err => console.error(err.message))
+      addNewPlant(
+        user,
+        personalPlantList.common_name,
+        {
+          sunlight: personalPlantList.sunlight,
+          watering: personalPlantList.watering,
+          temperatur: "10-30",
+          imageURL: personalPlantList.default_image
+            ? personalPlantList.default_image.regular_url
+            : "",
+        }
+      )
+        .then((p) => {
+          console.log(p);
+          setPersonalPlantList([]);
+          setPlant(false);
+          navigate("/home");
+        })
+        .catch((err) => console.error(err.message));
     }
   }, [personalPlantList, user]);
 

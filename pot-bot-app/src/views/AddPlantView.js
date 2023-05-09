@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import plantSource from '../services/plantSource';
 import { ThreeDots } from 'react-loader-spinner'
-import '../styling/AddPlant.css'
+import '../styling/AddPlant.css';
+import speciesData from "../services/species_data.json";
+import elephant from "../styling/images/elefant.jpg";
 
 /*TODO:Flytta konstanter till presenter från app */
 const {searchPlants, fetchPlantDetails} = plantSource;
@@ -20,6 +22,21 @@ export default function AddPlantView({ addPlantToPersonalList }) {
 
   const observer = useRef();
   const loaderRef = useRef();
+
+  const localSearchPlants = (searchTerm) => {
+    return speciesData.filter((plant) => {
+      return (
+        plant.common_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        plant.scientific_name.some((name) =>
+          name.toLowerCase().includes(searchTerm.toLowerCase())
+        ) ||
+        (plant.other_name &&
+          plant.other_name.some((name) =>
+            name.toLowerCase().includes(searchTerm.toLowerCase())
+          ))
+      );
+    });
+  };
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -39,17 +56,12 @@ export default function AddPlantView({ addPlantToPersonalList }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await searchPlants(searchTerm);
+    const result = localSearchPlants(searchTerm);
     console.log("Search Results:", result);
     if (result && result.length > 0) {
-      const plantDetails = await Promise.all(
-        result.map((plant) => fetchPlantDetails(plant.id))
-      );
-      console.log("Plant Details:", plantDetails);
-      setSearchResults(plantDetails);
+      setSearchResults(result);
       setIsSearchMade(true); // Set isSearchMade to true when search is made
-      setIsLoading(true)
-
+      setIsLoading(true);
     } else {
       setSearchResults([]);
     }
@@ -116,7 +128,16 @@ export default function AddPlantView({ addPlantToPersonalList }) {
             onClick={() => handlePlantClick(plant.id)}
           >
             <div key={plant.id}>
-              <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100" />
+              <img
+                src={
+                  plant.default_image
+                    ? plant.default_image.regular_url
+                    : elephant
+                }
+                alt={plant.common_name}
+                width="100"
+                height="100"
+              />
               <p>{plant.common_name}</p>
             </div>
             {expandedPlantId === plant.id && (
@@ -144,5 +165,4 @@ export default function AddPlantView({ addPlantToPersonalList }) {
       </div>
     </div>
   );
-
 }
