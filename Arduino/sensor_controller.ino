@@ -112,7 +112,7 @@ int counter = 0;
 
 void loop() {
 
-  if (counter > 600){
+  if (counter > 10){
     int waterLevel = readWaterLevel();
     float temperature = readTemperature();
     float uvIntensity = readUVIntensity();

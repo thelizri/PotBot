@@ -4,6 +4,9 @@ import os
 import subprocess
 import sys
 import website
+import error_handler
+from threading import Thread
+import main_controller
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -31,7 +34,10 @@ def connect_to_network():
                 continue
             else:
                 sleep(30)
-                subprocess.run(["sudo", "python3", "arduino_manager.py", "&"])
+                #themain = Thread(target=main_controller.run)
+                #themain.start()
+                #themain.join()
+                subprocess.run(["sudo", "python", "main_controller.py"])
                 return True
 
     # remove wifi credentials
@@ -54,8 +60,9 @@ def _main():
         if not os.path.exists("networkUserAndPassword.txt"):
             try:
                 enable_hotspot()
-            except BaseException:
+            except Exception as error:
                 print("something went wrong")
+                error_handler.handle_errors("hotspot_manager_error.log", error)
 
         if os.path.exists("networkUserAndPassword.txt") and connect_to_network():
             break
