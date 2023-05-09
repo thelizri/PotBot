@@ -108,13 +108,13 @@ def run():
         fetcher.start()
 
         # Checks water level periodically
-        # print("Create water level checker")
-        # water = Thread(target=check_water_level)
-        # water.start()
+        print("Create water level checker")
+        water = Thread(target=check_water_level)
+        water.start()
 
         # Pushes data to cloud database
         print("Create database runner. Pushes data to database")
-        pusher = Thread(target=database_manager.run())
+        pusher = Thread(target=database_manager.run)
         pusher.start()
 
         print("Created all threads")
