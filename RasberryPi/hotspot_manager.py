@@ -34,9 +34,10 @@ def connect_to_network():
                 continue
             else:
                 sleep(30)
-                themain = Thread(target=main_controller.run)
-                themain.start()
-                themain.join()
+                #themain = Thread(target=main_controller.run)
+                #themain.start()
+                #themain.join()
+                subprocess.run(["sudo", "python", "main_controller.py"])
                 return True
 
     # remove wifi credentials
