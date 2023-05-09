@@ -18,7 +18,7 @@ except Exception as error:
     handle_errors("main_controller_error.log", error)
 
 
-def check_settings():
+def pump_controller():
     if not utils.check_if_file_exist_and_is_not_empty("settings.json"):
         return None
 
@@ -112,8 +112,8 @@ def run():
         pusher.start()
 
         while True:
-            check_settings()
-            print("Checked settings")
+            pump_controller()
+            print("Pump controller finished")
             time.sleep(20)
     except Exception as error:
         handle_errors("main_controller_error.log", error)
