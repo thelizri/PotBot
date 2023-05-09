@@ -1,4 +1,3 @@
-from datetime import datetime
 from error_handler import handle_errors
 from threading import Thread
 import json
@@ -8,7 +7,7 @@ import database_manager
 import arduino_manager
 import pump_controller
 
-# import email_manager
+import email_manager
 import user_pi_syncing
 import utils
 
@@ -33,7 +32,7 @@ def check_water_level():
         waterLevel = data["waterLevel"]
 
         if waterLevel == 0:
-            # email_manager.send_notification()
+            email_manager.send_notification()
             print("The water level is low. Sending notification")
 
         time.sleep(600)
