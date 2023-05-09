@@ -18,7 +18,7 @@ def update_labels(label_vars, window):
 
     label_vars[0].set("Water Level: " + str(data["waterLevel"]) + " " + str(counter))
     label_vars[1].set(
-        "UV Light: " + str(data["uvIntensity"]) + "mW/cm2 " + str(counter)
+        "UV Light: " + str(data["uvIntensity"]) + " mW/cm2 " + str(counter)
     )
     label_vars[2].set(
         "Soil Moisture: " + str(int(data["soilMoisture"])) + "% " + str(counter)
