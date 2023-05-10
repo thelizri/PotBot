@@ -1,3 +1,4 @@
+from datetime import datetime
 from error_handler import handle_errors
 from threading import Thread
 import json
@@ -7,10 +8,9 @@ import database_manager
 import arduino_manager
 import pump_controller
 
-import email_manager
+# import email_manager
 import user_pi_syncing
 import utils
-import gui_app
 
 try:
     abspath = os.path.dirname(os.path.abspath(__file__))

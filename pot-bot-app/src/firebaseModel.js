@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, ref, set, update, remove} from "firebase/database";
+import {child, get, getDatabase, ref, remove, set, update} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -24,11 +24,10 @@ const db = getDatabase(app);
 export function UserAuthContextProvider({children}) {
   const [user, setUser] = useState({});
 
-   function signIn(email, password) {
-    try {
-      return  signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-    }
+  function signIn(email, password) {
+    return signInWithEmailAndPassword(auth, email, password).catch(err => {
+      console.error(err)
+    });
   }
 
   async function signUp(email, password) {
@@ -79,7 +78,12 @@ async function readUserData(user, path) {
     console.log(err)
   })
 }
-
+/*
+ * @param {Object} data contains all plantVitals from API, need to get this from user when API not working
+ * @param {String} plantName plants name taken from API, need to get this from user when API not working
+ * @param {Object} user this user
+ ** Setting for frequency and soil_moisture need to be taken from the data object *
+ * */
 async function addNewPlant(user, plantName, data) {
   const dbRef = await ref(db, `users/${user.uid}`);
   //Check if the user already has this plant
@@ -116,6 +120,16 @@ async function updatePlantData(user, path, data) {
   const dbRef = await ref(db, `users/${user.uid}/${path}`);
   return await update(dbRef, data);
 }
+/*
+ * Connect the potBot to the users currentPlant
+ * @param {string} potBotKey input from user
+ * @param {Object} data {uid: user.uid, plant: name}
+ * when potBot is connected it will write the productID to user plant
+ */
+async function connectPotBot(potBotKey, data) {
+  const dbRef = await ref(db, `potbots/${potBotKey}`);
+  return await update(dbRef, data);
+}
 
 async function removePlant(name){
   if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
@@ -135,21 +149,21 @@ async function hasPlants(user) {
     return console.error(err.message);
   }
 }
-  
-  /**
-   * This function is used by the "water plant"-button
-   * When clicked it sends a "1" to the database
-   * @param {*} user 
+
+/**
+ * This function is used by the "water plant"-button
+ * When clicked it sends a "1" to the database
+ * @param {*} user
+ */
+function setWateredTrue(user) {
+  const path = 'plants/Parasollpilea/settings';
+  const data = {water: 1};
+  console.log("watered plant");
+  updatePlantData(user, path, data);
+  /**TODO
+   * Return some sort of confirmation to the user that the plant has been watered
+   * aka 'water' setting has been changed to 0
    */
-function setWateredTrue(user){
-    const path = 'plants/Parasollpilea/settings';
-    const data = {water: 1};
-    console.log("watered plant");
-    updatePlantData(user, path, data);
-    /**TODO
-     * Return some sort of confirmation to the user that the plant has been watered 
-     * aka 'water' setting has been changed to 0
-     */
 }
 
 async function notificationToggle(user, toggleValue) {
@@ -165,9 +179,18 @@ async function notificationToggle(user, toggleValue) {
   }
 }
 
-  
 
-export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant, notificationToggle}
+export {
+  connectPotBot,
+  hasPlants,
+  updatePlantData,
+  addNewPlant,
+  readUserData,
+  writeUserData,
+  setWateredTrue,
+  removePlant,
+  notificationToggle
+}
 export function useAuth() {
   return useContext(AuthContext);
 }
