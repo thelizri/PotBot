@@ -9,13 +9,12 @@ import utils
 
 
 class DatabaseManager:
-    def __init__(self, key_path):
+    def __init__(self):
         self.abspath = os.path.dirname(os.path.abspath(__file__))
         os.chdir(self.abspath)
         self.cred = None
         self.uid = None
         self.plant_id = None
-        self.key_path = key_path
         self.cred = credentials.Certificate(
             "/home/pi/PotBot/RasberryPi/firebase-key.json"
         )
@@ -82,3 +81,7 @@ class DatabaseManager:
                 time.sleep(60)
             except Exception as error:
                 handle_errors("database_manager_error.log", error)
+
+    def reference(self, arg):
+        ref = db.reference(arg)
+        return ref

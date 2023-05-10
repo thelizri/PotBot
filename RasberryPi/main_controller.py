@@ -42,7 +42,8 @@ def check_water_level():
 def run():
     try:
         # Get the correct ids from the database
-        user_pi_syncing.run()
+        db = database_manager.DatabaseManager()
+        user_pi_syncing.run(db)
 
         # Takes measurements from the arduino
         print("Creating arduino thread")
