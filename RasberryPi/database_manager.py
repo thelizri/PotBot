@@ -20,6 +20,8 @@ def _set_user_notification_setting(event):
 
 def _set_settings(event):
     with open("settings.json", "w") as file:
+        print("settings fetched:")
+        print(event.data)
         data = event.data
         json.dump(data, file)
 
