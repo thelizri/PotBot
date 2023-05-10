@@ -16,7 +16,7 @@ def _set_user_email(event):
 def _set_user_notification_setting(event):
     data = event.data
     with open("notify.set", "w") as file:
-        file.write(data)
+        file.write(f"{data}")
 
 def _set_settings(event):
     with open("settings.json", "w") as file:
