@@ -19,7 +19,7 @@ except Exception as error:
     handle_errors("main_controller_error.log", error)
 
 
-def check_water_level():
+def check_water_level(db):
     while True:
         print("check_water_level")
         if not utils.check_if_file_exist_and_is_not_empty("last_measurement.json"):
@@ -33,8 +33,11 @@ def check_water_level():
         waterLevel = data["waterLevel"]
 
         if waterLevel == 0:
-            email_manager.send_notification()
-            print("The water level is low. Sending notification")
+            if db.fetch_user_notification_setting():
+                email_manager.send_notification()
+                print("The water level is low. Sending notification")
+            else:
+                print("Email notifications is disabled")
 
         time.sleep(600)
 
@@ -55,11 +58,6 @@ def run():
         fetcher = Thread(target=db.get_settings)
         fetcher.start()
 
-        # Checks water level periodically
-        print("Create water level checker")
-        water = Thread(target=check_water_level)
-        water.start()
-
         # Pushes data to cloud database
         print("Create database runner. Pushes data to database")
         pusher = Thread(target=db.run)
@@ -69,6 +67,11 @@ def run():
         print("Create pump controller runner")
         pump = Thread(target=pump_controller.run)
         pump.start()
+
+        # Checks water level periodically
+        print("Create water level checker")
+        water = Thread(target=check_water_level, args=(db,))
+        water.start()
 
         # Turns on the graphical interface
         print("Turning on GUI app")
