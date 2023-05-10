@@ -1,4 +1,3 @@
-from datetime import datetime
 from error_handler import handle_errors
 from threading import Thread
 import json
@@ -8,9 +7,10 @@ import database_manager
 import arduino_manager
 import pump_controller
 
-# import email_manager
+import email_manager
 import user_pi_syncing
 import utils
+import gui_app
 
 try:
     abspath = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +38,6 @@ def check_water_level(database):
                 print("The water level is low. Sending notification")
             else:
                 print("Email notifications is disabled")
-
         time.sleep(600)
 
 
@@ -81,7 +80,6 @@ def run():
         print("Created all threads")
     except Exception as error:
         handle_errors("main_controller_error.log", error)
-
 
 if __name__ == "__main__":
     run()
