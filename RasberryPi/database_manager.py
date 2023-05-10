@@ -8,6 +8,21 @@ import os
 import utils
 
 
+def __set_user_email(event):
+    data = event.data
+    with open("email.id", "w") as file:
+        file.write(data)
+
+def __set_user_notification_setting(event):
+    data = event.data
+    with open("notify.set", "w") as file:
+        file.write(data)
+
+def __set_settings(event):
+    with open("settings.json", "w") as file:
+        data = event.data
+        json.dump(data, file)
+
 class DatabaseManager:
     def __init__(self):
         self.abspath = os.path.dirname(os.path.abspath(__file__))
@@ -15,6 +30,9 @@ class DatabaseManager:
         self.cred = None
         self.uid = None
         self.plant_id = None
+        self.email_listener = None
+        self.notif_settings_listener = None
+        self.settings_listener = None
         self.cred = credentials.Certificate(
             "/home/pi/PotBot/RasberryPi/firebase-key.json"
         )
@@ -34,21 +52,21 @@ class DatabaseManager:
         except Exception as error:
             handle_errors("database_manager_error.log", error)
 
-    def fetch_user_email(self):
+    """ def fetch_user_email(self):
         ref = db.reference(f"/users/{self.uid}/email")
         data = ref.get()
         with open("email.id", "w") as file:
-            file.write(data)
+            file.write(data) """
 
-    def fetch_user_notification_setting(self):
+    """ def fetch_user_notification_setting(self):
         ref = db.reference(f"/users/{self.uid}/notificationSettings/notificationToggle")
-        return ref.get()
+        return ref.get() """
 
     def push_data(self, data):
         ref = db.reference(f"/users/{self.uid}/plants/{self.plant_id}")
         ref.child("measureData").update(data)
 
-    def get_settings(self):
+    """ def get_settings(self):
         ref = db.reference(f"/users/{self.uid}/plants/{self.plant_id}/settings")
         while True:
             print("get_settings()")
@@ -60,27 +78,30 @@ class DatabaseManager:
                     ref.update(data)
                 time.sleep(10)
             except KeyboardInterrupt:
-                return None
+                return None """
 
     def read_json(self, filepath):
-        if True:
-            if not utils.check_if_file_exist_and_is_not_empty(filepath):
-                time.sleep(5)
-                return None
+        if not utils.check_if_file_exist_and_is_not_empty(filepath):
+            time.sleep(5)
+            return None
 
-            with open(filepath) as file:
-                data = json.load(file)
+        with open(filepath) as file:
+            data = json.load(file)
 
-            self.push_data(data)
+        self.push_data(data)
 
     def run(self):
-        while True:
-            print("database_manager.run()")
-            try:
+        print("database_manager.run()")
+        try:
+            self.email_listener = db.reference(f"/users/{self.uid}/email").listen(__set_user_email)
+            self.notif_settings_listener = db.reference(f"/users/{self.uid}/notificationSettings/notificationToggle").listen(__set_user_notification_setting)
+            self.settings_listener = db.reference(f"/users/{self.uid}/plants/{self.plant_id}/settings").listen(__set_settings)
+
+            while True:
                 self.read_json("last_measurement.json")
                 time.sleep(60)
-            except Exception as error:
-                handle_errors("database_manager_error.log", error)
+        except Exception as error:
+            handle_errors("database_manager_error.log", error)
 
     def reference(self, arg):
         ref = db.reference(arg)
