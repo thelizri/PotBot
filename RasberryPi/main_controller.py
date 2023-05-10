@@ -81,4 +81,6 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    # run()
+    db = database_manager.DatabaseManager()
+    user_pi_syncing.run(db)
