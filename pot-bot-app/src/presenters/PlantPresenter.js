@@ -41,63 +41,89 @@ export default function PlantPresenter() {
       setLatest(data[latestDate])
     }, [user, data])
 
-    function getMoistureColor(actual, optimal) {
-      const lowerLimit = optimal * 0.8;
-      const upperLimit = optimal * 1.2;
-    
+    function getMoistureColor(actual, wateringPreset) {
+      const lowerLimit = wateringPreset.min;
+      const upperLimit = wateringPreset.max;
+      
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
     
-    function getLightColor(actual, optimal) {
-      const lowerLimit = optimal * 0.8;
-      const upperLimit = optimal * 1.2;
-    
+    function getLightColor(actual, sunlightPreset) {
+      const lowerLimit = sunlightPreset.min;
+      const upperLimit = sunlightPreset.max;
+      
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
     function getTemperatureColor(temperature) {
-      return (temperature >= 0 && temperature <= 30) ? 'green' : 'red';
+      return (temperature >= 10 && temperature <= 30) ? 'green' : 'red';
+    }
+
+    function getWaterlevelColor(waterLevel) {
+      return (waterLevel >= 1 && waterLevel <= 0) ? 'red' : 'green';
     }
 
     function wateringToValue(watering) {
       switch (watering) {
         case 'frequent':
-          return 75;
+          return { min: 60, max: 90 };
         case 'average':
-          return 50;
+          return { min: 30, max: 60 };
         case 'minimum':
-          return 25;
+          return { min: 15, max: 30 };
         case 'none':
-          return 0;
+          return { min: 0, max: 15 };
         default:
-          return 0;
+          return { min: 0, max: 0 };
       }
     }
     
     function sunlightToValue(sunlight) {
       if (!Array.isArray(sunlight)) {
-        return 0;
+        return { min: 0, max: 0 };
       }
+      
       let total = 0;
+      let count = 0;
+      
       sunlight.forEach((element) => {
         switch (element) {
           case 'full_shade':
-            total += 2;
+            total += 0.1;
+            count += 1;
             break;
           case 'part_shade':
-            total += 5;
+            total += 0.35;
+            count += 1;
             break;
           case 'sun-part_shade':
-            total += 7;
+            total += 0.65;
+            count += 1;
             break;
           case 'full_sun':
-            total += 10;
+            total += 0.9;
+            count += 1;
             break;
           default:
             break;
         }
       })
-      return total / sunlight.length;
+      
+      const avg = total / count;
+      
+      let min = 0, max = 0;
+      
+      if (avg >= 0 && avg < 0.2) {
+        min = 0; max = 0.2;
+      } else if (avg >= 0.2 && avg < 0.5) {
+        min = 0.2; max = 0.5;
+      } else if (avg >= 0.5 && avg < 0.8) {
+        min = 0.5; max = 0.8;
+      } else if (avg >= 0.8 && avg <= 1.0) {
+        min = 0.8; max = 1.0;
+      }
+      
+      return { min, max };
     }
 
     let wateringValue = wateringToValue(watering);
@@ -127,7 +153,7 @@ export default function PlantPresenter() {
                 <p><FontAwesomeIcon icon={faThermometerHalf} /> Temperature</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.waterLevel}</div>
+                <div className="circle" style={{color: getWaterlevelColor(latest.waterLevel) }}>{latest.waterLevel}</div>
                 <p><FontAwesomeIcon icon={faFlask} /> Waterlevel</p>
               </div>
             </div>
