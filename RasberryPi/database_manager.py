@@ -18,7 +18,7 @@ setupComplete = False
 cred, uid, plant_id = None, None, None
 
 
-def setup(db_name):
+def setup(name):
     global cred, uid, plant_id, setupComplete
     # Replace 'path/to/your-service-account-key.json' with the path to the
     # JSON file you downloaded
@@ -30,7 +30,7 @@ def setup(db_name):
         {
             "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
         },
-        name=db_name,
+        name=name,
     )
 
     try:
@@ -43,15 +43,6 @@ def setup(db_name):
     plant_id = plant_id_file.readline().strip()
 
     setupComplete = True
-
-
-def fetch_user_email():
-    if not setupComplete:
-        setup("email_fetcher")
-    ref = db.reference(f"/users/{uid}/email")
-    data = ref.get()
-    with open("email.id", "w") as file:
-        file.write(data)
 
 
 def push_data(data):

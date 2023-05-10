@@ -25,7 +25,9 @@ export function UserAuthContextProvider({children}) {
   const [user, setUser] = useState({});
 
   function signIn(email, password) {
-    return signInWithEmailAndPassword(auth, email, password)
+    return signInWithEmailAndPassword(auth, email, password).catch(err => {
+      console.error(err)
+    });
   }
 
   async function signUp(email, password) {
@@ -137,7 +139,7 @@ async function removePlant(name){
 }
 
 /*
-* boolean to check if user has a plant registered*/
+* boolean to check if user has a plant registred*/
 async function hasPlants(user) {
   const dbRef = ref(db, `users/${user.uid}`);
   try {
@@ -148,20 +150,20 @@ async function hasPlants(user) {
   }
 }
 
-  /**
-   * This function is used by the "water plant"-button
-   * When clicked it sends a "1" to the database
-   * @param {*} user
+/**
+ * This function is used by the "water plant"-button
+ * When clicked it sends a "1" to the database
+ * @param {*} user
+ */
+function setWateredTrue(user) {
+  const path = 'plants/Parasollpilea/settings';
+  const data = {water: 1};
+  console.log("watered plant");
+  updatePlantData(user, path, data);
+  /**TODO
+   * Return some sort of confirmation to the user that the plant has been watered
+   * aka 'water' setting has been changed to 0
    */
-function setWateredTrue(user){
-    const path = 'plants/Parasollpilea/settings';
-    const data = {water: 1};
-    console.log("watered plant");
-    updatePlantData(user, path, data);
-    /**TODO
-     * Return some sort of confirmation to the user that the plant has been watered
-     * aka 'water' setting has been changed to 0
-     */
 }
 
 async function notificationToggle(user, toggleValue) {
@@ -178,7 +180,16 @@ async function notificationToggle(user, toggleValue) {
 }
 
 
-export {connectPotBot,hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant, notificationToggle}
+export {
+  connectPotBot,
+  hasPlants,
+  updatePlantData,
+  addNewPlant,
+  readUserData,
+  writeUserData,
+  setWateredTrue,
+  removePlant
+}
 export function useAuth() {
   return useContext(AuthContext);
 }
