@@ -54,6 +54,11 @@ def fetch_user_email():
         file.write(data)
 
 
+def fetch_user_notification_setting():
+    ref = db.reference(f"/users/{uid}/notificationSettings/notificationToggle")
+    return ref.get()
+
+
 def push_data(data):
     if not setupComplete:
         setup("pusher")
