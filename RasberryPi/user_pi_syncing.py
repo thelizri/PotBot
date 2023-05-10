@@ -13,19 +13,6 @@ except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
 
-def __setup():
-    try:
-        cred = credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json")
-        firebase_admin.initialize_app(
-            cred,
-            {
-                "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
-            },
-        )
-    except Exception as error:
-        handle_errors("user_pi_syncing_error.log", error)
-
-
 def is_linked_with_user():
     try:
         user_id_file = open("user.id", "r")
@@ -67,9 +54,8 @@ def link_pi_with_user():
         handle_errors("user_pi_syncing_error.log", error)
 
 
-def run():
-    __setup()
-    if not is_linked_with_user():
+def run(db):
+    if not is_linked_with_user(db):
         print("Is not linked with user")
         link_pi_with_user()
 
