@@ -52,7 +52,7 @@ def run():
 
         # Fetches commands from the database
         print("Creating fetcher of settings")
-        fetcher = Thread(target=database_manager.get_settings)
+        fetcher = Thread(target=db.get_settings)
         fetcher.start()
 
         # Checks water level periodically
@@ -62,7 +62,7 @@ def run():
 
         # Pushes data to cloud database
         print("Create database runner. Pushes data to database")
-        pusher = Thread(target=database_manager.run)
+        pusher = Thread(target=db.run)
         pusher.start()
 
         # Turns the pump on/off when necessary
@@ -81,6 +81,4 @@ def run():
 
 
 if __name__ == "__main__":
-    # run()
-    db = database_manager.DatabaseManager()
-    user_pi_syncing.run(db)
+    run()
