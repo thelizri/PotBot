@@ -1,4 +1,3 @@
-from datetime import datetime
 from error_handler import handle_errors
 from threading import Thread
 import json
@@ -8,9 +7,10 @@ import database_manager
 import arduino_manager
 import pump_controller
 
-# import email_manager
+import email_manager
 import user_pi_syncing
 import utils
+import gui_app
 
 try:
     abspath = os.path.dirname(os.path.abspath(__file__))
@@ -33,7 +33,7 @@ def check_water_level():
         waterLevel = data["waterLevel"]
 
         if waterLevel == 0:
-            # email_manager.send_notification()
+            email_manager.send_notification()
             print("The water level is low. Sending notification")
 
         time.sleep(600)
@@ -68,6 +68,11 @@ def run():
         print("Create pump controller runner")
         pump = Thread(target=pump_controller.run)
         pump.start()
+
+        # Turns on the graphical interface
+        print("Turning on GUI app")
+        gui = Thread(target=gui_app.run)
+        gui.start()
 
         print("Created all threads")
     except Exception as error:
