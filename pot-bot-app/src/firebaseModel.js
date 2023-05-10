@@ -147,11 +147,11 @@ async function hasPlants(user) {
     return console.error(err.message);
   }
 }
-  
+
   /**
    * This function is used by the "water plant"-button
    * When clicked it sends a "1" to the database
-   * @param {*} user 
+   * @param {*} user
    */
 function setWateredTrue(user){
     const path = 'plants/Parasollpilea/settings';
@@ -159,11 +159,11 @@ function setWateredTrue(user){
     console.log("watered plant");
     updatePlantData(user, path, data);
     /**TODO
-     * Return some sort of confirmation to the user that the plant has been watered 
+     * Return some sort of confirmation to the user that the plant has been watered
      * aka 'water' setting has been changed to 0
      */
 }
-  
+
 async function notificationToggle(user, toggleValue) {
   console.log(user)
   const dbRef = ref(db, `users/${user.uid}/notificationSettings`);
