@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import json
 import os
+import subprocess
 
 
 def update_labels(label_vars, window):
@@ -23,6 +24,9 @@ def update_labels(label_vars, window):
 
 
 def run():
+    subprocess.run(
+        ["xhost", "+SI:localuser:root"], check=True, text=True, capture_output=True
+    )
     os.environ["DISPLAY"] = ":0.0"
     bg_color = "#94C973"
     fg_color = "#000209"
