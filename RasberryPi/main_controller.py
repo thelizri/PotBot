@@ -33,11 +33,13 @@ def check_water_level(database):
         waterLevel = data["waterLevel"]
 
         if waterLevel == 0:
-            if database.fetch_user_notification_setting():
-                email_manager.send_notification(database)
-                print("The water level is low. Sending notification")
-            else:
-                print("Email notifications is disabled")
+            with open ("notify.set", "r") as file:
+                notify = eval(file.readline().strip())
+                if notify:
+                    email_manager.send_notification(database)
+                    print("The water level is low. Sending notification")
+                else:
+                    print("Email notifications is disabled")
         time.sleep(600)
 
 
