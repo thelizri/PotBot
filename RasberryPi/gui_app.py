@@ -25,6 +25,7 @@ def update_labels(label_vars, window):
 
 
 def run():
+    os.environ["DISPLAY"] = ":0.0"
     try:
         subprocess.run(
             ["sudo", "xhost", "+SI:localuser:root"],
@@ -34,7 +35,6 @@ def run():
         )
     except Exception as error:
         error_handler.handle_errors("gui.log", error)
-    os.environ["DISPLAY"] = ":0.0"
     bg_color = "#94C973"
     fg_color = "#000209"
 
