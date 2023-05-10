@@ -24,11 +24,8 @@ const db = getDatabase(app);
 export function UserAuthContextProvider({children}) {
   const [user, setUser] = useState({});
 
-   function signIn(email, password) {
-    try {
-      return  signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-    }
+  function signIn(email, password) {
+    return signInWithEmailAndPassword(auth, email, password)
   }
 
   async function signUp(email, password) {
@@ -116,6 +113,15 @@ async function updatePlantData(user, path, data) {
   const dbRef = await ref(db, `users/${user.uid}/${path}`);
   return await update(dbRef, data);
 }
+/**
+ * Connect the potBot to the users currentPlant
+ * @param {string} potBotKey
+ * @param {Object} data
+ */
+async function connectPotBot(potBotKey, data) {
+  const dbRef = await ref(db, `potbots/${key}`);
+  return await update(dbRef, data);
+}
 
 async function removePlant(name){
   if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
@@ -151,7 +157,7 @@ function setWateredTrue(user){
      * aka 'water' setting has been changed to 0
      */
 }
-
+  
 async function notificationToggle(user, toggleValue) {
   console.log(user)
   const dbRef = ref(db, `users/${user.uid}/notificationSettings`);
@@ -165,9 +171,8 @@ async function notificationToggle(user, toggleValue) {
   }
 }
 
-  
 
-export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant, notificationToggle}
+export {connectPotBot,hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant, notificationToggle}
 export function useAuth() {
   return useContext(AuthContext);
 }
