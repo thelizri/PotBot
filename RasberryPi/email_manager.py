@@ -76,10 +76,10 @@ def send_email(service, to, subject, body, attachment=None):
     return send_message
 
 
-def send_notification(db):
+def send_notification(database):
     service = create_gmail_service()
 
-    to = get_email(db)
+    to = get_email(database)
     subject = "PotBot"
     body = "Please refill water tank. Water level is low."
     attachment = None  # Replace with file path if you want to attach a file
@@ -87,9 +87,9 @@ def send_notification(db):
     send_email(service, to, subject, body, attachment)
 
 
-def get_email(db):
+def get_email(database):
     if not utils.check_if_file_exist_and_is_not_empty("email.id"):
-        db.fetch_user_email()
+        database.fetch_user_email()
     with open("email.id", "r") as file:
         email = file.readline().strip()
         return email

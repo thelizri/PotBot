@@ -13,7 +13,7 @@ except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
 
-def is_linked_with_user(db):
+def is_linked_with_user(database):
     try:
         user_id_file = open("user.id", "r")
         uid = user_id_file.readline().strip()
@@ -22,16 +22,16 @@ def is_linked_with_user(db):
         plant_name_file = open("plant.id", "r")
         plant_name = plant_name_file.readline().strip()
 
-        ref = db.reference(f"/users/{uid}/plants/{plant_name}")
+        ref = database.reference(f"/users/{uid}/plants/{plant_name}")
         return ref.child("productID").get() == product_id
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
         return False
 
 
-def link_pi_with_user(db):
+def link_pi_with_user(database):
     try:
-        ref = db.reference("/potbots")
+        ref = database.reference("/potbots")
         product_id_file = open("product.id", "r")
         product_id = product_id_file.readline().strip()
         ref.update({product_id: ""})
@@ -49,15 +49,17 @@ def link_pi_with_user(db):
         plant_file.write(plant)
 
         ref.child(product_id).delete()
-        db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
+        database.reference(f"/users/{uid}/plants/{plant}").update(
+            {"productID": product_id}
+        )
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
 
 
-def run(db):
-    if not is_linked_with_user(db):
+def run(database):
+    if not is_linked_with_user(database):
         print("Is not linked with user")
-        link_pi_with_user(db)
+        link_pi_with_user(database)
 
 
 if __name__ == "__main__":

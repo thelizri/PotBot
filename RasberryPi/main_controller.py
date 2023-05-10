@@ -19,7 +19,7 @@ except Exception as error:
     handle_errors("main_controller_error.log", error)
 
 
-def check_water_level(db):
+def check_water_level(database):
     while True:
         print("check_water_level")
         if not utils.check_if_file_exist_and_is_not_empty("last_measurement.json"):
@@ -33,8 +33,8 @@ def check_water_level(db):
         waterLevel = data["waterLevel"]
 
         if waterLevel == 0:
-            if db.fetch_user_notification_setting():
-                email_manager.send_notification(db)
+            if database.fetch_user_notification_setting():
+                email_manager.send_notification(database)
                 print("The water level is low. Sending notification")
             else:
                 print("Email notifications is disabled")
@@ -45,8 +45,8 @@ def check_water_level(db):
 def run():
     try:
         # Get the correct ids from the database
-        db = database_manager.DatabaseManager()
-        user_pi_syncing.run(db)
+        database = database_manager.DatabaseManager()
+        user_pi_syncing.run(database)
 
         # Takes measurements from the arduino
         print("Creating arduino thread")
@@ -55,12 +55,12 @@ def run():
 
         # Fetches commands from the database
         print("Creating fetcher of settings")
-        fetcher = Thread(target=db.get_settings)
+        fetcher = Thread(target=database.get_settings)
         fetcher.start()
 
         # Pushes data to cloud database
         print("Create database runner. Pushes data to database")
-        pusher = Thread(target=db.run)
+        pusher = Thread(target=database.run)
         pusher.start()
 
         # Turns the pump on/off when necessary
@@ -70,7 +70,7 @@ def run():
 
         # Checks water level periodically
         print("Create water level checker")
-        water = Thread(target=check_water_level, args=(db,))
+        water = Thread(target=check_water_level, args=(database,))
         water.start()
 
         # Turns on the graphical interface
