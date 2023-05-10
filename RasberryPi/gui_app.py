@@ -3,6 +3,7 @@ from tkinter import ttk
 import json
 import os
 import subprocess
+import error_handler
 
 
 def update_labels(label_vars, window):
@@ -24,9 +25,15 @@ def update_labels(label_vars, window):
 
 
 def run():
-    subprocess.run(
-        ["xhost", "+SI:localuser:root"], check=True, text=True, capture_output=True
-    )
+    try:
+        subprocess.run(
+            ["sudo", "xhost", "+SI:localuser:root"],
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+    except Exception as error:
+        error_handler.handle_errors("gui.log", error)
     os.environ["DISPLAY"] = ":0.0"
     bg_color = "#94C973"
     fg_color = "#000209"
