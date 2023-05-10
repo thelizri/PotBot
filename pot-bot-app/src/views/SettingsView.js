@@ -23,8 +23,8 @@ function SettingsView({user, plantName, handleNotificationToggle, setWateringPre
         </div>
         <div className="dropdown-content">
           <div id="Manual" onClick={(event) => setWateringPreference(event, plantName)}>Manual</div>
-          <div id="Automatic" onClick={() => setWateringPreference(plantName, this.id)}>Automatic</div>
-          <div id="frequent" onClick={() => setWateringPreference(plantName, this.id)}>Scheduled</div>
+          <div id="Automatic" onClick={(event) => setWateringPreference(event, plantName)}>Automatic</div>
+          <div id="frequent" onClick={(event) => setWateringPreference(event, plantName)}>Scheduled</div>
         </div>
   
       </div>

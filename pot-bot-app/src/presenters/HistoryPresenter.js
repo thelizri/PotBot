@@ -30,9 +30,7 @@ export default function HistoryPresenter(){
     const [temperatureData, setTemperatureData] = useState({});
     // const [graphData, setGraphData] = useState({})
     // const [plantName, setPlantName] = useState(null); //Ideally the plant name should be fetched as well
-    /* const data = state?.data; //must use data?.{name} to access 
-    console.log(state.soilMoisture); 
-    */
+    
     useEffect(() => {
         function makeGraph(y, label, borderColor){
             const labels = timeArray;
@@ -61,9 +59,6 @@ export default function HistoryPresenter(){
         setUVData(makeGraph(uvValues, "UV Light", 'rgb(54, 162, 235)'))
         setTemperatureData(makeGraph(temperatureValues, "Temperature", 'rgb(255, 205, 86)'))
         console.log(Object.keys(state).map(x => state[x])) //Gives the entire object
-        // console.log(dateTimeArray)
-        // console.log(timeArray)
-        // console.log(soilMois)
     },[state])
 
     return (

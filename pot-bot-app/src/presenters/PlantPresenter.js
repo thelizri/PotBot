@@ -117,7 +117,7 @@ export default function PlantPresenter() {
     }
 
     let wateringValue = wateringToValue(watering);
-    console.log(wateringValue)
+    // console.log(wateringValue)
     let sunlightValue = sunlightToValue(sunlight);
     let image = plants[name].plantRecommendedVitals.image;
     if (!image || image === "NaN") {
