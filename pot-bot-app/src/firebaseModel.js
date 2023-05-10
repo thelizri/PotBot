@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, ref, remove, set, update} from "firebase/database";
+import {child, get, getDatabase, onValue, ref, remove, set, update} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -69,6 +69,16 @@ async function writeUserData(name, email) {
   })
 }
 
+async function readPlantData(user, path) {
+  const dbRef = ref(db, `plantData/${path}`)
+  return get(dbRef).then(snapshot => {
+    //console.log(snapshot.val())
+    return snapshot.val();
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
 async function readUserData(user, path) {
   const dbRef = ref(db, `users/${user.uid}/${path}`)
   return get(dbRef).then(snapshot => {
@@ -105,13 +115,21 @@ async function addNewPlant(user, plantName, data) {
           frequency: "None",
           soil_moisture: "None",
           type: "Manual",
-          water:0
+          water: 0
         }
       })
     }
   }).catch(err => console.error(err))
 }
 
+function connectionListener(user, plantName, productID) {
+  const dbRef = ref(db, `user/${user.uid}/plants/${plantName}`)
+  return onValue(dbRef, (snapshot) => {
+    const data = snapshot.val()
+    console.log(snapshot)
+    return data
+  },)
+}
 /*
 * data is written as this example of a plant measureData object {timestamp, timestamp2,...}
 * and m1 is then as {date: '2023-04-24 15:00', temp: 22, humidity: 50, ...}
@@ -189,7 +207,10 @@ export {
   writeUserData,
   setWateredTrue,
   removePlant,
-  notificationToggle
+  notificationToggle,
+  readPlantData,
+  connectionListener,
+  db
 }
 export function useAuth() {
   return useContext(AuthContext);

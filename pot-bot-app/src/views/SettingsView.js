@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import Settings from "../styling/Settings.css";
-import { notificationToggle, useAuth } from '../firebaseModel';
+import React from "react";
+import "../styling/Settings.css";
+import {notificationToggle, useAuth} from '../firebaseModel';
 
 function SettingsView() {
-    const {user} = useAuth();
+  const {user} = useAuth();
 
-    const handleNotificationToggle = async (event) => {
-        const toggleValue = event.target.checked;
-        await notificationToggle(user, toggleValue);
-      };
-      
-      
+  const handleNotificationToggle = async (event) => {
+    const toggleValue = event.target.checked;
+    await notificationToggle(user, toggleValue);
+  };
+
+
   return (
     <div className="settings">
       <h1>Settings</h1>
