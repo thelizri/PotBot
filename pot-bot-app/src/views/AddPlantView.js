@@ -76,7 +76,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
         setIsFetchingMore(true);
       }
     });
-  }, []);
+  }, [isFetchingMore]);
 
   useEffect(() => {
     if (isFetchingMore) {

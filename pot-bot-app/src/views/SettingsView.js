@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import Settings from "../styling/Settings.css";
-import { notificationToggle, useAuth } from '../firebaseModel';
+import React from "react";
+import "../styling/Settings.css";
+import {notificationToggle, useAuth} from '../firebaseModel';
 
 function SettingsView() {
     const {user} = useAuth();

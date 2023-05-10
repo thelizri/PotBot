@@ -1,8 +1,9 @@
-import {connectPotBot, readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
+import {db, readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
+import {onValue, ref} from "firebase/database";
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
@@ -99,24 +100,28 @@ export default function PlantPresenter() {
     }
 
     function connectPotBotHandler(productID, name) {
-      console.log(productID.target, name);
+      const dbRef = ref(db, `user/${user.uid}/plants/${name}/${productID}`)
+      console.log(dbRef)
+      const change = (() => onValue(dbRef, (snapshot) => {
+        const data = snapshot.val()
+        console.log(data)
+        return data === productID
+        //n("/settings")
+      }))
+      while (change()) {
 
+      }
+
+      /*const connect = connectionListener(user, name, productID)
+      console.log(connect)
       const data = {uid: user.uid, plant: name}
-
-      //n('/home');
-      /*const data2 = {plantRecommendedVitals: {
-          image: "NaN",
-          sunlight: ["Full sun", "part shade"],
-          temperature:"15",
-          watering:"Average"
-        }}*/
-      connectPotBot(productID.target, data).then((v) => console.log("Successful adding")).catch(error => {
+      */
+      /*connectPotBot(productID.target, data).then((v) => console.log("Successful adding")).catch(error => {
         console.error(error)
-      })
+      })*/
     }
 
     let wateringValue = wateringToValue(watering);
-    console.log(wateringValue)
     let sunlightValue = sunlightToValue(sunlight);
     let image = plants[name].plantRecommendedVitals.image;
     if (!image || image === "NaN") {
@@ -177,7 +182,8 @@ export default function PlantPresenter() {
               >Enter your
                 code and press connect<input type='text' name='productID' required/>
               </form>
-              <button type='button' className='expandable-div'>Connect {name}
+              <button type='button' className='expandable-div'
+                      onClick={(e => connectPotBotHandler("6c4c1c", name))}>Connect {name}
               </button>
             </div>
           </div>}
