@@ -19,6 +19,7 @@ export default function PlantPresenter() {
       })).catch(err => console.error(err.message));
     }
   }, [user])
+  
 
   function Plant({name, data, watering, sunlight, productID}) {
     const [expanded, setExpanded] = useState(false);
@@ -155,14 +156,14 @@ export default function PlantPresenter() {
                 </div>
               </div>
               <div className="row">
-
                 <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
+                <div className="settings-btn"><Link to={`/settings/${name}`} state={plants}>Watering settings</Link></div>
               </div>
               <div className="row">
                 <div className="stats-btn">
-                  <button type="button" className="water-btn" onClick={() => setWateredTrue(user)}>Water plant</button>
+                  <button type="button" className="water-btn" state={data} onClick={() => setWateredTrue(name)}>Water plant</button>
                   <button type={"button"}
-                          onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete
+                          onClick={(event) => removePlant(name)}>Delete
                     this plant
                   </button>
                 </div>

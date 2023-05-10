@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Settings from "../styling/Settings.css";
-import { notificationToggle, useAuth } from '../firebaseModel';
+import "../styling/Settings.css";
 import "../styling/dropdown.css"
 import arrow from "../styling/images/dropdown-arrow.svg"
 
-function SettingsView() {
-    const {user} = useAuth();
-
-    const handleNotificationToggle = async (event) => {
-        const toggleValue = event.target.checked;
-        await notificationToggle(user, toggleValue);
-      };
-      
-      
+function SettingsView({user, plantName, handleNotificationToggle, setWateringPreference}) {  
+    
   return (
     <div className="settings">
-      <h2>Settings</h2>
+      <h2>Settings for {plantName}</h2>
       <div className={"row"}>
         <label htmlFor="notificationToggle">Receive notifications</label>
         <input
@@ -30,9 +22,9 @@ function SettingsView() {
       <button className="dropbtn">Enable automatic watering </button><img width="24px" src={arrow}></img>
         </div>
         <div className="dropdown-content">
-          <div onClick={}>Manual</div>
-          <div onClick={}>Automatic</div>
-          <div onClick={}>Scheduled</div>
+          <div id="Manual" onClick={(event) => setWateringPreference(event, plantName)}>Manual</div>
+          <div id="Automatic" onClick={() => setWateringPreference(plantName, this.id)}>Automatic</div>
+          <div id="frequent" onClick={() => setWateringPreference(plantName, this.id)}>Scheduled</div>
         </div>
   
       </div>

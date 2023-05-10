@@ -1,7 +1,6 @@
 import React,{ useEffect, useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import HistoryView from "../views/HistoryView";
-
 import {
     Chart as ChartJS,
     CategoryScale,
