@@ -8,17 +8,17 @@ import os
 import utils
 
 
-def __set_user_email(event):
+def _set_user_email(event):
     data = event.data
     with open("email.id", "w") as file:
         file.write(data)
 
-def __set_user_notification_setting(event):
+def _set_user_notification_setting(event):
     data = event.data
     with open("notify.set", "w") as file:
         file.write(data)
 
-def __set_settings(event):
+def _set_settings(event):
     with open("settings.json", "w") as file:
         data = event.data
         json.dump(data, file)
@@ -93,9 +93,9 @@ class DatabaseManager:
     def run(self):
         print("database_manager.run()")
         try:
-            self.email_listener = db.reference(f"/users/{self.uid}/email").listen(__set_user_email)
-            self.notif_settings_listener = db.reference(f"/users/{self.uid}/notificationSettings/notificationToggle").listen(__set_user_notification_setting)
-            self.settings_listener = db.reference(f"/users/{self.uid}/plants/{self.plant_id}/settings").listen(__set_settings)
+            self.email_listener = db.reference(f"/users/{self.uid}/email").listen(_set_user_email)
+            self.notif_settings_listener = db.reference(f"/users/{self.uid}/notificationSettings/notificationToggle").listen(_set_user_notification_setting)
+            self.settings_listener = db.reference(f"/users/{self.uid}/plants/{self.plant_id}/settings").listen(_set_settings)
 
             while True:
                 self.read_json("last_measurement.json")
