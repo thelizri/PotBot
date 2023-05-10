@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, ref, remove, set, update} from "firebase/database";
+import {child, get, getDatabase, onChildChanged, ref, remove, set, update} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -75,9 +75,19 @@ async function readUserData(user, path) {
     //console.log(snapshot.val())
     return snapshot.val();
   }).catch(err => {
-    console.log(err)
+    console.log(err.message)
   })
 }
+
+async function readPlantDatabase(user, path) {
+  const dbRef = ref(db, `plantData/${path}`)
+  return get(dbRef).then(snapshot => {
+    return snapshot.val();
+  }).catch(err => {
+    console.log(err.message)
+  })
+}
+
 /*
  * @param {Object} data contains all plantVitals from API, need to get this from user when API not working
  * @param {String} plantName plants name taken from API, need to get this from user when API not working
@@ -99,13 +109,14 @@ async function addNewPlant(user, plantName, data) {
       set(ref(db, `users/${user.uid}/plants/${plantName}`), {
         productID: 'RaspberryPi',
         measureData: 'To be added',
+        notificationSettings: {notificationToggle: true},
         plantRecommendedVitals: data,
-        settings:{
+        settings: {
           amount: 100,
           frequency: "None",
           soil_moisture: "None",
           type: "Manual",
-          water:0
+          water: 0
         }
       })
     }
@@ -120,6 +131,7 @@ async function updatePlantData(user, path, data) {
   const dbRef = await ref(db, `users/${user.uid}/${path}`);
   return await update(dbRef, data);
 }
+
 /*
  * Connect the potBot to the users currentPlant
  * @param {string} potBotKey input from user
@@ -128,18 +140,24 @@ async function updatePlantData(user, path, data) {
  */
 async function connectPotBot(potBotKey, data) {
   const dbRef = await ref(db, `potbots/${potBotKey}`);
-  return await update(dbRef, data);
+  return await update(dbRef, data).then(async () => {
+    const dbRef = await ref(db, `users/${data.uid}/plants/${data.plant}`)
+    await onChildChanged(dbRef, (snapshot, previousChildName) => {
+      console.log(snapshot.val())
+      console.log(previousChildName)
+    })
+  });
 }
 
-async function removePlant(name){
-  if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
+async function removePlant(name) {
+  if (!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
   const {uid} = auth.currentUser;
   const dbRef = await ref(db, `users/${uid}/plants/${name}`);
   return await remove(dbRef)
 }
 
 /*
-* boolean to check if user has a plant registred*/
+* boolean to check if user has a plant registered*/
 async function hasPlants(user) {
   const dbRef = ref(db, `users/${user.uid}`);
   try {
@@ -191,6 +209,7 @@ export {
   removePlant,
   notificationToggle
 }
+
 export function useAuth() {
   return useContext(AuthContext);
 }
