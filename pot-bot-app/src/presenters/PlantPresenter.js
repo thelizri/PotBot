@@ -21,7 +21,7 @@ export default function PlantPresenter() {
     }
   }, [user])
 
-  function Plant({name, data}) {
+  function Plant({name, data, imageURL, watering, sunlight}) {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
     const {user} = useAuth()
@@ -37,26 +37,84 @@ export default function PlantPresenter() {
       setLatest(data[latestDate])
     }, [user, data])
 
+    function getMoistureColor(actual, optimal) {
+      const lowerLimit = optimal * 0.8;
+      const upperLimit = optimal * 1.2;
+    
+      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+    
+    function getLightColor(actual, optimal) {
+      const lowerLimit = optimal * 0.8;
+      const upperLimit = optimal * 1.2;
+    
+      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+
+    function wateringToValue(watering) {
+      switch (watering) {
+        case 'frequent':
+          return 75;
+        case 'average':
+          return 50;
+        case 'minimum':
+          return 25;
+        case 'none':
+          return 0;
+        default:
+          return 0;
+      }
+    }
+    
+    function sunlightToValue(sunlight) {
+      if (!Array.isArray(sunlight)) {
+        return 0;
+      }
+      let total = 0;
+      sunlight.forEach((element) => {
+        switch (element) {
+          case 'full_shade':
+            total += 2;
+            break;
+          case 'part_shade':
+            total += 5;
+            break;
+          case 'sun-part_shade':
+            total += 7;
+            break;
+          case 'full_sun':
+            total += 10;
+            break;
+          default:
+            break;
+        }
+      })
+      return total / sunlight.length;
+    }
+
+    let wateringValue = wateringToValue(watering);
+    let sunlightValue = sunlightToValue(sunlight);
+
     return (
       <>
         <div id={name} className={`expandable-div ${expanded ? "expanded" : ""}`}
              onClick={handleClick}>
           <div className="card-title">
-            <img src={elephant} width="100" height="100" alt={"Oh no your plantpicture is gone"}/>
+          <img src={(imageURL && imageURL.trim() !== "" && imageURL !== "NaN") ? imageURL : elephant} width="100" height="100" alt={"Oh no your plant picture is gone"}/>
             <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
           </div>
           <div className="plant-data">
             <div className="row">
               <div className="col">
-                <div className="circle">{latest.soilMoisture} </div>
+              <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture} </div>
                 <p>Moisture</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.uvIntensity}</div>
+              <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
                 <p>Light</p>
               </div>
               <div className="col">
-                <div className="circle">{latest.temperatur}</div>
+                <div className="circle">{latest.temperature}</div>
                 <p>Temperature</p>
               </div>
               <div className="col">
@@ -76,9 +134,7 @@ export default function PlantPresenter() {
 
   }
 
-  return <>
-    {<PlantView user={user} plants={plants} Plant={Plant}/>}
-  </>
+  return <PlantView user={user} plants={plants} Plant={Plant}/>}
 
   /* DummieButton to add a new plant */
   /* function buttonHandler() {
@@ -92,4 +148,4 @@ export default function PlantPresenter() {
       }}
     updatePlantData(user, "plants/Parasollpilea", data2 ).catch(error => {console.error(error)})
   }*/
-}
+

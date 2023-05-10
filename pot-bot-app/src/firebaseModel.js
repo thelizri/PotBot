@@ -24,10 +24,11 @@ const db = getDatabase(app);
 export function UserAuthContextProvider({children}) {
   const [user, setUser] = useState({});
 
-  function signIn(email, password) {
-    return signInWithEmailAndPassword(auth, email, password).catch(err => {
-      console.error(err)
-    });
+   function signIn(email, password) {
+    try {
+      return  signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+    }
   }
 
   async function signUp(email, password) {
@@ -150,9 +151,23 @@ function setWateredTrue(user){
      * aka 'water' setting has been changed to 0
      */
 }
+
+async function notificationToggle(user, toggleValue) {
+  console.log(user)
+  const dbRef = ref(db, `users/${user.uid}/notificationSettings`);
+  try {
+    await update(dbRef, {
+      notificationToggle: toggleValue
+    });
+    console.log("Notification settings updated successfully!");
+  } catch (error) {
+    console.error("Error updating notification settings: ", error);
+  }
+}
+
   
 
-export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant}
+export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant, notificationToggle}
 export function useAuth() {
   return useContext(AuthContext);
 }
