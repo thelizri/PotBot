@@ -57,7 +57,7 @@ def link_pi_with_user():
 def run(db):
     if not is_linked_with_user(db):
         print("Is not linked with user")
-        link_pi_with_user()
+        link_pi_with_user(db)
 
 
 if __name__ == "__main__":
