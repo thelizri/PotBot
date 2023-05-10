@@ -34,7 +34,7 @@ def check_water_level(db):
 
         if waterLevel == 0:
             if db.fetch_user_notification_setting():
-                email_manager.send_notification()
+                email_manager.send_notification(db)
                 print("The water level is low. Sending notification")
             else:
                 print("Email notifications is disabled")
