@@ -120,7 +120,7 @@ async function updatePlantData(user, path, data) {
  * @param {Object} data
  */
 async function connectPotBot(potBotKey, data) {
-  const dbRef = await ref(db, `potbots/${key}`);
+  const dbRef = await ref(db, `potbots/${potBotKey}`);
   return await update(dbRef, data);
 }
 
@@ -143,23 +143,9 @@ async function hasPlants(user) {
   }
 }
 
-/**
- * This function is used by the "water plant"-button
- * When clicked it sends a "1" to the database
- * @param {*} user
- */
-function setWateredTrue(user) {
-  const path = 'plants/Parasollpilea/settings';
-  const data = {water: 1};
-  console.log("watered plant");
-  updatePlantData(user, path, data);
-  /**TODO
-   * Return some sort of confirmation to the user that the plant has been watered
-   * aka 'water' setting has been changed to 0
-   */
-}
 
-export {connectPotBot,hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant}
+export {connectPotBot, hasPlants, updatePlantData, addNewPlant, readUserData, writeUserData, removePlant}
+
 export function useAuth() {
   return useContext(AuthContext);
 }
