@@ -13,7 +13,7 @@ except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
 
-def is_linked_with_user():
+def is_linked_with_user(db):
     try:
         user_id_file = open("user.id", "r")
         uid = user_id_file.readline().strip()
@@ -29,7 +29,7 @@ def is_linked_with_user():
         return False
 
 
-def link_pi_with_user():
+def link_pi_with_user(db):
     try:
         ref = db.reference("/potbots")
         product_id_file = open("product.id", "r")
