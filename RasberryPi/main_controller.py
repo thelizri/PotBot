@@ -52,13 +52,13 @@ def run():
         arduino = Thread(target=arduino_manager.check_for_messages)
         arduino.start()
 
-        # Fetches commands from the database
+        """ # Fetches commands from the database
         print("Creating fetcher of settings")
         fetcher = Thread(target=database.get_settings)
-        fetcher.start()
+        fetcher.start() """
 
-        # Pushes data to cloud database
-        print("Create database runner. Pushes data to database")
+        # Pushes/fetches data from the cloud database
+        print("Create database runner")
         pusher = Thread(target=database.run)
         pusher.start()
 
