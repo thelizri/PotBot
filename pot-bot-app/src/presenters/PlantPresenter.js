@@ -156,7 +156,7 @@ export default function PlantPresenter() {
                 </div>
               </div>
               <div className="row">
-                <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
+                <div className="stats-btn"><Link to={`/history/${name}`} state={data}>See growth history</Link></div>
                 <div className="settings-btn"><Link to={`/settings/${name}`} state={plants}>Watering settings</Link></div>
               </div>
               <div className="row">

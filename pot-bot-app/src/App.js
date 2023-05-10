@@ -33,7 +33,7 @@ function App() {
               path="/addNewPlant"
               element={<AddPlantPresenter />}
             />
-            <Route path="/history" element={<HistoryPresenter />} />
+            <Route path="/history/:plantName" element={<HistoryPresenter />} />
           </Routes>
         </UserAuthContextProvider>
       </Router>
