@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, ref, set, update, remove} from "firebase/database";
+import {child, get, getDatabase, ref, remove, set, update} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -188,7 +188,8 @@ export {
   readUserData,
   writeUserData,
   setWateredTrue,
-  removePlant
+  removePlant,
+  notificationToggle
 }
 export function useAuth() {
   return useContext(AuthContext);
