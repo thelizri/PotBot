@@ -11,9 +11,9 @@ export default function ConnectPotBotView({loading, productID, setProductID, han
   return (
     <div className="connect">
       {loading ? <div className="loading">Connecting </div> :
-        <form className="connect" onSubmit={handleFormSubmit}>
+        <form className="plant-form" onSubmit={handleFormSubmit}>
           <p style={{fontSize: "20px"}}>Connect your potBot device</p>
-          <input name='connect' type='productID' placeholder='Enter device number' value={productID}
+          <input className='api-search' type='productID' placeholder='Enter device number' value={productID}
                  onChange={(e) => setProductID(e.target.value)}/>
           <button name='connect' type='submit'>Connect</button>
           <Link to='/home'>Back to plants</Link>
