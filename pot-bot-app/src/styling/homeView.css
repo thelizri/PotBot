@@ -2,7 +2,6 @@
 .Home {
   display: flex;
   flex-direction: column;
-  /* gap: 10px; */
   justify-content: center;
   align-items: start;
   max-width: 40vmin;
@@ -10,9 +9,6 @@
 }
 
 .logout-btn {
-  /* background-color: transparent;
-  border-style: none none solid none;
-  border-bottom: 1px solid #444; */
   position: fixed;
   bottom: 0;
   right: 0;
@@ -23,7 +19,6 @@
   background-color: transparent;
   border-style: none none none none;
   text-decoration: underline;
-  /* border-bottom: 1px solid #444; */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -36,6 +31,7 @@ button:hover {
 }
 
 .expandable-div {
+  position: relative;
   width: 400px;
   height: 100px;
   border-radius: 10px;
@@ -49,7 +45,6 @@ button:hover {
   align-items: center;
   padding: 20px;
   opacity: 0;
-  /*height: 0;*/
   transition: opacity 0.2s ease;
 }
 
@@ -87,6 +82,35 @@ button:hover {
   justify-content: center;
   align-items: center;
   box-shadow: 4px 2px 6px rgba(143, 143, 143, 0.9);
+}
+
+#icons__row {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  align-items: end;
+  gap: 0;
+}
+
+.icon--small {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 6px;
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 100ms linear;
+}
+
+.icon--small:hover {
+  transform: scale(1.1);
+}
+
+#trash {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
 }
 
 .col {

@@ -44,7 +44,7 @@
     color: #444; /* set a dark grey label text color */
   }
   
-  input {
+  .login-input, .signup-input {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;

@@ -155,11 +155,11 @@ async function hasPlants(user) {
  * When clicked it sends a "1" to the database
  * @param {*} user
  */
-function setWateredTrue(user) {
-  const path = 'plants/Parasollpilea/settings';
+function setWateredTrue(name) {
+  const path = `/plants/${name}/settings`;
   const data = {water: 1};
   console.log("watered plant");
-  updatePlantData(user, path, data);
+  updatePlantData(auth.currentUser, path, data);
   /**TODO
    * Return some sort of confirmation to the user that the plant has been watered
    * aka 'water' setting has been changed to 0
@@ -178,6 +178,12 @@ async function notificationToggle(user, toggleValue) {
     console.error("Error updating notification settings: ", error);
   }
 }
+async function setWateringPreference(event, name){
+  const type = event.target.innerText;
+  const path = `/plants/${name}/settings`;
+  const data = {type: type};
+  updatePlantData(auth.currentUser, path, data)
+}
 
 
 export {
@@ -190,7 +196,8 @@ export {
   writeUserData,
   setWateredTrue,
   removePlant,
-  notificationToggle
+  notificationToggle,
+  setWateringPreference,
 }
 export function useAuth() {
   return useContext(AuthContext);
