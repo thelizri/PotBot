@@ -181,6 +181,7 @@ async function notificationToggle(user, toggleValue) {
 
 
 export {
+  db,
   connectPotBot,
   hasPlants,
   updatePlantData,

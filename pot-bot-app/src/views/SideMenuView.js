@@ -21,6 +21,7 @@ function SideMenuView() {
       </button>
       {isOpen && (
         <ul>
+          <li><Link to='/home'>Home</Link></li>
           <li><Link to='/settings'>Settings</Link></li>
           <li><Link to='/profile'>Profile</Link></li>
         </ul>
