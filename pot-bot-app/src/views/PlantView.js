@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import addPlantIcon from "../styling/images/plus-pot.png";
+import Modal from "./Modal";
 
 export default function PlantView({user, plants, Plant}) {
 

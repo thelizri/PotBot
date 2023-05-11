@@ -9,6 +9,7 @@ import trash from '../styling/images/trash.svg'
 import graph from '../styling/images/graph.svg'
 import waterdrop from '../styling/images/waterdrop.svg'
 import settingsIcon from '../styling/images/settings.svg'
+import Modal from "../views/Modal";
 
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
@@ -32,9 +33,15 @@ export default function PlantPresenter() {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
     const [connected, setConnected] = useState(false)
+    const [isWatering, setIsWatering] = useState(false);
     const {user} = useAuth()
     let n = useNavigate()
 
+    function handleWaterClick() {
+      setWateredTrue(name);
+      setIsWatering(true);
+      setTimeout(() => {setIsWatering(false)}, 2000)
+    }
 
     function handleClick(e) {
       e.preventDefault()
@@ -53,14 +60,14 @@ export default function PlantPresenter() {
     function getMoistureColor(actual, wateringPreset) {
       const lowerLimit = wateringPreset.min;
       const upperLimit = wateringPreset.max;
-      
+
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
-    
+
     function getLightColor(actual, sunlightPreset) {
       const lowerLimit = sunlightPreset.min;
       const upperLimit = sunlightPreset.max;
-      
+
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
@@ -92,10 +99,10 @@ export default function PlantPresenter() {
       if (!Array.isArray(sunlight)) {
         return { min: 0, max: 0 };
       }
-      
+
       let total = 0;
       let count = 0;
-      
+
       sunlight.forEach((element) => {
         switch (element) {
           case 'full_shade' || 'Full_shade':
@@ -118,11 +125,11 @@ export default function PlantPresenter() {
             break;
         }
       })
-      
+
       const avg = total / count;
-      
+
       let min = 0, max = 0;
-      
+
       if (avg >= 0 && avg < 0.2) {
         min = 0; max = 0.2;
       } else if (avg >= 0.2 && avg < 0.5) {
@@ -132,7 +139,7 @@ export default function PlantPresenter() {
       } else if (avg >= 0.8 && avg <= 1.0) {
         min = 0.8; max = 1.0;
       }
-      
+
       return { min, max };
     }
 
@@ -195,7 +202,7 @@ export default function PlantPresenter() {
                 <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img
                   src={graph}></img>}</Link>
                 <button id="waterdrop" className={"icon--small"} type={"button"}
-                        onClick={(event) => setWateredTrue(name)}>{<img src={waterdrop}></img>}</button>
+                        onClick={handleWaterClick}>{<img src={waterdrop}></img>}</button>
                 <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}><img
                   src={settingsIcon}/></Link></div>
               </div>
@@ -212,6 +219,7 @@ export default function PlantPresenter() {
               </button>
             </div>
           </div>}
+        <Modal active={isWatering} message={"Your plant is being watered!"}/>
       </>)
   }
 
