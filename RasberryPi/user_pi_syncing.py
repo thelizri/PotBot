@@ -13,6 +13,7 @@ ref = None
 product_id = None
 
 def is_linked_with_user(database):
+    global product_id
     try:
         user_id_file = open("user.id", "r")
         uid = user_id_file.readline().strip()
