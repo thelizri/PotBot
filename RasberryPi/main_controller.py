@@ -58,7 +58,7 @@ def run():
 
         # Turns the pump on/off when necessary
         print("Create pump controller runner")
-        pump = Thread(target=pump_controller.run)
+        pump = Thread(target=pump_controller.run, args=(database,))
         pump.start()
 
         # Checks water level periodically

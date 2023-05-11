@@ -60,9 +60,9 @@ class DatabaseManager:
         except Exception as error:
             handle_errors("database_manager_error.log", error)
 
-    def push_data(self, data):
-        ref = db.reference(f"/users/{self.uid}/plants/{self.plant_id}")
-        ref.child("measureData").update(data)
+    def push_data(self, path, child, data):
+        ref = db.reference(path)
+        ref.child(child).update(data)
 
     def read_json(self, filepath):
         if not utils.check_if_file_exist_and_is_not_empty(filepath):
@@ -72,7 +72,7 @@ class DatabaseManager:
         with open(filepath) as file:
             data = json.load(file)
 
-        self.push_data(data)
+        self.push_data(f"/users/{self.uid}/plants/{self.plant_id}", "measureData", data)
 
     def run(self):
         print("database_manager.run()")
