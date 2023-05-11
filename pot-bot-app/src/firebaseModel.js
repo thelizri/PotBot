@@ -187,6 +187,7 @@ async function setWateringPreference(event, name){
 
 
 export {
+  db,
   connectPotBot,
   hasPlants,
   updatePlantData,
