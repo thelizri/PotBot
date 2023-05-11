@@ -160,9 +160,8 @@ function setWateredTrue(name) {
   const data = {water: 1};
   console.log("watered plant");
   updatePlantData(auth.currentUser, path, data);
-  /**TODO
+  /** DONE
    * Return some sort of confirmation to the user that the plant has been watered
-   * aka 'water' setting has been changed to 0
    */
 }
 
