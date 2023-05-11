@@ -9,6 +9,17 @@ import { searchPlants, fetchPlantDetails } from "../services/plantSource";
 
 /*TODO:Flytta konstanter till presenter från app */
 
+const isIDValid = (id) => {
+  const plantRef = ref(db, `plants/${id}`);
+  return get(plantRef)
+    .then((snapshot) => {
+      return snapshot.exists();
+    })
+    .catch((error) => {
+      console.error("Error checking ID validity:", error);
+      return false;
+    });
+};
 
 export default function AddPlantView({ addPlantToPersonalList }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,16 +52,29 @@ export default function AddPlantView({ addPlantToPersonalList }) {
     addPlantToPersonalList(plantDataWithImage);
   };
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const result = await searchPlants(searchTerm);
+  //   console.log("Search Results:", result);
+  //   if (result && result.length > 0) {
+  //     const validIDs = result.filter((plant) => isIDValid(plant.id));
+  //     const plantDetails = await Promise.all(
+  //       validIDs.map((plant) => fetchPlantDetails(plant.id))
+  //     );
+  //     console.log("Plant Details:", plantDetails);
+  //     setSearchResults(plantDetails);
+  //     setIsLoading(true);
+  //   } else {
+  //     setSearchResults([]);
+  //   }
+  // };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await searchPlants(searchTerm);
     console.log("Search Results:", result);
     if (result && result.length > 0) {
-      const plantDetails = await Promise.all(
-        result.map((plant) => fetchPlantDetails(plant.id))
-      );
-      console.log("Plant Details:", plantDetails);
-      setSearchResults(plantDetails);
+      setSearchResults(result);
       setIsLoading(true);
     } else {
       setSearchResults([]);
@@ -61,8 +85,9 @@ export default function AddPlantView({ addPlantToPersonalList }) {
     const nextPage = currentPage + 1;
     const results = await searchPlants(searchTerm, nextPage);
     setCurrentPage(nextPage);
+    const validIDs = results.filter((plant) => isIDValid(plant.id));
     const plantDetails = await Promise.all(
-      results.map((plant) => fetchPlantDetails(plant.id))
+      validIDs.map((plant) => fetchPlantDetails(plant.id))
     );
     setSearchResults((prevResults) => [...prevResults, ...plantDetails]);
     setIsFetchingMore(false);
