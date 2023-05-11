@@ -22,7 +22,7 @@ def _set_user_notification_setting(event):
 
 def _set_settings(event):
     key = event.path.replace("/", "")
-
+    print(event.path)
     if key == "":
         if len(event.data) != 5:
             return
