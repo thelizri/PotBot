@@ -120,38 +120,45 @@ export default function AddPlantView({ addPlantToPersonalList }) {
         </Link>
       </form>
       <div className="search-results-grid">
-        {searchResults.map((plant, index) => (
-          <div
-            className="plant-card"
-            key={plant.id}
-            onClick={() => handlePlantClick(plant.id)}
-          >
-            <div key={plant.id}>
-              <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100"/>
-              <p>{plant.common_name}</p>
-            </div>
-            {expandedPlantId === plant.id && (
-              <div className="plant-dropdown">
-                <button
-                  className="add-plant-button"
-                  onClick={() => handleAddPlantButtonClick(plant)}
-                >
-                  Add to my plants
-                </button>
-              </div>
-            )}
-            {index === searchResults.length - 1 && !isLoading && (
-              <div className="load-more" ref={loaderRef}>
-                Load More
-              </div>
-            )}
-            {isLoading && (
-              <div className="loading">
-                <ThreeDots type="ThreeDots" color="#2BAD60" height={40} width={40}/>
-              </div>
-            )}
-          </div>
-        ))}
+      {searchResults.map((plant, index) => (
+  <div
+    className="plant-card"
+    key={plant.id}
+    onClick={() => handlePlantClick(plant.id)}
+  >
+    <div key={plant.id}>
+      {plant.default_image && (
+        <img
+          src={plant.default_image.regular_url}
+          alt={plant.common_name}
+          width="100"
+          height="100"
+        />
+      )}
+      <p>{plant.common_name}</p>
+    </div>
+    {expandedPlantId === plant.id && (
+      <div className="plant-dropdown">
+        <button
+          className="add-plant-button"
+          onClick={() => handleAddPlantButtonClick(plant)}
+        >
+          Add to my plants
+        </button>
+      </div>
+    )}
+    {index === searchResults.length - 1 && !isLoading && (
+      <div className="load-more" ref={loaderRef}>
+        Load More
+      </div>
+    )}
+    {isLoading && (
+      <div className="loading">
+        <ThreeDots type="ThreeDots" color="#2BAD60" height={40} width={40} />
+      </div>
+    )}
+  </div>
+))}
       </div>
     </div>
   );
