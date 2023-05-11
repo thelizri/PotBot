@@ -102,6 +102,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
       </div>
       <form className="plant-form" onSubmit={handleSubmit}>
         <input
+          className="api-search"
           type="text"
           placeholder="Choose your plant"
           value={searchTerm}
