@@ -43,7 +43,7 @@ def _link_pi_with_user(event):
     plant_file.write(plant)
 
     db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
-    ref.child(product_id).delete()
+    ref.delete()
 
 
 def run(database):
