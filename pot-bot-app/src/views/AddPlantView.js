@@ -10,15 +10,13 @@ import { searchPlants, fetchPlantDetails } from "../services/plantSource";
 /*TODO:Flytta konstanter till presenter från app */
 
 
-export default function AddPlantView({addPlantToPersonalList}) {
+export default function AddPlantView({ addPlantToPersonalList }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [expandedPlantId, setExpandedPlantId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [, setIsSearchMade] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
 
   const observer = useRef();
   const loaderRef = useRef();
@@ -53,9 +51,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
       );
       console.log("Plant Details:", plantDetails);
       setSearchResults(plantDetails);
-      setIsSearchMade(true); // Set isSearchMade to true when search is made
-      setIsLoading(true)
-
+      setIsLoading(true);
     } else {
       setSearchResults([]);
     }
@@ -68,31 +64,40 @@ export default function AddPlantView({addPlantToPersonalList}) {
     const plantDetails = await Promise.all(
       results.map((plant) => fetchPlantDetails(plant.id))
     );
-    setSearchResults([...searchResults, ...plantDetails]);
+    setSearchResults((prevResults) => [...prevResults, ...plantDetails]);
     setIsFetchingMore(false);
   };
-
+  
   useEffect(() => {
-    if (observer.current) {
-      observer.current.disconnect();
-    }
-    observer.current = new IntersectionObserver((entries) => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+  
+    const observerCallback = (entries) => {
       const first = entries[0];
       if (first.isIntersecting && !isFetchingMore) {
         setIsFetchingMore(true);
       }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (isFetchingMore) {
-      handleLoadMore();
+    };
+  
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+  
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
     }
+  
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
   }, [isFetchingMore]);
-
+  
   useEffect(() => {
     if (observer.current && searchResults.length > 0) {
-      observer.current.observe(document.querySelector(".plant-card:last-child"));
+      observer.current.observe(loaderRef.current);
     }
   }, [searchResults]);
 
