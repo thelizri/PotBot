@@ -74,13 +74,13 @@ export default function PlantPresenter() {
     function wateringToValue(watering) {
 
       switch (watering) {
-        case 'frequent':
+        case 'frequent' || 'Frequent':
           return { min: 60, max: 90 };
-        case 'average':
+        case 'average' || 'Average':
           return { min: 30, max: 60 };
-        case 'minimum':
+        case 'minimum' || 'Minimum':
           return { min: 15, max: 30 };
-        case 'none':
+        case 'none' || 'None':
           return { min: 0, max: 15 };
         default:
           return { min: 0, max: 0 };
@@ -97,19 +97,19 @@ export default function PlantPresenter() {
       
       sunlight.forEach((element) => {
         switch (element) {
-          case 'full_shade':
+          case 'full_shade' || 'Full_shade':
             total += 0.1;
             count += 1;
             break;
-          case 'part_shade':
+          case 'part_shade' || 'Part_shade':
             total += 0.35;
             count += 1;
             break;
-          case 'sun-part_shade':
+          case 'sun-part_shade' || 'Sun-part_shade':
             total += 0.65;
             count += 1;
             break;
-          case 'full_sun':
+          case 'full_sun'  || 'Full_sun':
             total += 0.9;
             count += 1;
             break;
