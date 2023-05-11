@@ -75,9 +75,19 @@ async function readUserData(user, path) {
     //console.log(snapshot.val())
     return snapshot.val();
   }).catch(err => {
-    console.log(err)
+    console.log(err.message)
   })
 }
+
+async function readPlantDatabase(pathKey) {
+  const dbRef = ref(db, `/plantsData/${pathKey}`)
+  return get(dbRef).then(snapshot => {
+    return snapshot.val();
+  }).catch(err => {
+    console.log(err.message)
+  })
+}
+
 /*
  * @param {Object} data contains all plantVitals from API, need to get this from user when API not working
  * @param {String} plantName plants name taken from API, need to get this from user when API not working
@@ -99,13 +109,14 @@ async function addNewPlant(user, plantName, data) {
       set(ref(db, `users/${user.uid}/plants/${plantName}`), {
         productID: 'RaspberryPi',
         measureData: 'To be added',
+        notificationSettings: {notificationToggle: true},
         plantRecommendedVitals: data,
-        settings:{
+        settings: {
           amount: 100,
-          frequency: "None",
-          soil_moisture: "None",
+          frequency: 0,
+          soil_moisture: data.watering,
           type: "Manual",
-          water:0
+          water: 0
         }
       })
     }
@@ -120,6 +131,7 @@ async function updatePlantData(user, path, data) {
   const dbRef = await ref(db, `users/${user.uid}/${path}`);
   return await update(dbRef, data);
 }
+
 /*
  * Connect the potBot to the users currentPlant
  * @param {string} potBotKey input from user
@@ -131,15 +143,15 @@ async function connectPotBot(potBotKey, data) {
   return await update(dbRef, data);
 }
 
-async function removePlant(name){
-  if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
+async function removePlant(name) {
+  if (!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
   const {uid} = auth.currentUser;
   const dbRef = await ref(db, `users/${uid}/plants/${name}`);
   return await remove(dbRef)
 }
 
 /*
-* boolean to check if user has a plant registred*/
+* boolean to check if user has a plant registered*/
 async function hasPlants(user) {
   const dbRef = ref(db, `users/${user.uid}`);
   try {
@@ -162,6 +174,7 @@ function setWateredTrue(name) {
   updatePlantData(auth.currentUser, path, data);
   /** DONE
    * Return some sort of confirmation to the user that the plant has been watered
+   * aka 'water' setting has been changed to 0
    */
 }
 
@@ -177,7 +190,8 @@ async function notificationToggle(user, toggleValue) {
     console.error("Error updating notification settings: ", error);
   }
 }
-async function setWateringPreference(event, name){
+
+async function setWateringPreference(event, name) {
   const type = event.target.id;
   const path = `/plants/${name}/settings`;
   const data = {type: type};
@@ -186,7 +200,6 @@ async function setWateringPreference(event, name){
 
 
 export {
-  db,
   connectPotBot,
   hasPlants,
   updatePlantData,
@@ -196,8 +209,11 @@ export {
   setWateredTrue,
   removePlant,
   notificationToggle,
-  setWateringPreference,
+  readPlantDatabase,
+  db,
+  setWateringPreference
 }
+
 export function useAuth() {
   return useContext(AuthContext);
 }

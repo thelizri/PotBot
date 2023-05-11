@@ -12,7 +12,7 @@
 //     const results = await plantSource.searchPlants(searchTerm);
 //     setPlants(results);
 //   };
-  
+
 //   const handleSelectPlant = async (plantId) => {
 //     const plantDetails = await plantSource.fetchPlantDetails(plantId);
 //     setSelectedPlant(plantDetails);
