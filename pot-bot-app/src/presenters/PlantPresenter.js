@@ -174,9 +174,7 @@ export default function PlantPresenter() {
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <form className='expandable-div'
-              >Enter your
-                code and press connect<input type='text' name='productID' required/>
+              <form className='expandable-div'>Enter your code and press connect<input type='text' name='productID' required/>
               </form>
               <button type='button' className='expandable-div'>Connect {name}
               </button>
