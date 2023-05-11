@@ -3,6 +3,10 @@ import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
+import trash from '../styling/images/trash.svg'
+import graph from '../styling/images/graph.svg'
+import waterdrop from '../styling/images/waterdrop.svg'
+
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
@@ -19,6 +23,7 @@ export default function PlantPresenter() {
       })).catch(err => console.error(err.message));
     }
   }, [user])
+
 
   function Plant({name, data, watering, sunlight, productID}) {
     const [expanded, setExpanded] = useState(false);
@@ -116,7 +121,7 @@ export default function PlantPresenter() {
     }
 
     let wateringValue = wateringToValue(watering);
-    console.log(wateringValue)
+    // console.log(wateringValue)
     let sunlightValue = sunlightToValue(sunlight);
     let image = plants[name].plantRecommendedVitals.image;
     if (!image || image === "NaN") {
@@ -154,35 +159,26 @@ export default function PlantPresenter() {
                   <p>Waterlevel</p>
                 </div>
               </div>
-              <div className="row">
-
-                <div className="stats-btn"><Link to="/history" state={data}>See growth history</Link></div>
-              </div>
-              <div className="row">
-                <div className="stats-btn">
-                  <button type="button" className="water-btn" onClick={() => setWateredTrue(user)}>Water plant</button>
-                  <button type={"button"}
-                          onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete
-                    this plant
-                  </button>
-                </div>
-              </div>
+              <div className="settings-btn"><Link to={`/settings/${name}`} state={plants}>Watering settings</Link></div>
+              <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>{<img
+                src={trash}></img>}</button>
+              <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img src={graph}></img>}</Link>
+              <button id="waterdrop" className={"icon--small"} type={"button"}
+                      onClick={(event) => setWateredTrue(name)}>{<img src={waterdrop}></img>}</button>
             </div>
           </div> :
-          <div id={name} className={`expandable-div ${false} ? "expanded" : ""}`}>
+          <div id={name} className='expandable-div'>
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <form className='expandable-div'
-              >Enter your
-                code and press connect<input type='text' name='productID' required/>
+              <form className='expandable-div'>Enter your code and press connect<input type='text' name='productID'
+                                                                                       required/>
               </form>
               <button type='button' className='expandable-div'>Connect {name}
               </button>
             </div>
           </div>}
       </>)
-
   }
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>
