@@ -1,18 +1,9 @@
-import {
-  connectionListener,
-  connectPotBot,
-  db,
-  readUserData,
-  removePlant,
-  setWateredTrue,
-  useAuth
-} from "../firebaseModel";
+import {readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
-import {ref} from "firebase/database";
-/*TODO: Check why sometimes getting an uncaught error */
+/* TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
   const {user} = useAuth();
@@ -110,27 +101,13 @@ export default function PlantPresenter() {
     }
 
 
-    function connectPotBotHandler(productID, name) {
-      const dbRef = ref(db, `user/${user.uid}/plants/${name}/${productID}`)
-      const change = connectPotBot(productID, {uid: user.uid, plant: name}).then(() => {
-        console.log("Set loading")
-        setLoading(true)
-        connectionListener(user, name, {
-          function(v) {
-            setConnected(v)
-          }
-        })
-        console.log(connected)
-      })
-    }
-
-
     let wateringValue = wateringToValue(watering);
     let sunlightValue = sunlightToValue(sunlight);
     let image = plants[name].plantRecommendedVitals.image;
     if (!image || image === "NaN") {
       image = elephant
     }
+
     return (
       <>
         {connected ?
