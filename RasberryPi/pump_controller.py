@@ -54,7 +54,7 @@ def run(database):
     while True:
         with open("settings.json", "r") as file:
             data = json.load(file)
-            print(data)
+            print(f"Settings json: {data}")
             if data["type"] == "Manual":
                 manual(data, database)
             elif data["type"] == "Automatic":
