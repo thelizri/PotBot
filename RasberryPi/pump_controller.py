@@ -44,7 +44,7 @@ def run(database):
         return None
 
     while True:
-        with open("settings.json") as file:
+        with open("settings.json", "r") as file:
             data = json.load(file)
             if data["type"] == "Manual":
                 manual(data, database)
