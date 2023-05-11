@@ -5,7 +5,7 @@ import {ThreeDots} from 'react-loader-spinner'
 import '../styling/AddPlant.css'
 import { get, ref } from "firebase/database";
 import { db } from "../firebaseModel";
-import { searchPlants, fetchPlantDetails } from "../firebaseModel";
+import { searchPlants, fetchPlantDetails } from "../services/plantSource";
 
 /*TODO:Flytta konstanter till presenter från app */
 
@@ -150,5 +150,4 @@ export default function AddPlantView({addPlantToPersonalList}) {
       </div>
     </div>
   );
-
 }

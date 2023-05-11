@@ -7,7 +7,7 @@ const API_BASE = 'https://perenual.com/api';
 const API_KEY = 'sk-vhKW64412e6ecbc88586';
 
 
-async function searchPlants(searchTerm) {
+  export const searchPlants = async (searchTerm) => {
   const dbRef = ref(db, "plantsData/species_data_detailed");
   const snapshot = await get(dbRef);
   const plantData = snapshot.val();
@@ -22,7 +22,7 @@ async function searchPlants(searchTerm) {
   return results;
 }
 
-async function fetchPlantDetails(plantId) {
+export const fetchPlantDetails = async (plantId) => {
   const dbRef = ref(db, `plantsData/species_data_detailed/${plantId}`);
   const snapshot = await get(dbRef);
   return snapshot.val();
