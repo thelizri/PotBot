@@ -56,6 +56,7 @@ function SignUpView({username, setUsername, password, setPassword, handleSubmit,
         <form onSubmit={handleFormSubmit}>
 
           <input
+            className="signup-input"
             type="text"
             id="username"
             name="username"
@@ -68,6 +69,7 @@ function SignUpView({username, setUsername, password, setPassword, handleSubmit,
             required
           />
           <input
+            className="signup-input"
             type="password"
             id="password"
             name="password"

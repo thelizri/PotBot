@@ -34,7 +34,11 @@ export default function AddPlantView({addPlantToPersonalList}) {
   };
 
   const handleAddPlantButtonClick = (plant) => {
-    addPlantToPersonalList(plant);
+    const plantDataWithImage = {
+      ...plant,
+      imageURL: plant.default_image.regular_url,
+    };
+    addPlantToPersonalList(plantDataWithImage);
   };
 
   const handleSubmit = async (event) => {

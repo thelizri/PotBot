@@ -6,10 +6,12 @@ import ResetPasswordPresenter from "./presenters/ResetPasswordPresenter";
 import AddPlantPresenter from "./presenters/AddPlantPresenter";
 import HomePresenter from "./presenters/HomePresenter";
 import HistoryPresenter from "./presenters/HistoryPresenter";
+import SettingsPresenter from "./presenters/SettingsPresenter";
+import ProfilePresenter from "./presenters/ProfilePresenter";
 import ChangeUserName from "./views/ChangeUserName";
 import { UserAuthContextProvider } from "./firebaseModel";
 import SideMenuView from "./views/SideMenuView";
-import SettingsView from "./views/SettingsView";
+// import SettingsView from "./views/SettingsView";
 import "./styling/App.css";
 
 function App() {
@@ -27,12 +29,13 @@ function App() {
             <Route path="/reset" element={<ResetPasswordPresenter />} />
             <Route path="/name" element={<ChangeUserName />} />
             <Route path="/home" element={<HomePresenter />} />
-            <Route path="/settings" element={<SettingsView />} />
+            <Route path="/settings/:plantName" element={<SettingsPresenter />} />
             <Route
               path="/addNewPlant"
               element={<AddPlantPresenter />}
             />
-            <Route path="/history" element={<HistoryPresenter />} />
+            <Route path="/history/:plantName" element={<HistoryPresenter />} />
+            <Route path="/profile" element={<ProfilePresenter />} />
           </Routes>
         </UserAuthContextProvider>
       </Router>
