@@ -56,8 +56,9 @@ def run(database):
 
             product_id_file = open("product.id", "r")
             product_id = product_id_file.readline().strip()
-            ref = database.reference(f"/potbots/{product_id}")
-            ref.update("")
+            ref = database.reference(f"/potbots")
+            ref.update({product_id: ""})
+            ref = ref.child(product_id)
 
             ref.listen(_link_pi_with_user)
     except Exception as error:
