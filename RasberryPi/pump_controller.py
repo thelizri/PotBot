@@ -21,6 +21,7 @@ def manual(data, database):
             print("Turned on water pump")
         data["water"] = 0
         file = open("settings.json", "w")
+        print(f"Data dumping: {data}")
         json.dump(data, file)
         file.close()
 
