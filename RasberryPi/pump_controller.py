@@ -53,15 +53,16 @@ def run(database):
         return None
 
     while True:
-        with open("settings.json", "r") as file:
-            data = json.load(file)
-            print(f"Settings json: {data}")
-            if data["type"] == "Manual":
-                manual(data, database)
-            elif data["type"] == "Automatic":
-                automatic(data)
-            elif data["type"] == "Scheduled":
-                frequency(data)
-            else:
-                print("Incorrect type. Check the settings.")
-            time.sleep(5)
+        file = open("settings.json", "r")
+        data = json.load(file)
+        file.close()
+        print(f"Settings json: {data}")
+        if data["type"] == "Manual":
+            manual(data, database)
+        elif data["type"] == "Automatic":
+            automatic(data)
+        elif data["type"] == "Scheduled":
+            frequency(data)
+        else:
+            print("Incorrect type. Check the settings.")
+        time.sleep(5)
