@@ -11,6 +11,8 @@ from googleapiclient.errors import HttpError
 
 import os
 import json
+import utils
+import database_manager
 
 
 # Function to create the Gmail API service
@@ -74,16 +76,17 @@ def send_email(service, to, subject, body, attachment=None):
     return send_message
 
 
-def send_notification():
+def send_notification(database):
     service = create_gmail_service()
-
-    to = "ottoeh@kth.se, wcar@kth.se, mahadah@kth.se, kinnmark@kth.se, afranke@kth.se, rfu@kth.se, nadler@kth.se"
+    to = get_email(database)
     subject = "PotBot"
     body = "Please refill water tank. Water level is low."
     attachment = None  # Replace with file path if you want to attach a file
-
     send_email(service, to, subject, body, attachment)
 
-
-if __name__ == "__main__":
-    send_notification()
+def get_email(database):
+    if not utils.check_if_file_exist_and_is_not_empty("email.id"):
+        database.fetch_user_email()
+    with open("email.id", "r") as file:
+        email = file.readline().strip()
+        return email
