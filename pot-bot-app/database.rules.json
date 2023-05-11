@@ -1,7 +1,12 @@
 {
   "rules": {
-    "potbots": {
-      "$key": {
+    "plantData":{
+      "$key":{
+        ".read": "auth !== null"
+      }
+    },
+    "potbots":{
+      "$key":{
         ".write": "auth !== null"
       }
     },
