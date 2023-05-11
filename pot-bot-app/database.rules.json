@@ -1,6 +1,6 @@
 {
   "rules": {
-    "plantData": {
+    "plantsData": {
       "$key": {
         ".read": "auth !== null"
       }
