@@ -162,7 +162,7 @@ export default function PlantPresenter() {
               <div className="settings-btn"><Link to={`/settings/${name}`} state={plants}>Watering settings</Link></div>
               <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>{<img
                 src={trash}></img>}</button>
-              <Link to="/history" state={data} id="graph" className={"icon--small"}>{<img src={graph}></img>}</Link>
+              <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img src={graph}></img>}</Link>
               <button id="waterdrop" className={"icon--small"} type={"button"}
                       onClick={(event) => setWateredTrue(name)}>{<img src={waterdrop}></img>}</button>
             </div>
