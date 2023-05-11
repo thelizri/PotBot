@@ -52,8 +52,8 @@ def run(database):
     if not utils.check_if_file_exist_and_is_not_empty("settings.json"):
         return None
 
-    time.sleep(5)
     while True:
+        time.sleep(5)
         file = open("settings.json", "r")
         data = json.load(file)
         file.close()
@@ -66,4 +66,3 @@ def run(database):
             frequency(data)
         else:
             print("Incorrect type. Check the settings.")
-        time.sleep(5)
