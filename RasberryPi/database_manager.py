@@ -19,11 +19,18 @@ def _set_user_notification_setting(event):
         file.write(f"{data}")
 
 def _set_settings(event):
+    key = event.path.replace("/", "")
+
+    if key == "":
+        with open("settings.json", "w") as file:
+            json.dump(event.data, file)
+            return
+
+    with open("settings.json", "r") as file:
+        settings = json.load(file)
+        settings[key] = event.data
     with open("settings.json", "w") as file:
-        print("settings fetched:")
-        print(event.data)
-        data = event.data
-        json.dump(data, file)
+        json.dump(settings, file)
 
 class DatabaseManager:
     def __init__(self):
