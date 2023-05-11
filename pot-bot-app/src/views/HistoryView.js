@@ -4,7 +4,7 @@ import React from "react";
 import "firebase/database";
 import { Line } from 'react-chartjs-2';
 
-export default function HistoryView({soilMoistureData, uvData, temperatureData,}) {
+export default function HistoryView({plantName, soilMoistureData, uvData, temperatureData}) {
 
     const options = {
       maintainAspectRatio: false,
@@ -23,7 +23,7 @@ export default function HistoryView({soilMoistureData, uvData, temperatureData,}
 
     return (
         <div className="graphs">
-            <h2>Measurement history for Parasollpilea</h2>
+            <h2>Measurement history for {plantName}</h2>
             <p>Your plants soil moisture values over time</p>
             <div className="moisture-graph">
                 {Object.keys(soilMoistureData).length > 0 && <Line options={options} data={soilMoistureData} />}

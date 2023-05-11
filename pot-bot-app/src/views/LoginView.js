@@ -68,6 +68,7 @@ function LoginView({username, setUsername, password, setPassword, handleSubmit, 
         </div>
         <form onSubmit={handleFormSubmit}>
           <input
+            className="login-input"
             type="email"
             id="email"
             name="email"
@@ -80,6 +81,7 @@ function LoginView({username, setUsername, password, setPassword, handleSubmit, 
             required
           />
           <input
+            className="login-input"
             type="password"
             id="password"
             name="password"
