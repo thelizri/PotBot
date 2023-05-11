@@ -36,6 +36,7 @@ button:hover {
 }
 
 .expandable-div {
+  position: relative;
   width: 400px;
   height: 100px;
   border-radius: 10px;
@@ -88,6 +89,45 @@ button:hover {
   align-items: center;
   box-shadow: 4px 2px 6px rgba(143, 143, 143, 0.9);
 }
+
+.icon--small {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 6px;
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 200ms linear;
+}
+
+#trash {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
+}
+
+#trash:hover {
+  background-color: #c55;
+}
+
+#graph {
+  position: absolute;
+  left: 0.5em;
+  bottom: 0.5em;
+}
+
+#graph:hover {
+  background-color: #3e8e41;
+}
+
+#waterdrop {
+  position: absolute;
+  left: 3em;
+  bottom: 0.5em;
+}
+
+
 
 .col {
   display: flex;
