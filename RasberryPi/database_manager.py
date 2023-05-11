@@ -7,29 +7,39 @@ import time
 import os
 import utils
 
+
 def _set_user_email(event):
     data = event.data
     with open("email.id", "w") as file:
         file.write(data)
+
 
 def _set_user_notification_setting(event):
     data = event.data
     with open("notify.set", "w") as file:
         file.write(f"{data}")
 
+
 def _set_settings(event):
     key = event.path.replace("/", "")
-
+    # print(event.path)
     if key == "":
+        if len(event.data) != 5:
+            return
         with open("settings.json", "w") as file:
+            # print(event.data)
+            # print("No key")
             json.dump(event.data, file)
             return
 
     with open("settings.json", "r") as file:
+        # print(event.data)
+        # print("With key")
         settings = json.load(file)
         settings[key] = event.data
     with open("settings.json", "w") as file:
         json.dump(settings, file)
+
 
 class DatabaseManager:
     def __init__(self):
@@ -77,9 +87,15 @@ class DatabaseManager:
     def run(self):
         print("database_manager.run()")
         try:
-            self.email_listener = db.reference(f"/users/{self.uid}/email").listen(_set_user_email)
-            self.notif_settings_listener = db.reference(f"/users/{self.uid}/notificationSettings/notificationToggle").listen(_set_user_notification_setting)
-            self.settings_listener = db.reference(f"/users/{self.uid}/plants/{self.plant_id}/settings").listen(_set_settings)
+            self.email_listener = db.reference(f"/users/{self.uid}/email").listen(
+                _set_user_email
+            )
+            self.notif_settings_listener = db.reference(
+                f"/users/{self.uid}/notificationSettings/notificationToggle"
+            ).listen(_set_user_notification_setting)
+            self.settings_listener = db.reference(
+                f"/users/{self.uid}/plants/{self.plant_id}/settings"
+            ).listen(_set_settings)
 
             while True:
                 self.read_json("last_measurement.json")
