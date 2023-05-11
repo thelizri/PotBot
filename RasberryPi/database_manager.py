@@ -7,7 +7,6 @@ import time
 import os
 import utils
 
-
 def _set_user_email(event):
     data = event.data
     with open("email.id", "w") as file:
@@ -61,33 +60,9 @@ class DatabaseManager:
         except Exception as error:
             handle_errors("database_manager_error.log", error)
 
-    """ def fetch_user_email(self):
-        ref = db.reference(f"/users/{self.uid}/email")
-        data = ref.get()
-        with open("email.id", "w") as file:
-            file.write(data) """
-
-    """ def fetch_user_notification_setting(self):
-        ref = db.reference(f"/users/{self.uid}/notificationSettings/notificationToggle")
-        return ref.get() """
-
     def push_data(self, data):
         ref = db.reference(f"/users/{self.uid}/plants/{self.plant_id}")
         ref.child("measureData").update(data)
-
-    """ def get_settings(self):
-        ref = db.reference(f"/users/{self.uid}/plants/{self.plant_id}/settings")
-        while True:
-            print("get_settings()")
-            try:
-                with open("settings.json", "w") as file:
-                    data = ref.get()
-                    json.dump(data, file)
-                    data["water"] = 0
-                    ref.update(data)
-                time.sleep(10)
-            except KeyboardInterrupt:
-                return None """
 
     def read_json(self, filepath):
         if not utils.check_if_file_exist_and_is_not_empty(filepath):

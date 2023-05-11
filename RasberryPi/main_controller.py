@@ -6,7 +6,6 @@ import os
 import database_manager
 import arduino_manager
 import pump_controller
-
 import email_manager
 import user_pi_syncing
 import utils
@@ -17,7 +16,6 @@ try:
     os.chdir(abspath)
 except Exception as error:
     handle_errors("main_controller_error.log", error)
-
 
 def check_water_level(database):
     while True:
@@ -42,7 +40,6 @@ def check_water_level(database):
                     print("Email notifications is disabled")
         time.sleep(600)
 
-
 def run():
     try:
         # Get the correct ids from the database
@@ -53,11 +50,6 @@ def run():
         print("Creating arduino thread")
         arduino = Thread(target=arduino_manager.check_for_messages)
         arduino.start()
-
-        """ # Fetches commands from the database
-        print("Creating fetcher of settings")
-        fetcher = Thread(target=database.get_settings)
-        fetcher.start() """
 
         # Pushes/fetches data from the cloud database
         print("Create database runner")

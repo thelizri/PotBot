@@ -1,5 +1,4 @@
 from error_handler import handle_errors
-from time import sleep
 import os
 
 try:
@@ -28,10 +27,8 @@ def is_linked_with_user(database):
         handle_errors("user_pi_syncing_error.log", error)
         return False
 
-
 def _link_pi_with_user(event):
     data = event.data
-    print(f"user_pi_syncing data: {data}")
     if data == None or data == "":
         return
 
@@ -43,11 +40,8 @@ def _link_pi_with_user(event):
     plant_file = open("plant.id", "w")
     plant_file.write(plant)
 
-    tmp_ref = db.reference(f"/users/{uid}/plants/{plant}")
-    tmp_ref.update({"productID": product_id})
-    print(f"ref: {tmp_ref.path}")
+    db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
     ref.delete()
-
 
 def run(database):
     global db, ref
@@ -65,7 +59,6 @@ def run(database):
             ref.listen(_link_pi_with_user)
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
-
 
 if __name__ == "__main__":
     run()
