@@ -47,6 +47,7 @@ def _link_pi_with_user(event):
 
 
 def run(database):
+    global db, ref
     try:
         db = database
         if not is_linked_with_user(database):
