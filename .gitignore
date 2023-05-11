@@ -142,3 +142,6 @@ networkUserAndPassword.txt
 
 #All ID files
 *.id
+
+#All setting files
+*.set

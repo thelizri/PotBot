@@ -11,7 +11,7 @@ try:
 except Exception as error:
     handle_errors("_controller_error.log", error)
 
-def manual(data):
+def manual(data, database):
     if data["water"] == 1:
         measurements = json.load(open("last_measurement.json"))
         measurements = list(measurements.values())[0]
@@ -22,6 +22,8 @@ def manual(data):
         file = open("settings.json", "w")
         json.dump(data, file)
         file.close()
+        
+        database.push_data(f"/users/{database.uid}/plants/{database.plant_id}", "settings", {"water": 0})
 
 def automatic(data):
     if utils.should_plant_be_watered(1):
@@ -36,7 +38,7 @@ def frequency(data):
         arduino_manager.turn_on_water_pump(data["amount"])
         print("Turned on water pump")
 
-def run():
+def run(database):
     print("pump_controller")
     if not utils.check_if_file_exist_and_is_not_empty("settings.json"):
         return None
@@ -45,7 +47,7 @@ def run():
         with open("settings.json") as file:
             data = json.load(file)
             if data["type"] == "Manual":
-                manual(data)
+                manual(data, database)
             elif data["type"] == "Automatic":
                 automatic(data)
             elif data["type"] == "Frequent":
