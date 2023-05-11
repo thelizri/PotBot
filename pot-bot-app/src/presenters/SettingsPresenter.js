@@ -1,19 +1,34 @@
 import React, {useEffect, useState} from "react";
 import { useLocation, useParams } from 'react-router-dom';
 import SettingsView from "../views/SettingsView";
-import {setWateringPreference, notificationToggle, useAuth} from "../firebaseModel";
+import {setWateringPreference, notificationToggle, useAuth, readUserData, updatePlantData} from "../firebaseModel";
 
 function SettingsPresenter() {
     let {plantName} = useParams();
     const {user} = useAuth();
+    const [wateringType, setWateringType] = useState(" ");
+    const [interval, setInterval] = useState();
     
     const handleNotificationToggle = async (event) => {
         const toggleValue = event.target.checked;
         await notificationToggle(user, toggleValue);
       };
 
+    useEffect(() => {
+      const path = `plants/${plantName}/settings/type`
+      readUserData(user, path).then(setWateringType)
+    },[user])
+
+    useEffect(() => {
+      if(!interval) return;
+      const path = `plants/${plantName}/settings/`
+      updatePlantData(user, path, {frequency: interval})
+    },[interval, user])
+
+    
+
   return (
-    <SettingsView plantName={plantName} user={user} handleNotificationToggle={handleNotificationToggle} setWateringPreference={setWateringPreference}/>
+    <SettingsView interval={interval} setInterval={setInterval} wateringType={wateringType} plantName={plantName} user={user} handleNotificationToggle={handleNotificationToggle} setWateringPreference={setWateringPreference}/>
   );
 }
 

@@ -4,14 +4,14 @@ import {useState} from 'react';
 function ProfileView(handleNotificationToggle){
     return(
         <div>
-            <div className={"row"}>
+            {/* <div className={"row"}>
                 <label htmlFor="notificationToggle">Receive notifications</label>
                 <input
                 type="checkbox"
                 id="notificationToggle"
                 onChange={handleNotificationToggle}
                 />
-            </div>
+            </div> */}
             {/* Some suggestions for what to include in the profile */}
             <div className={"row"}>
                 <p>Change your password</p>

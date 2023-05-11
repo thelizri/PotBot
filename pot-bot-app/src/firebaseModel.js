@@ -160,9 +160,8 @@ function setWateredTrue(name) {
   const data = {water: 1};
   console.log("watered plant");
   updatePlantData(auth.currentUser, path, data);
-  /**TODO
+  /** DONE
    * Return some sort of confirmation to the user that the plant has been watered
-   * aka 'water' setting has been changed to 0
    */
 }
 
@@ -179,7 +178,7 @@ async function notificationToggle(user, toggleValue) {
   }
 }
 async function setWateringPreference(event, name){
-  const type = event.target.innerText;
+  const type = event.target.id;
   const path = `/plants/${name}/settings`;
   const data = {type: type};
   updatePlantData(auth.currentUser, path, data)
