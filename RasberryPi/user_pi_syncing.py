@@ -42,8 +42,9 @@ def _link_pi_with_user(event):
     plant_file = open("plant.id", "w")
     plant_file.write(plant)
 
-    db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
-    print(f"ref: {ref.path}")
+    tmp_ref = db.reference(f"/users/{uid}/plants/{plant}")
+    tmp_ref.update({"productID": product_id})
+    print(f"ref: {tmp_ref.path}")
     ref.delete()
 
 
