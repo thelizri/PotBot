@@ -9,7 +9,7 @@ try:
     abspath = os.path.dirname(os.path.abspath(__file__))
     os.chdir(abspath)
 except Exception as error:
-    handle_errors("_controller_error.log", error)
+    handle_errors("pump_controller_error.log", error)
 
 def manual(data, database):
     if data["water"] == 1:
@@ -50,8 +50,8 @@ def run(database):
                 manual(data, database)
             elif data["type"] == "Automatic":
                 automatic(data)
-            elif data["type"] == "Frequent":
+            elif data["type"] == "Scheduled":
                 frequency(data)
             else:
                 print("Incorrect type. Check the settings.")
-            time.sleep(20)
+            time.sleep(5)
