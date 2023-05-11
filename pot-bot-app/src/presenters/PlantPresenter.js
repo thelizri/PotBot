@@ -8,6 +8,7 @@ import { faTint, faSun, faThermometerHalf, faFlask } from '@fortawesome/free-sol
 import trash from '../styling/images/trash.svg'
 import graph from '../styling/images/graph.svg'
 import waterdrop from '../styling/images/waterdrop.svg'
+import settingsIcon from '../styling/images/settings.svg'
 
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
@@ -188,12 +189,16 @@ export default function PlantPresenter() {
                   <p><FontAwesomeIcon icon={faFlask}/> Waterlevel</p>
                 </div>
               </div>
-              <div className="settings-btn"><Link to={`/settings/${name}`} state={plants}>Watering settings</Link></div>
               <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>{<img
                 src={trash}></img>}</button>
-              <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img src={graph}></img>}</Link>
-              <button id="waterdrop" className={"icon--small"} type={"button"}
-                      onClick={(event) => setWateredTrue(name)}>{<img src={waterdrop}></img>}</button>
+              <div id="icons__row" className="row">
+                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img
+                  src={graph}></img>}</Link>
+                <button id="waterdrop" className={"icon--small"} type={"button"}
+                        onClick={(event) => setWateredTrue(name)}>{<img src={waterdrop}></img>}</button>
+                <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}><img
+                  src={settingsIcon}/></Link></div>
+              </div>
             </div>
           </div> :
           <div id={name} className='expandable-div'>

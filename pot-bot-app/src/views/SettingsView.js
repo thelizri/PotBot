@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../styling/Settings.css";
 import "../styling/dropdown.css"
 import arrow from "../styling/images/dropdown-arrow.svg"
 
-function SettingsView({user, plantName, handleNotificationToggle, setWateringPreference}) {  
-    
+function SettingsView({plantName, handleNotificationToggle, setWateringPreference}) {
+
   return (
     <div className="settings">
       <h2>Settings for {plantName}</h2>
@@ -17,16 +17,15 @@ function SettingsView({user, plantName, handleNotificationToggle, setWateringPre
         />
       </div>
       <div className="dropdown">
-      {/* <label htmlFor="automaticWateringToggle">Enable automatic watering</label> */}
       <div className="row dropbtn">
-      <button className="dropbtn">Enable automatic watering </button><img width="24px" src={arrow}></img>
+      <label className="dropbtn">Enable automatic watering </label><img width="24px" src={arrow}></img>
         </div>
         <div className="dropdown-content">
           <div id="Manual" onClick={(event) => setWateringPreference(event, plantName)}>Manual</div>
           <div id="Automatic" onClick={(event) => setWateringPreference(event, plantName)}>Automatic</div>
           <div id="frequent" onClick={(event) => setWateringPreference(event, plantName)}>Scheduled</div>
         </div>
-  
+
       </div>
     </div>
   );
