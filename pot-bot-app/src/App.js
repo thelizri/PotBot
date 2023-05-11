@@ -8,6 +8,7 @@ import HomePresenter from "./presenters/HomePresenter";
 import HistoryPresenter from "./presenters/HistoryPresenter";
 import SettingsPresenter from "./presenters/SettingsPresenter";
 import ProfilePresenter from "./presenters/ProfilePresenter";
+import AboutPresenter from "./presenters/AboutPresenter";
 import ChangeUserName from "./views/ChangeUserName";
 import { UserAuthContextProvider } from "./firebaseModel";
 import SideMenuView from "./views/SideMenuView";
@@ -36,6 +37,7 @@ function App() {
             />
             <Route path="/history/:plantName" element={<HistoryPresenter />} />
             <Route path="/profile" element={<ProfilePresenter />} />
+            <Route path="/about" element={<AboutPresenter />} />
           </Routes>
         </UserAuthContextProvider>
       </Router>
