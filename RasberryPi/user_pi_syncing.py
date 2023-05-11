@@ -31,7 +31,7 @@ def is_linked_with_user(database):
 def _link_pi_with_user(event):
     data = event.data
     print(f"user_pi_syncing data: {data}")
-    if data == None:
+    if data == None or data == "":
         return
 
     uid = data["uid"]
