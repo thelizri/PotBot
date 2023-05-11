@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { useState } from 'react';
 import {get, ref} from "firebase/database";
 import {db} from "../firebaseModel";
 
@@ -23,7 +21,7 @@ const API_KEY = 'sk-vhKW64412e6ecbc88586';
 }
 
 export const fetchPlantDetails = async (plantId) => {
-  const dbRef = ref(db, `plantsData/species_data_detailed/${plantId}`);
+  const dbRef = ref(db, `plantsData/species_data_detailed/${plantId - 1}`);
   const snapshot = await get(dbRef);
   return snapshot.val();
 }
