@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, onChildChanged, onValue, ref, remove, set, update} from "firebase/database";
+import {child, get, getDatabase, onChildChanged, ref, remove, set, update} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -123,12 +123,11 @@ async function addNewPlant(user, plantName, data) {
   }).catch(err => console.error(err))
 }
 
-function connectionListener(user, plantName, productID) {
+function connectionListener(user, plantName, {setConnected}) {
   const dbRef = ref(db, `user/${user.uid}/plants/${plantName}`)
-  return onValue(dbRef, (snapshot) => {
-    const data = snapshot.val()
-    console.log(snapshot)
-    return data
+  return onChildChanged(dbRef, (snapshot) => {
+    console.log(snapshot.val())
+    setConnected(true)
   },)
 }
 
@@ -147,15 +146,19 @@ async function updatePlantData(user, path, data) {
  * @param {Object} data {uid: user.uid, plant: name}
  * when potBot is connected it will write the productID to user plant
  */
-async function connectPotBot(potBotKey, data) {
+async function connectPotBot(potBotKey, data, setConnected) {
   const dbRef = await ref(db, `potbots/${potBotKey}`);
-  return await update(dbRef, data).then(async () => {
+  return await update(dbRef, data)/*.then(async () => {
     const dbRef = await ref(db, `users/${data.uid}/plants/${data.plant}`)
-    await onChildChanged(dbRef, (snapshot, previousChildName) => {
+    return onChildChanged(dbRef, (snapshot, previousChildName) => {
       console.log(snapshot.val())
       console.log(previousChildName)
+      if (potBotKey === snapshot.val()) {
+        setConnected(true);
+      }
+      return snapshot.val()
     })
-  });
+  });*/
 }
 
 async function removePlant(name) {

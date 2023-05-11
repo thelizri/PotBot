@@ -1,9 +1,17 @@
-import {db, readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
+import {
+  connectionListener,
+  connectPotBot,
+  db,
+  readUserData,
+  removePlant,
+  setWateredTrue,
+  useAuth
+} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
 import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
-import {onValue, ref} from "firebase/database";
+import {ref} from "firebase/database";
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
   const [plants, setPlants] = useState(null);
@@ -25,7 +33,9 @@ export default function PlantPresenter() {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
     const [connected, setConnected] = useState(false)
+    const [loading, setLoading] = useState(false)
     const {user} = useAuth()
+
     let n = useNavigate()
 
 
@@ -99,27 +109,21 @@ export default function PlantPresenter() {
       return total / sunlight.length;
     }
 
+
     function connectPotBotHandler(productID, name) {
       const dbRef = ref(db, `user/${user.uid}/plants/${name}/${productID}`)
-      console.log(dbRef)
-      const change = (() => onValue(dbRef, (snapshot) => {
-        const data = snapshot.val()
-        console.log(data)
-        return data === productID
-        //n("/settings")
-      }))
-      while (change()) {
-
-      }
-
-      /*const connect = connectionListener(user, name, productID)
-      console.log(connect)
-      const data = {uid: user.uid, plant: name}
-      */
-      /*connectPotBot(productID.target, data).then((v) => console.log("Successful adding")).catch(error => {
-        console.error(error)
-      })*/
+      const change = connectPotBot(productID, {uid: user.uid, plant: name}).then(() => {
+        console.log("Set loading")
+        setLoading(true)
+        connectionListener(user, name, {
+          function(v) {
+            setConnected(v)
+          }
+        })
+        console.log(connected)
+      })
     }
+
 
     let wateringValue = wateringToValue(watering);
     let sunlightValue = sunlightToValue(sunlight);
@@ -178,13 +182,7 @@ export default function PlantPresenter() {
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <form className='expandable-div'
-              >Enter your
-                code and press connect<input type='text' name='productID' required/>
-              </form>
-              <button type='button' className='expandable-div'
-                      onClick={(e => connectPotBotHandler("6c4c1c", name))}>Connect {name}
-              </button>
+              <Link className='expandable-div' to='/connect' state={{plantName: name}}>Connect {name} to potBot</Link>
             </div>
           </div>}
       </>)
