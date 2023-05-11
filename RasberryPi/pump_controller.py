@@ -52,6 +52,7 @@ def run(database):
     if not utils.check_if_file_exist_and_is_not_empty("settings.json"):
         return None
 
+    time.sleep(5)
     while True:
         file = open("settings.json", "r")
         data = json.load(file)
