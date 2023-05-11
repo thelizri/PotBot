@@ -123,7 +123,6 @@ async function addNewPlant(user, plantName, data) {
   }).catch(err => console.error(err))
 }
 
-
 /*
 * data is written as this example of a plant measureData object {timestamp, timestamp2,...}
 * and m1 is then as {date: '2023-04-24 15:00', temp: 22, humidity: 50, ...}
@@ -141,17 +140,7 @@ async function updatePlantData(user, path, data) {
  */
 async function connectPotBot(potBotKey, data) {
   const dbRef = await ref(db, `potbots/${potBotKey}`);
-  return await update(dbRef, data)/*.then(async () => {
-    const dbRef = await ref(db, `users/${data.uid}/plants/${data.plant}`)
-    return onChildChanged(dbRef, (snapshot, previousChildName) => {
-      console.log(snapshot.val())
-      console.log(previousChildName)
-      if (potBotKey === snapshot.val()) {
-        setConnected(true);
-      }
-      return snapshot.val()
-    })
-  });*/
+  return await update(dbRef, data);
 }
 
 async function removePlant(name) {
@@ -178,12 +167,12 @@ async function hasPlants(user) {
  * When clicked it sends a "1" to the database
  * @param {*} user
  */
-function setWateredTrue(user) {
-  const path = 'plants/Parasollpilea/settings';
+function setWateredTrue(name) {
+  const path = `/plants/${name}/settings`;
   const data = {water: 1};
   console.log("watered plant");
-  updatePlantData(user, path, data);
-  /**TODO
+  updatePlantData(auth.currentUser, path, data);
+  /** DONE
    * Return some sort of confirmation to the user that the plant has been watered
    * aka 'water' setting has been changed to 0
    */
@@ -202,6 +191,13 @@ async function notificationToggle(user, toggleValue) {
   }
 }
 
+async function setWateringPreference(event, name) {
+  const type = event.target.id;
+  const path = `/plants/${name}/settings`;
+  const data = {type: type};
+  updatePlantData(auth.currentUser, path, data)
+}
+
 
 export {
   connectPotBot,
@@ -214,7 +210,8 @@ export {
   removePlant,
   notificationToggle,
   readPlantDatabase,
-  db
+  db,
+  setWateringPreference
 }
 
 export function useAuth() {

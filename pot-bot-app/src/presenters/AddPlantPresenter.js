@@ -20,7 +20,7 @@ export default function AddPlantPresenter() {
     //function för att extrahera den data vi behöver
     if (addPlant) {
       addNewPlant(user, personalPlantList.common_name, {
-        image:personalPlantList.default_image.regular_url,
+        image: personalPlantList.default_image.original_url,
         sunlight: personalPlantList.sunlight,
         watering: personalPlantList.watering,
         temperature: '15'

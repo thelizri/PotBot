@@ -1,112 +1,108 @@
 from error_handler import handle_errors
-
-try:
-    import firebase_admin
-    from firebase_admin import credentials
-    from firebase_admin import db
-except Exception as error:
-    handle_errors("database_manager_error.log", error)
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
 import json
 import time
 import os
 import utils
 
-abspath = os.path.dirname(os.path.abspath(__file__))
-os.chdir(abspath)
 
-setupComplete = False
-cred, uid, plant_id = None, None, None
-
-
-def setup(db_name):
-    global cred, uid, plant_id, setupComplete
-    # Replace 'path/to/your-service-account-key.json' with the path to the
-    # JSON file you downloaded
-    cred = credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json")
-    # cred = credentials.Certificate(r'C:\Users\karlw\Documents\Code\PotBot\RasberryPi\firebase-key.json')
-
-    firebase_admin.initialize_app(
-        cred,
-        {
-            "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
-        },
-        name=db_name,
-    )
-
-    try:
-        uid_file = open("user.id", "r")
-        plant_id_file = open("plant.id", "r")
-    except Exception as error:
-        handle_errors("database_manager_error.log", error)
-
-    uid = uid_file.readline().strip()
-    plant_id = plant_id_file.readline().strip()
-
-    setupComplete = True
-
-
-def fetch_user_email():
-    if not setupComplete:
-        setup("email_fetcher")
-    ref = db.reference(f"/users/{uid}/email")
-    data = ref.get()
+def _set_user_email(event):
+    data = event.data
     with open("email.id", "w") as file:
         file.write(data)
 
 
-def fetch_user_notification_setting():
-    ref = db.reference(f"/users/{uid}/notificationSettings/notificationToggle")
-    return ref.get()
+def _set_user_notification_setting(event):
+    data = event.data
+    with open("notify.set", "w") as file:
+        file.write(f"{data}")
 
 
-def push_data(data):
-    if not setupComplete:
-        setup("pusher")
-    # Replace 'your_database_path' with the path where you want to push the
-    # data
-    ref = db.reference(f"/users/{uid}/plants/{plant_id}")
-    ref.child("measureData").update(data)
+def _set_settings(event):
+    key = event.path.replace("/", "")
+    # print(event.path)
+    if key == "":
+        if len(event.data) != 5:
+            return
+        with open("settings.json", "w") as file:
+            # print(event.data)
+            # print("No key")
+            json.dump(event.data, file)
+            return
+
+    with open("settings.json", "r") as file:
+        # print(event.data)
+        # print("With key")
+        settings = json.load(file)
+        settings[key] = event.data
+    with open("settings.json", "w") as file:
+        json.dump(settings, file)
 
 
-def get_settings():
-    if not setupComplete:
-        setup("fetcher")
-    ref = db.reference(f"/users/{uid}/plants/{plant_id}/settings")
-    while True:
-        print("get_settings()")
+class DatabaseManager:
+    def __init__(self):
+        self.abspath = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(self.abspath)
+        self.cred = None
+        self.uid = None
+        self.plant_id = None
+        self.email_listener = None
+        self.notif_settings_listener = None
+        self.settings_listener = None
+        self.cred = credentials.Certificate(
+            "/home/pi/PotBot/RasberryPi/firebase-key.json"
+        )
+        firebase_admin.initialize_app(
+            self.cred,
+            {
+                "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
+            },
+        )
+
         try:
-            with open("settings.json", "w") as file:
-                data = ref.get()
-                json.dump(data, file)
-                data["water"] = 0
-                ref.update(data)
-            time.sleep(10)
-        except KeyboardInterrupt:
-            return None
+            with open("user.id", "r") as uid_file:
+                self.uid = uid_file.readline().strip()
+            with open("plant.id", "r") as plant_id_file:
+                self.plant_id = plant_id_file.readline().strip()
+            self.setupComplete = True
+        except Exception as error:
+            handle_errors("database_manager_error.log", error)
 
+    def push_data(self, path, child, data):
+        ref = db.reference(path)
+        ref.child(child).update(data)
 
-def read_json(filepath):
-    if True:
+    def read_json(self, filepath):
         if not utils.check_if_file_exist_and_is_not_empty(filepath):
             time.sleep(5)
             return None
 
-        file = open(filepath)
-        data = json.load(file)
-        file.close()
+        with open(filepath) as file:
+            data = json.load(file)
 
-        push_data(data)
+        self.push_data(f"/users/{self.uid}/plants/{self.plant_id}", "measureData", data)
 
-
-def run():
-    while True:
-        print("database_mangager.run()")
+    def run(self):
+        print("database_manager.run()")
         try:
-            read_json("last_measurement.json")
-            time.sleep(60)
+            self.email_listener = db.reference(f"/users/{self.uid}/email").listen(
+                _set_user_email
+            )
+            self.notif_settings_listener = db.reference(
+                f"/users/{self.uid}/notificationSettings/notificationToggle"
+            ).listen(_set_user_notification_setting)
+            self.settings_listener = db.reference(
+                f"/users/{self.uid}/plants/{self.plant_id}/settings"
+            ).listen(_set_settings)
+
+            while True:
+                self.read_json("last_measurement.json")
+                time.sleep(60)
         except Exception as error:
-            handle_errors(error)
+            handle_errors("database_manager_error.log", error)
 
-
-if __name__ == "__main__":
-    run()
+    def reference(self, arg):
+        ref = db.reference(arg)
+        return ref
