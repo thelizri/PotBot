@@ -54,10 +54,10 @@ def run(database):
         if not is_linked_with_user(database):
             print("Is not linked with user")
 
-            ref = database.reference("/potbots")
             product_id_file = open("product.id", "r")
             product_id = product_id_file.readline().strip()
-            ref.update({product_id: ""})
+            ref = database.reference(f"/potbots/{product_id}")
+            ref.update("")
 
             ref.listen(_link_pi_with_user)
     except Exception as error:
