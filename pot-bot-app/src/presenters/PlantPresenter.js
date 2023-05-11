@@ -1,7 +1,7 @@
 import {readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 /* TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
@@ -18,17 +18,13 @@ export default function PlantPresenter() {
         setPlants(data)
       })).catch(err => console.error(err.message));
     }
-  }, [user])
+  }, [user, plants])
 
   function Plant({name, data, watering, sunlight, productID}) {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
     const [connected, setConnected] = useState(false)
-    const [loading, setLoading] = useState(false)
     const {user} = useAuth()
-
-    let n = useNavigate()
-
 
     function handleClick(e) {
       e.preventDefault()
@@ -148,18 +144,27 @@ export default function PlantPresenter() {
                 <div className="stats-btn">
                   <button type="button" className="water-btn" onClick={() => setWateredTrue(user)}>Water plant</button>
                   <button type={"button"}
-                          onClick={(event) => removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete
+                          onClick={(event) =>
+                            removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Delete
                     this plant
                   </button>
                 </div>
               </div>
             </div>
           </div> :
-          <div id={name} className={`expandable-div ${false} ? "expanded" : ""}`}>
+          <div id={name} className={`expandable-div ""}`}>
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <Link className='expandable-div' to='/connect' state={{plantName: name}}>Connect {name} to potBot</Link>
+              <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>
+                <Link className='expandable-div' to='/connect' state={{plantName: name}}>
+                  Connect {name} to potBot</Link><p/>
+                <button className='connect' type={"button"}
+                        onClick={(event) =>
+                          removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Not right plant? Delete plant
+                  </button>
+              </span>
+
             </div>
           </div>}
       </>)
@@ -168,7 +173,3 @@ export default function PlantPresenter() {
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>
 }
-
-/* DummieButton to add a new plant */
-
-

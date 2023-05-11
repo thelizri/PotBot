@@ -113,8 +113,8 @@ async function addNewPlant(user, plantName, data) {
         plantRecommendedVitals: data,
         settings: {
           amount: 100,
-          frequency: "None",
-          soil_moisture: "None",
+          frequency: 0,
+          soil_moisture: data.watering,
           type: "Manual",
           water: 0
         }
