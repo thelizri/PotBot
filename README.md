@@ -31,33 +31,6 @@ Robert: rfu@kth.se
 Veronica: nadler@kth.se  
 William: wcar@kth.se  
 
-# Arduino 
-Arduino is an open-source electronics platform based on easy-to-use hardware and software. It uses a simplified version of C++ as its programming language. Here is a summary of some of the most important Arduino-specific functions:
-
-- pinMode(pin, mode): Sets the specified pin to behave as either an INPUT or OUTPUT. The mode can be INPUT, OUTPUT, INPUT_PULLUP, or INPUT_PULLDOWN.
-- digitalWrite(pin, value): Sets the specified pin to either HIGH or LOW, when the pin has been configured as an OUTPUT.
-- digitalRead(pin): Reads the value of the specified digital pin. Returns HIGH or LOW.
-- analogRead(pin): Reads the value from the specified analog pin. Returns an integer value between 0 and 1023, representing a voltage range of 0 to 5 volts (for most Arduino boards).
-- analogWrite(pin, value): Generates a Pulse Width Modulation (PWM) signal on the specified pin, with a duty cycle between 0 (always off) and 255 (always on). 0 is the same as outputting 0 volts. And 255 is the same as outputting 5 volts. Writing 127 is approximately the same as outputting 2.5 volts.
-- millis(): Returns the number of milliseconds since the Arduino board started running the current program.
-- micros(): Returns the number of microseconds since the Arduino board started running the current program.
-- delay(ms): Pauses the program for a specified number of milliseconds.
-- delayMicroseconds(us): Pauses the program for a specified number of microseconds.
-- Serial.begin(baudRate): Initializes the serial communication at the specified baud rate.
-- Serial.print(data):
-
-## Serial Monitor
-The Serial Monitor in Arduino is a built-in tool within the Arduino IDE (Integrated Development Environment) that allows you to communicate with your Arduino board through a serial connection. It is used for sending and receiving text-based data between your computer and the Arduino board via the USB cable.
-
-The Serial Monitor is helpful for debugging your Arduino code, displaying sensor readings, or receiving user inputs. It can display data received from the Arduino as well as send data to the Arduino.
-
-To use the Serial Monitor, you need to include Serial communication functions in your Arduino code. Some common Serial functions include:
-- Serial.begin(baudRate): Initializes the Serial communication at the specified baud rate (e.g., 9600 bits per second).
-- Serial.print(data): Prints data to the Serial Monitor without moving to a new line.
-- Serial.println(data): Prints data to the Serial Monitor followed by a newline character, moving to a new line.
-- Serial.available(): Returns the number of bytes available for reading in the Serial buffer.
-- Serial.read(): Reads the oldest byte of incoming data in the Serial buffer and removes it from the buffer.
-
 # Git
 
 ## Common Commands
@@ -98,6 +71,12 @@ On the other hand, if you are working on a feature branch and the main branch is
 ## Install NetworkManager
 - https://linuxhint.com/install-network-manager-raspberry-pi/  
 
+## Install DNSmasq
+- https://raspberrytips.com/raspberry-pi-dns-server/
+
+## Fix Time Syncing
+- https://raspberrytips.com/time-sync-raspberry-pi/
+
 ## PotBot
 - Network address: 10.42.0.1:80
 - Network address: pot.bot
@@ -113,5 +92,14 @@ On the other hand, if you are working on a feature branch and the main branch is
 - `nmcli connection up name`
 - `nmcli device wifi connect SSID_or_BSSID password password`
 
-## Activate Network Script on Startup
-- Edited rc.local to make script run on startup
+## Activate Scripts on Startup
+- Add line below to /etc/rc.local
+- `/usr/bin/Python3 /home/pi/Desktop/PotBot/RasberryPi/hotspot_manager.py &`
+
+### Install Python Packages for Root
+- `sudo pip3 install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client`
+- `sudo pip install firebase-admin`
+
+## Allow Anybody to Call XHost
+- `sudo nano /etc/X11/Xwrapper.config`
+- `allowed_users = anybody`

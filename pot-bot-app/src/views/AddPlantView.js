@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {Link} from "react-router-dom";
 import plantSource from '../services/plantSource';
-import { ThreeDots } from 'react-loader-spinner'
+import {ThreeDots} from 'react-loader-spinner'
 import '../styling/AddPlant.css'
 
 /*TODO:Flytta konstanter till presenter från app */
 const {searchPlants, fetchPlantDetails} = plantSource;
 
 
-export default function AddPlantView({ addPlantToPersonalList }) {
+export default function AddPlantView({addPlantToPersonalList}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [expandedPlantId, setExpandedPlantId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [, setIsSearchMade] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [isLoading,setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const observer = useRef();
@@ -120,7 +120,7 @@ export default function AddPlantView({ addPlantToPersonalList }) {
             onClick={() => handlePlantClick(plant.id)}
           >
             <div key={plant.id}>
-              <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100" />
+              <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100"/>
               <p>{plant.common_name}</p>
             </div>
             {expandedPlantId === plant.id && (
@@ -140,7 +140,7 @@ export default function AddPlantView({ addPlantToPersonalList }) {
             )}
             {isLoading && (
               <div className="loading">
-                <ThreeDots type="ThreeDots" color="#2BAD60" height={40} width={40} />
+                <ThreeDots type="ThreeDots" color="#2BAD60" height={40} width={40}/>
               </div>
             )}
           </div>
