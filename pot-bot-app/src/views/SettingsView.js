@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../styling/Settings.css";
 import "../styling/dropdown.css"
 import arrow from "../styling/images/dropdown-arrow.svg"
 
-function SettingsView({user, plantName, handleNotificationToggle, setWateringPreference}) { 
+function SettingsView({plantName, handleNotificationToggle, setWateringPreference}) { 
   const [selectedOption, setSelectedOption] = useState("Choose watering method");
   const [interval, setInterval] = useState("");
 
@@ -30,7 +30,7 @@ function SettingsView({user, plantName, handleNotificationToggle, setWateringPre
       </div>
       <div className="dropdown">
       <div className="row dropbtn">
-        <button className="dropbtn">{"Chosen watering: " + selectedOption}</button><img width="24px" src={arrow}></img>
+        <label className="dropbtn">{"Chosen watering: " + selectedOption}</label><img width="24px" src={arrow}></img>
       </div>
         <div className="dropdown-content">
           <div id="Manual" onClick={(event) => setWateringPreference(event, plantName)}>Manual</div>

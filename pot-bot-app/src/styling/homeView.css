@@ -2,7 +2,6 @@
 .Home {
   display: flex;
   flex-direction: column;
-  /* gap: 10px; */
   justify-content: center;
   align-items: start;
   max-width: 40vmin;
@@ -10,9 +9,6 @@
 }
 
 .logout-btn {
-  /* background-color: transparent;
-  border-style: none none solid none;
-  border-bottom: 1px solid #444; */
   position: fixed;
   bottom: 0;
   right: 0;
@@ -23,7 +19,6 @@
   background-color: transparent;
   border-style: none none none none;
   text-decoration: underline;
-  /* border-bottom: 1px solid #444; */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -50,7 +45,6 @@ button:hover {
   align-items: center;
   padding: 20px;
   opacity: 0;
-  /*height: 0;*/
   transition: opacity 0.2s ease;
 }
 
@@ -90,6 +84,14 @@ button:hover {
   box-shadow: 4px 2px 6px rgba(143, 143, 143, 0.9);
 }
 
+#icons__row {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  align-items: end;
+  gap: 0;
+}
+
 .icon--small {
   box-sizing: border-box;
   margin: 0;
@@ -98,7 +100,11 @@ button:hover {
   max-width: 40px;
   height: 40px;
   border-radius: 50%;
-  transition: background-color 200ms linear;
+  transition: transform 100ms linear;
+}
+
+.icon--small:hover {
+  transform: scale(1.1);
 }
 
 #trash {
@@ -106,28 +112,6 @@ button:hover {
   right: 0.5em;
   bottom: 0.5em;
 }
-
-#trash:hover {
-  background-color: #c55;
-}
-
-#graph {
-  position: absolute;
-  left: 0.5em;
-  bottom: 0.5em;
-}
-
-#graph:hover {
-  background-color: #3e8e41;
-}
-
-#waterdrop {
-  position: absolute;
-  left: 3em;
-  bottom: 0.5em;
-}
-
-
 
 .col {
   display: flex;
