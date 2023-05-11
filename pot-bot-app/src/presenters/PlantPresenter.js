@@ -71,9 +71,9 @@ export default function PlantPresenter() {
     function wateringToValue(watering) {
 
       switch (watering) {
-        case 'frequent':
+        case 'frequent' || 'Frequent':
           return { min: 60, max: 90 };
-        case 'average':
+        case 'average' || 'Average':
           return { min: 30, max: 60 };
         case 'minimum':
           return { min: 15, max: 30 };
