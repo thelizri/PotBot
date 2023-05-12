@@ -34,14 +34,15 @@ export default function AddPlantView({addPlantToPersonalList}) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const result = await searchPlants(searchTerm);
     console.log("Search Results:", result);
     if (result && result.length > 0) {
       setSearchResults(result);
-      setIsLoading(true);
     } else {
       setSearchResults([]);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -96,6 +97,12 @@ export default function AddPlantView({addPlantToPersonalList}) {
           <button className="back-btn">Back to your plants</button>
         </Link>
       </form>
+      {isLoading && (
+              <div className="loading">
+                <ThreeDots type="ThreeDots" color="#2BAD60" height={200} width={200}/>
+              </div>
+            )}
+    
       <div className="search-results-grid">
         {searchResults.map((plant, index) => (
           <div
@@ -127,11 +134,6 @@ export default function AddPlantView({addPlantToPersonalList}) {
             {index === searchResults.length - 1 && !isLoading && (
               <div className="load-more" ref={loaderRef}>
                 Load More
-              </div>
-            )}
-            {isLoading && (
-              <div className="loading">
-                <ThreeDots type="ThreeDots" color="#2BAD60" height={40} width={40}/>
               </div>
             )}
           </div>
