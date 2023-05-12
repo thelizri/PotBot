@@ -7,6 +7,7 @@ import website
 import error_handler
 from threading import Thread
 import main_controller
+import gui_setup
 
 abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
@@ -34,9 +35,9 @@ def connect_to_network():
                 continue
             else:
                 sleep(30)
-                #themain = Thread(target=main_controller.run)
-                #themain.start()
-                #themain.join()
+                # themain = Thread(target=main_controller.run)
+                # themain.start()
+                # themain.join()
                 subprocess.run(["sudo", "python", "main_controller.py"])
                 return True
 
@@ -56,15 +57,20 @@ def wait_for_user_wifi():
 
 
 def _main():
+    gui = None
     while True:
         if not os.path.exists("networkUserAndPassword.txt"):
             try:
+                gui = Thread(target=gui_setup.run)
+                gui.start()
                 enable_hotspot()
             except Exception as error:
                 print("something went wrong")
                 error_handler.handle_errors("hotspot_manager_error.log", error)
 
         if os.path.exists("networkUserAndPassword.txt") and connect_to_network():
+            if gui:
+                pass
             break
 
 

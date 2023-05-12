@@ -3,26 +3,41 @@ from tkinter import ttk
 import os
 import subprocess
 import error_handler
+import time
+from threading import Thread
 
 
-def run():
-    os.environ["DISPLAY"] = ":0.0"
-    try:
-        subprocess.run(
-            ["sudo", "xhost", "+SI:localuser:root"],
-            check=True,
-            text=True,
-            capture_output=True,
-        )
-    except Exception as error:
-        error_handler.handle_errors("gui.log", error)
+class test:
+    def __init__(self):
+        self.bool = True
+
+
+def destroy(test, window):
+    time.sleep(4)
+    print("Hello")
+    test.bool = False
+    if not test.bool:
+        window.destroy()
+
+
+def create_window():
+    # os.environ["DISPLAY"] = ":0.0"
+    # try:
+    #    subprocess.run(
+    #        ["sudo", "xhost", "+SI:localuser:root"],
+    #        check=True,
+    #        text=True,
+    #        capture_output=True,
+    #    )
+    # except Exception as error:
+    #    error_handler.handle_errors("gui.log", error)
     bg_color = "#94C973"
     fg_color = "#000209"
 
     window = Tk()
     window.attributes("-fullscreen", True)
     window.title("PotBot")
-    window.configure(bg=bg_color, cursor="none")
+    window.configure(bg=bg_color)
 
     style = ttk.Style()
     style.configure("TFrame", background=bg_color)
@@ -52,8 +67,18 @@ def run():
 
     frame.place(x=x_offset, y=y_offset)
 
-    window.mainloop()
+    return window
 
 
 if __name__ == "__main__":
-    run()
+    t = test()
+    window = create_window()
+    thread = Thread(
+        target=destroy,
+        args=(
+            t,
+            window,
+        ),
+    )
+    thread.start()
+    window.mainloop()
