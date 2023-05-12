@@ -31,7 +31,8 @@ def is_linked_with_user(database):
         return False
     
 def _link_pi_with_user_setup():
-    print("Is not linked with user")
+    global is_linked
+    is_linked = False
     db.reference(f"/potbots").update({product_id: ""})
 
 def _link_pi_with_user(event):
@@ -53,11 +54,9 @@ def _link_pi_with_user(event):
     is_linked = True
 
 def _connection_state_changed(event):
-    global is_linked
     print("Connection state changed, callback has been called")
     if event.data == None or event.data == "Raspberry Pi":
-        is_linked = False
-        _link_pi_with_user(event)
+        _link_pi_with_user_setup()
 
 def run(database):
     global db
