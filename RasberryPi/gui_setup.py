@@ -7,6 +7,11 @@ import time
 from threading import Thread
 
 
+class Bool:
+    def __init__(self):
+        self.bool = False
+
+
 def create_window():
     os.environ["DISPLAY"] = ":0.0"
     try:
@@ -70,6 +75,14 @@ def run(object):
     window.mainloop()
 
 
+def shutdown(object):
+    time.sleep(4)
+    object.bool = True
+
+
 if __name__ == "__main__":
+    object = Bool()
     window = create_window()
+    window.after(1000, check_destroy, object, window)
+    Thread(target=shutdown, args=(object,)).start()
     window.mainloop()

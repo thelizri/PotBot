@@ -67,15 +67,14 @@ def _main():
         if not os.path.exists("networkUserAndPassword.txt"):
             try:
                 object = Bool()
-                gui = Thread(target=gui_setup.run, args=(object,))
-                gui.start()
+                Thread(target=gui_setup.run, args=(object,)).start()
                 enable_hotspot()
             except Exception as error:
                 print("something went wrong")
                 error_handler.handle_errors("hotspot_manager_error.log", error)
 
         if os.path.exists("networkUserAndPassword.txt") and connect_to_network():
-            if not object is None:
+            if object:
                 object.bool = True
             break
 
