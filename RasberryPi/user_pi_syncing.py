@@ -1,4 +1,5 @@
 from error_handler import handle_errors
+from time import sleep
 import os
 
 try:
@@ -12,6 +13,7 @@ ref = None
 product_id = None
 uid = None
 plant_name = None
+is_linked = False
 
 def is_linked_with_user(database):
     global product_id, uid, plant_name
@@ -30,6 +32,7 @@ def is_linked_with_user(database):
         return False
 
 def _link_pi_with_user(event):
+    global uid, plant_name, is_linked
     data = event.data
     if data == None or data == "" or data == "Raspberry Pi":
         return
@@ -38,12 +41,13 @@ def _link_pi_with_user(event):
     user_id_file = open("user.id", "w")
     user_id_file.write(uid)
 
-    plant = data["plant"]
+    plant_name = data["plant"]
     plant_file = open("plant.id", "w")
     plant_file.write(plant)
 
     db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
     ref.delete()
+    is_linked = True
 
 def _connection_state_changed(event):
     print("Connection state changed, callback has been called")
@@ -62,7 +66,9 @@ def run(database):
             ref = ref.child(product_id)
 
             ref.listen(_link_pi_with_user)
-            db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(_connection_state_changed)
+            while not is_linked:
+                sleep(5)
+        db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(_connection_state_changed)
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
 
