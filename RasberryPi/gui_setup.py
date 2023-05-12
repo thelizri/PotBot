@@ -12,12 +12,10 @@ class test:
         self.bool = True
 
 
-def destroy(test, window):
+def destroy(test):
     time.sleep(4)
     print("Hello")
     test.bool = False
-    if not test.bool:
-        window.destroy()
 
 
 def create_window():
@@ -70,15 +68,20 @@ def create_window():
     return window
 
 
+def check_destroy(test, window):
+    if not test.bool:
+        window.destroy()
+    else:
+        window.after(1000, check_destroy, test, window)
+
+
 if __name__ == "__main__":
     t = test()
     window = create_window()
     thread = Thread(
         target=destroy,
-        args=(
-            t,
-            window,
-        ),
+        args=(t,),
     )
     thread.start()
+    window.after(1000, check_destroy, t, window)
     window.mainloop()
