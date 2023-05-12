@@ -198,8 +198,23 @@ async function setWateringPreference(event, name) {
   updatePlantData(auth.currentUser, path, data)
 }
 
+async function searchPlants(searchTerm) {
+  const dbRef = ref(db, "plantsData/species_data_detailed");
+  const snapshot = await get(dbRef);
+  const plantData = snapshot.val();
+
+  return Object.values(plantData).filter(
+    (plant) =>
+      plant.common_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      plant.scientific_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (plant.other_name && plant.other_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())))
+  );
+
+}
+
 
 export {
+  searchPlants,
   connectPotBot,
   hasPlants,
   updatePlantData,

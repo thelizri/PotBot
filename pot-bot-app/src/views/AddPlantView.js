@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
-import {searchPlants} from '../services/plantSource';
+import {searchPlants} from '../firebaseModel';
 import {ThreeDots} from 'react-loader-spinner'
 import '../styling/AddPlant.css'
 /*TODO:Flytta konstanter till presenter från app */
@@ -102,7 +102,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
                 <ThreeDots type="ThreeDots" color="#2BAD60" height={200} width={200}/>
               </div>
             )}
-    
+
       <div className="search-results-grid">
         {searchResults.map((plant, index) => (
           <div
@@ -110,7 +110,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
             key={plant.id}
             onClick={() => handlePlantClick(plant.id)}
           >
-            <div key={plant.id}>
+            <div key={plant.id} style={{textTransform: 'capitalize'}}>
               {plant.default_image && (
                 <img
                   src={plant.default_image.original_url}
