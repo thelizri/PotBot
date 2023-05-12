@@ -1,5 +1,6 @@
 from error_handler import handle_errors
 import os
+import time
 
 try:
     abspath = os.path.dirname(os.path.abspath(__file__))
@@ -10,6 +11,7 @@ except Exception as error:
 db = None
 ref = None
 product_id = None
+
 
 def is_linked_with_user(database):
     global product_id
@@ -27,6 +29,7 @@ def is_linked_with_user(database):
         handle_errors("user_pi_syncing_error.log", error)
         return False
 
+
 def _link_pi_with_user(event):
     data = event.data
     if data == None or data == "":
@@ -43,6 +46,7 @@ def _link_pi_with_user(event):
     db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
     ref.delete()
 
+
 def run(database):
     global db, ref
     try:
@@ -57,8 +61,11 @@ def run(database):
             ref = ref.child(product_id)
 
             ref.listen(_link_pi_with_user)
+        while not is_linked_with_user(database):
+            time.sleep(1)
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
+
 
 if __name__ == "__main__":
     run()
