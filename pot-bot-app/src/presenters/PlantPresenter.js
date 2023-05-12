@@ -156,7 +156,7 @@ export default function PlantPresenter() {
     }
 
     return (
-      <>
+      <div className="plant-container">
         {connected ?
           <div id={name} className={`expandable-div ${expanded && connected ? "expanded" : ""}`}
                onClick={handleClick}>
@@ -216,8 +216,7 @@ export default function PlantPresenter() {
             </div>
           </div>}
         <Modal active={isWatering} message={"Your plant is being watered!"}/>
-      </>)
-
+      </div>)
   }
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>

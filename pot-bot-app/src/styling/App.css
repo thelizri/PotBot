@@ -4,7 +4,33 @@ body {
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
+  /* background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.5)
+  ), url("./images/pexels-garrett-morrow-1638073.jpg"); */
+  /* background-image: url("./images/pexels-garrett-morrow-1638073.jpg"); */
+  /* background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.350)
+  ), url("./images/pexels-karolina-grabowska-4621652.jpg"); */
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.350)
+  ), url("./images/pexels-markus-spiske-1268129.jpg");
+  background-size: cover;
+  min-height: 130vh; /* this line har a flaw: if you have several plants and expand every card, 
+  the background will at some point move. There must be a way to make it dynamic*/
+  /* background-color: rgba(255, 255, 255, 0.794); */
 }
+/* .Home{
+  background-color: white;
+} */
+/* .plant-container{
+  background-color: white;
+} */
 
 .header {
   text-decoration: none;
@@ -13,10 +39,14 @@ body {
 hr {
   opacity: 50%;
 }
+h2{
+  color: white;
+}
 
 p {
   font-size: 0.875rem; /* Change the value to adjust the size */
   text-align: center; /* Optional: center the text horizontally */
+  color: white;
 }
 
 input:focus {
@@ -31,6 +61,7 @@ a, button[type="button"] {
   color: #444; /* set a dark grey color for the link */
   text-decoration: underline;
   text-align: center;
+  color: white;
 }
 
 .all-plants {
@@ -59,3 +90,4 @@ a, button[type="button"] {
   margin-right: 100px;
   text-align: left;
 }
+
