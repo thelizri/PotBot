@@ -2,6 +2,12 @@
   /* margin-left: 25vw; */
 }
 
+.add-plant{
+  padding: 10px;
+  background-color: rgba(32, 41, 31, 0.835);
+  border-radius: 10px;
+}
+
 .plant-form {
   margin: auto;
 }

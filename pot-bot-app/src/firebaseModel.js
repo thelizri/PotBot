@@ -192,7 +192,7 @@ async function notificationToggle(user, toggleValue) {
 }
 
 async function setWateringPreference(event, name) {
-  const type = event.target.id;
+  const type = event.target.value;
   const path = `/plants/${name}/settings`;
   const data = {type: type};
   updatePlantData(auth.currentUser, path, data)

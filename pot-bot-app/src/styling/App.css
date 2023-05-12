@@ -1,4 +1,7 @@
 /* Styles that apply to the whole app should go here, e.g. body, a, div, etc.. */
+/* html{
+  background-color: rgb(4, 20, 6);
+} */
 
 body {
   box-sizing: border-box;

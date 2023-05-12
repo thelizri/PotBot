@@ -79,7 +79,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
   }, [searchResults]);
 
   return (
-    <div className="addPlant">
+    <div className="add-plant">
       <div className="addPlantDescr">
         <h2>Connect your plant to the PotBot</h2>
         <p>First choose what kind of plant you have and we will calibrate the optimal conditions for it</p>
