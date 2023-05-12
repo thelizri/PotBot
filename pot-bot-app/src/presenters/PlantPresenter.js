@@ -100,24 +100,25 @@ export default function PlantPresenter() {
         return {min: 0, max: 0};
       }
 
+      console.log(sunlight)
       let total = 0;
       let count = 0;
 
       sunlight.forEach((element) => {
         switch (element) {
-          case 'full_shade' || 'Full_shade':
+          case 'Full shade':
             total += 0.1;
             count += 1;
             break;
-          case 'part_shade' || 'Part_shade':
+          case 'Part shade':
             total += 0.35;
             count += 1;
             break;
-          case 'sun-part_shade' || 'Sun-part_shade':
+          case 'Partial sun':
             total += 0.65;
             count += 1;
             break;
-          case 'full_sun' || 'Full_sun':
+          case 'Full sun':
             total += 0.9;
             count += 1;
             break;
@@ -129,7 +130,7 @@ export default function PlantPresenter() {
       const avg = total / count;
 
       let min = 0, max = 0;
-
+      console.log("Avg " + avg)
       if (avg >= 0 && avg < 0.2) {
         min = 0;
         max = 0.2;
@@ -143,7 +144,7 @@ export default function PlantPresenter() {
         min = 0.8;
         max = 1.0;
       }
-
+      console.log("min " + min + " max " + max)
       return {min, max};
     }
 
@@ -163,7 +164,7 @@ export default function PlantPresenter() {
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <span style={{padding: "0.5em"}}>{name}</span>
+              <span style={{padding: "0.5em", textTransform: 'capitalize'}}>{name}</span>
             </div>
             <div className="plant-data">
               <div className="row">
@@ -175,7 +176,9 @@ export default function PlantPresenter() {
                 <div className="col">
                   <div className="circle"
                        style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
-                  <p><FontAwesomeIcon icon={faSun} title={sunlight.join(', ')}/> Light</p>
+                  <p><FontAwesomeIcon icon={faSun}
+                                      title={sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}/> Light
+                  </p>
                 </div>
                 <div className="col">
                   <div className="circle"
@@ -204,7 +207,7 @@ export default function PlantPresenter() {
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <span style={{padding: "0.5em"}}>
+              <span style={{padding: "0.5em", textTransform: 'capitalize'}}>
                 <Link className='expandable-div' to='/connect' state={{plantName: name}}>
                   Connect {name} to PotBot</Link><p/>
                 <button className='connect' type={"button"}
