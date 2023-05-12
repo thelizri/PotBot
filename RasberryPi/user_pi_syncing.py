@@ -9,7 +9,6 @@ except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
 db = None
-ref = None
 product_id = None
 uid = None
 plant_name = None
@@ -30,6 +29,10 @@ def is_linked_with_user(database):
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
         return False
+    
+def _link_pi_with_user_setup():
+    print("Is not linked with user")
+    db.reference(f"/potbots").update({product_id: ""})
 
 def _link_pi_with_user(event):
     global uid, plant_name, is_linked
@@ -43,29 +46,26 @@ def _link_pi_with_user(event):
 
     plant_name = data["plant"]
     plant_file = open("plant.id", "w")
-    plant_file.write(plant)
+    plant_file.write(plant_name)
 
-    db.reference(f"/users/{uid}/plants/{plant}").update({"productID": product_id})
-    ref.delete()
+    db.reference(f"/users/{uid}/plants/{plant_name}").update({"productID": product_id})
+    db.reference(f"/potbots/{product_id}").delete()
     is_linked = True
 
 def _connection_state_changed(event):
+    global is_linked
     print("Connection state changed, callback has been called")
     if event.data == None or event.data == "Raspberry Pi":
+        is_linked = False
         _link_pi_with_user(event)
 
 def run(database):
-    global db, ref
+    global db
     try:
         db = database
         if not is_linked_with_user(database):
-            print("Is not linked with user")
-
-            ref = database.reference(f"/potbots")
-            ref.update({product_id: ""})
-            ref = ref.child(product_id)
-
-            ref.listen(_link_pi_with_user)
+            _link_pi_with_user_setup()
+            db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
             while not is_linked:
                 sleep(5)
         db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(_connection_state_changed)
