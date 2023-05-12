@@ -6,7 +6,7 @@ const API_KEY = 'sk-vhKW64412e6ecbc88586';
 
 
 export const searchPlants = async (searchTerm) => {
-  const dbRef = ref(db, "plantsData/species_data_detailed");
+  const dbRef = ref(db, "plantsData/species_data_dumb");
   const snapshot = await get(dbRef);
   const plantData = snapshot.val();
 
@@ -30,7 +30,7 @@ export const searchPlants = async (searchTerm) => {
 };
 
 export const fetchPlantDetails = async (plantId) => {
-  const dbRef = ref(db, `plantsData/species_data_detailed/${plantId - 1}`);
+  const dbRef = ref(db, `plantsData/species_data_dumb/${plantId - 1}`);
   const snapshot = await get(dbRef);
   return snapshot.val();
 }
