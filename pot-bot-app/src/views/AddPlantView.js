@@ -133,7 +133,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
             )}
             {index === searchResults.length - 1 && !isLoading && (
               <div className="load-more" ref={loaderRef}>
-                Load More
+                {isFetchingMore && <p>Loading...</p>}
               </div>
             )}
           </div>
