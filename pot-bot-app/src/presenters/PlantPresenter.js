@@ -80,74 +80,41 @@ export default function PlantPresenter() {
     }
 
     function wateringToValue(watering) {
-
+      //The plan is to trigger the automatic watering system based on the minimum value.
       switch (watering) {
-        case 'frequent' || 'Frequent':
+        case 'Frequent':
           return {min: 60, max: 90};
-        case 'average' || 'Average':
+        case 'Average':
           return {min: 30, max: 60};
-        case 'minimum' || 'Minimum':
+        case 'Minimum':
           return {min: 15, max: 30};
-        case 'none' || 'None':
+        case 'None':
           return {min: 0, max: 15};
+        //Default values in case a plant has no watering information.
         default:
-          return {min: 0, max: 0};
+          return {min: 30, max: 60};
       }
     }
 
     function sunlightToValue(sunlight) {
-      if (!Array.isArray(sunlight)) {
-        return {min: 0, max: 0};
-      }
+      const mapping = {
+        'Full shade': {min: 0.1, max: 0.4},
+        'Part shade': {min: 0.4, max: 0.7},
+        'Full sun': {min: 0.7, max: 1.0},
+      };
+      //Default values in case a plant has no sunlight information.
+      let min = 0.3;
+      let max = 0.8;
 
-      console.log(sunlight)
-      let total = 0;
-      let count = 0;
-
-      sunlight.forEach((element) => {
-        switch (element) {
-          case 'Full shade':
-            total += 0.1;
-            count += 1;
-            break;
-          case 'Part shade':
-            total += 0.35;
-            count += 1;
-            break;
-          case 'Partial sun':
-            total += 0.65;
-            count += 1;
-            break;
-          case 'Full sun':
-            total += 0.9;
-            count += 1;
-            break;
-          default:
-            break;
+      if (Array.isArray(sunlight)) {
+        const values = sunlight.filter((value) => mapping.hasOwnProperty(value));
+        if (values.length > 0) {
+          min = Math.min(...values.map((value) => mapping[value].min));
+          max = Math.max(...values.map((value) => mapping[value].max));
         }
-      })
-
-      const avg = total / count;
-
-      let min = 0, max = 0;
-      console.log("Avg " + avg)
-      if (avg >= 0 && avg < 0.2) {
-        min = 0;
-        max = 0.2;
-      } else if (avg >= 0.2 && avg < 0.5) {
-        min = 0.2;
-        max = 0.5;
-      } else if (avg >= 0.5 && avg < 0.8) {
-        min = 0.5;
-        max = 0.8;
-      } else if (avg >= 0.8 && avg <= 1.0) {
-        min = 0.8;
-        max = 1.0;
       }
-      console.log("min " + min + " max " + max)
       return {min, max};
     }
-
 
     let wateringValue = wateringToValue(watering);
     let sunlightValue = sunlightToValue(sunlight);
