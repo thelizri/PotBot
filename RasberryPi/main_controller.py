@@ -17,6 +17,7 @@ try:
 except Exception as error:
     handle_errors("main_controller_error.log", error)
 
+
 def check_water_level(database):
     while True:
         print("check_water_level")
@@ -31,7 +32,7 @@ def check_water_level(database):
         waterLevel = data["waterLevel"]
 
         if waterLevel == 0:
-            with open ("notify.set", "r") as file:
+            with open("notify.set", "r") as file:
                 notify = eval(file.readline().strip())
                 if notify:
                     email_manager.send_notification(database)
@@ -40,11 +41,12 @@ def check_water_level(database):
                     print("Email notifications is disabled")
         time.sleep(600)
 
+
 def run():
     try:
         # Get the correct ids from the database
+        user_pi_syncing.run()
         database = database_manager.DatabaseManager()
-        user_pi_syncing.run(database)
 
         # Takes measurements from the arduino
         print("Creating arduino thread")
@@ -74,6 +76,7 @@ def run():
         print("Created all threads")
     except Exception as error:
         handle_errors("main_controller_error.log", error)
+
 
 if __name__ == "__main__":
     run()
