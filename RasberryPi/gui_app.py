@@ -25,8 +25,6 @@ def update_labels(label_vars, window):
 
 
 def run():
-<<<<<<< HEAD
-=======
     os.environ["DISPLAY"] = ":0.0"
     try:
         subprocess.run(
@@ -37,7 +35,6 @@ def run():
         )
     except Exception as error:
         error_handler.handle_errors("gui.log", error)
->>>>>>> main
     bg_color = "#94C973"
     fg_color = "#000209"
 
