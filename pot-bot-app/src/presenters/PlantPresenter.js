@@ -163,7 +163,7 @@ export default function PlantPresenter() {
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>{name}</span>
+              <span style={{padding: "0.5em"}}>{name}</span>
             </div>
             <div className="plant-data">
               <div className="row">
@@ -204,12 +204,12 @@ export default function PlantPresenter() {
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>
+              <span style={{padding: "0.5em"}}>
                 <Link className='expandable-div' to='/connect' state={{plantName: name}}>
-                  Connect {name} to potBot</Link><p/>
+                  Connect {name} to PotBot</Link><p/>
                 <button className='connect' type={"button"}
                         onClick={(event) =>
-                          removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Not right plant? Delete plant
+                          removePlant(name)}>Not right plant? Delete plant
                   </button>
               </span>
 
@@ -218,7 +218,9 @@ export default function PlantPresenter() {
         <Modal active={isWatering} message={"Your plant is being watered!"}/>
       </>)
 
+
   }
+
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>
 }
