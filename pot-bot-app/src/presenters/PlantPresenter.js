@@ -1,14 +1,15 @@
-import {connectPotBot, readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
+import {readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTint, faSun, faThermometerHalf, faFlask } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faFlask, faSun, faThermometerHalf, faTint} from '@fortawesome/free-solid-svg-icons';
 import trash from '../styling/images/trash.svg'
 import graph from '../styling/images/graph.svg'
 import waterdrop from '../styling/images/waterdrop.svg'
 import settingsIcon from '../styling/images/settings.svg'
+import Modal from "../views/Modal";
 
 /*TODO: Check why sometimes getting an uncaught error */
 export default function PlantPresenter() {
@@ -25,16 +26,22 @@ export default function PlantPresenter() {
         setPlants(data)
       })).catch(err => console.error(err.message));
     }
-  }, [user])
-
+  }, [user, plants])
 
   function Plant({name, data, watering, sunlight, productID}) {
     const [expanded, setExpanded] = useState(false);
     const [latest, setLatest] = useState({})
     const [connected, setConnected] = useState(false)
+    const [isWatering, setIsWatering] = useState(false);
     const {user} = useAuth()
-    let n = useNavigate()
 
+    function handleWaterClick() {
+      setWateredTrue(name);
+      setIsWatering(true);
+      setTimeout(() => {
+        setIsWatering(false)
+      }, 2000)
+    }
 
     function handleClick(e) {
       e.preventDefault()
@@ -53,14 +60,14 @@ export default function PlantPresenter() {
     function getMoistureColor(actual, wateringPreset) {
       const lowerLimit = wateringPreset.min;
       const upperLimit = wateringPreset.max;
-      
+
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
-    
+
     function getLightColor(actual, sunlightPreset) {
       const lowerLimit = sunlightPreset.min;
       const upperLimit = sunlightPreset.max;
-      
+
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
@@ -76,26 +83,26 @@ export default function PlantPresenter() {
 
       switch (watering) {
         case 'frequent' || 'Frequent':
-          return { min: 60, max: 90 };
+          return {min: 60, max: 90};
         case 'average' || 'Average':
-          return { min: 30, max: 60 };
+          return {min: 30, max: 60};
         case 'minimum' || 'Minimum':
-          return { min: 15, max: 30 };
+          return {min: 15, max: 30};
         case 'none' || 'None':
-          return { min: 0, max: 15 };
+          return {min: 0, max: 15};
         default:
-          return { min: 0, max: 0 };
+          return {min: 0, max: 0};
       }
     }
 
     function sunlightToValue(sunlight) {
       if (!Array.isArray(sunlight)) {
-        return { min: 0, max: 0 };
+        return {min: 0, max: 0};
       }
-      
+
       let total = 0;
       let count = 0;
-      
+
       sunlight.forEach((element) => {
         switch (element) {
           case 'full_shade' || 'Full_shade':
@@ -110,7 +117,7 @@ export default function PlantPresenter() {
             total += 0.65;
             count += 1;
             break;
-          case 'full_sun'  || 'Full_sun':
+          case 'full_sun' || 'Full_sun':
             total += 0.9;
             count += 1;
             break;
@@ -118,48 +125,36 @@ export default function PlantPresenter() {
             break;
         }
       })
-      
+
       const avg = total / count;
-      
+
       let min = 0, max = 0;
-      
+
       if (avg >= 0 && avg < 0.2) {
-        min = 0; max = 0.2;
+        min = 0;
+        max = 0.2;
       } else if (avg >= 0.2 && avg < 0.5) {
-        min = 0.2; max = 0.5;
+        min = 0.2;
+        max = 0.5;
       } else if (avg >= 0.5 && avg < 0.8) {
-        min = 0.5; max = 0.8;
+        min = 0.5;
+        max = 0.8;
       } else if (avg >= 0.8 && avg <= 1.0) {
-        min = 0.8; max = 1.0;
+        min = 0.8;
+        max = 1.0;
       }
-      
-      return { min, max };
+
+      return {min, max};
     }
 
-    function connectPotBotHandler(productID, name) {
-      console.log(productID.target, name);
-
-      const data = {uid: user.uid, plant: name}
-
-      //n('/home');
-      /*const data2 = {plantRecommendedVitals: {
-          image: "NaN",
-          sunlight: ["Full sun", "part shade"],
-          temperature:"15",
-          watering:"Average"
-        }}*/
-      connectPotBot(productID.target, data).then((v) => console.log("Successful adding")).catch(error => {
-        console.error(error)
-      })
-    }
 
     let wateringValue = wateringToValue(watering);
-    // console.log(wateringValue)
     let sunlightValue = sunlightToValue(sunlight);
     let image = plants[name].plantRecommendedVitals.image;
     if (!image || image === "NaN") {
       image = elephant
     }
+
     return (
       <>
         {connected ?
@@ -173,19 +168,23 @@ export default function PlantPresenter() {
             <div className="plant-data">
               <div className="row">
                 <div className="col">
-                  <div className="circle" style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture}</div>
+                  <div className="circle"
+                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture}</div>
                   <p><FontAwesomeIcon icon={faTint} title={watering}/> Moisture</p>
                 </div>
                 <div className="col">
-                  <div className="circle" style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
+                  <div className="circle"
+                       style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
                   <p><FontAwesomeIcon icon={faSun} title={sunlight.join(', ')}/> Light</p>
                 </div>
                 <div className="col">
-                  <div className="circle" style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}</div>
+                  <div className="circle"
+                       style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}</div>
                   <p><FontAwesomeIcon icon={faThermometerHalf}/> Temperature</p>
                 </div>
                 <div className="col">
-                  <div className="circle" style={{color: getWaterlevelColor(latest.waterLevel)}}>{latest.waterLevel}</div>
+                  <div className="circle"
+                       style={{color: getWaterlevelColor(latest.waterLevel)}}>{latest.waterLevel}</div>
                   <p><FontAwesomeIcon icon={faFlask}/> Waterlevel</p>
                 </div>
               </div>
@@ -195,29 +194,31 @@ export default function PlantPresenter() {
                 <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img
                   src={graph}></img>}</Link>
                 <button id="waterdrop" className={"icon--small"} type={"button"}
-                        onClick={(event) => setWateredTrue(name)}>{<img src={waterdrop}></img>}</button>
+                        onClick={handleWaterClick}>{<img src={waterdrop}></img>}</button>
                 <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}><img
                   src={settingsIcon}/></Link></div>
               </div>
             </div>
           </div> :
-          <div id={name} className='expandable-div'>
+          <div id={name} className={`expandable-div ""`}>
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <form className='expandable-div'>Enter your code and press connect<input type='text' name='productID'
-                                                                                       required/>
-              </form>
-              <button type='button' className='expandable-div'>Connect {name}
-              </button>
+              <span style={{fontFamily: "sans-serif", padding: "0.5em"}}>
+                <Link className='expandable-div' to='/connect' state={{plantName: name}}>
+                  Connect {name} to potBot</Link><p/>
+                <button className='connect' type={"button"}
+                        onClick={(event) =>
+                          removePlant(event.target.parentElement.parentElement.parentElement.parentElement.id)}>Not right plant? Delete plant
+                  </button>
+              </span>
+
             </div>
           </div>}
+        <Modal active={isWatering} message={"Your plant is being watered!"}/>
       </>)
+
   }
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>
 }
-
-/* DummieButton to add a new plant */
-
-

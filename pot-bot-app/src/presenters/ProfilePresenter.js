@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
-import { useLocation, useParams } from 'react-router-dom';
+import React from "react";
 import ProfileView from "../views/ProfileView";
 
-function ProfilePresenter(){
-    return <ProfileView/>
+function ProfilePresenter() {
+  return <ProfileView/>
 }
 
 export default ProfilePresenter;

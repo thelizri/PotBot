@@ -1,5 +1,10 @@
 {
   "rules": {
+    "plantsData": {
+      "$key": {
+        ".read": "auth !== null"
+      }
+    },
     "potbots": {
       "$key": {
         ".write": "auth !== null"

@@ -5,9 +5,11 @@ body {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
 }
-.header{
+
+.header {
   text-decoration: none;
 }
+
 hr {
   opacity: 50%;
 }
@@ -21,7 +23,7 @@ input:focus {
   outline: none;
 }
 
-a, button[type="button"]{
+a, button[type="button"] {
   background-color: transparent;
   border-style: none none none none;
   margin-top: 10px;
@@ -31,17 +33,29 @@ a, button[type="button"]{
   text-align: center;
 }
 
-.all-plants{
+.all-plants {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.graphs{
-display: flex;
+.graphs {
+  display: flex;
   flex-direction: column;
 }
+
 /* .moisture-graph, .uv-graph, .temperature-graph{
   width: 700px;
   height: auto;
 } */
+
+
+.about-content > p {
+  text-align: left;
+}
+
+.about-content {
+  margin-left: 100px;
+  margin-right: 100px;
+  text-align: left;
+}
