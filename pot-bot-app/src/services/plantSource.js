@@ -17,8 +17,17 @@ export const searchPlants = async (searchTerm) => {
       (plant.other_name && plant.other_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())))
   );
 
-  return results;
-}
+  const capitalizedResults = results.map((plant) => {
+    return {
+      ...plant,
+      common_name: plant.common_name
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" "),
+    };
+  });
+  return capitalizedResults;
+};
 
 export const fetchPlantDetails = async (plantId) => {
   const dbRef = ref(db, `plantsData/species_data_detailed/${plantId - 1}`);

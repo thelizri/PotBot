@@ -59,6 +59,7 @@ class DatabaseManager:
             {
                 "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
             },
+            name="main",
         )
 
         try:
