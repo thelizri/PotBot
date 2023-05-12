@@ -7,35 +7,24 @@ import time
 from threading import Thread
 
 
-class test:
-    def __init__(self):
-        self.bool = True
-
-
-def destroy(test):
-    time.sleep(4)
-    print("Hello")
-    test.bool = False
-
-
 def create_window():
-    # os.environ["DISPLAY"] = ":0.0"
-    # try:
-    #    subprocess.run(
-    #        ["sudo", "xhost", "+SI:localuser:root"],
-    #        check=True,
-    #        text=True,
-    #        capture_output=True,
-    #    )
-    # except Exception as error:
-    #    error_handler.handle_errors("gui.log", error)
+    os.environ["DISPLAY"] = ":0.0"
+    try:
+        subprocess.run(
+            ["sudo", "xhost", "+SI:localuser:root"],
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+    except Exception as error:
+        error_handler.handle_errors("gui.log", error)
     bg_color = "#94C973"
     fg_color = "#000209"
 
     window = Tk()
     window.attributes("-fullscreen", True)
     window.title("PotBot")
-    window.configure(bg=bg_color)
+    window.configure(bg=bg_color, cursor=None)
 
     style = ttk.Style()
     style.configure("TFrame", background=bg_color)
@@ -68,20 +57,19 @@ def create_window():
     return window
 
 
-def check_destroy(test, window):
-    if not test.bool:
+def check_destroy(object, window):
+    if object.bool:
         window.destroy()
     else:
-        window.after(1000, check_destroy, test, window)
+        window.after(1000, check_destroy, object, window)
+
+
+def run(object):
+    window = create_window()
+    window.after(1000, check_destroy, object, window)
+    window.mainloop()
 
 
 if __name__ == "__main__":
-    t = test()
     window = create_window()
-    thread = Thread(
-        target=destroy,
-        args=(t,),
-    )
-    thread.start()
-    window.after(1000, check_destroy, t, window)
     window.mainloop()

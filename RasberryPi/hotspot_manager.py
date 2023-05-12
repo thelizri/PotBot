@@ -13,6 +13,11 @@ abspath = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abspath)
 
 
+class Bool:
+    def __init__(self):
+        self.bool = False
+
+
 def connect_to_network():
     with open("networkUserAndPassword.txt", "r") as credentials:
         ssid = credentials.readline().strip()
@@ -57,11 +62,12 @@ def wait_for_user_wifi():
 
 
 def _main():
-    gui = None
+    object = None
     while True:
         if not os.path.exists("networkUserAndPassword.txt"):
             try:
-                gui = Thread(target=gui_setup.run)
+                object = Bool()
+                gui = Thread(target=gui_setup.run, args=(object,))
                 gui.start()
                 enable_hotspot()
             except Exception as error:
@@ -69,8 +75,8 @@ def _main():
                 error_handler.handle_errors("hotspot_manager_error.log", error)
 
         if os.path.exists("networkUserAndPassword.txt") and connect_to_network():
-            if gui:
-                pass
+            if not object is None:
+                object.bool = True
             break
 
 
