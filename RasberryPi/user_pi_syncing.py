@@ -22,6 +22,7 @@ product_id = None
 uid = None
 plant_name = None
 is_linked = False
+connection_state_listener = None
 
 def is_linked_with_user():
     global product_id, uid, plant_name
@@ -53,8 +54,10 @@ def _link_pi_with_user_setup():
     db.reference(f"/potbots").update({product_id: ""})
 
 def _link_pi_with_user(event):
-    global uid, plant_name, is_linked
+    print("-----_link_pi_with_user called-----")
+    global uid, plant_name, is_linked, connection_state_listener
     data = event.data
+    print(f"-----data received: {data}-----")
     if data == None or data == "" or data == "Raspberry Pi":
         return
 
@@ -70,6 +73,11 @@ def _link_pi_with_user(event):
     db.reference(f"/potbots/{product_id}").delete()
     is_linked = True
 
+    if connection_state_listener != None:
+        connection_state_listener.close()
+    connection_state_listener = db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(
+                                _connection_state_changed)
+
 def _connection_state_changed(event):
     print("Connection state changed, callback has been called")
     if event.data == None or event.data == "Raspberry Pi":
@@ -83,7 +91,6 @@ def run():
             db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
             while not is_linked:
                 sleep(5)
-        db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(_connection_state_changed)
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
 
