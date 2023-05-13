@@ -10,12 +10,13 @@ export const searchPlants = async (searchTerm) => {
   const snapshot = await get(dbRef);
   const plantData = snapshot.val();
 
-  const results = Object.values(plantData).filter(
-    (plant) =>
-      plant.common_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plant.scientific_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (plant.other_name && plant.other_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
+  const results = Object.values(plantData).filter((plant) => {
+    const commonNameMatch = plant.common_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const scientificNameMatch = plant.scientific_name && plant.scientific_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const otherNameMatch = plant.other_name && plant.other_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    return commonNameMatch || scientificNameMatch || otherNameMatch;
+  });
 
   const capitalizedResults = results.map((plant) => {
     return {
