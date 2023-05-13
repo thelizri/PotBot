@@ -46,7 +46,7 @@ def run():
     try:
         # Get the correct ids from the database
         database = database_manager.DatabaseManager()
-        user_pi_syncing.run(database)
+        user_pi_syncing.run()
 
         # Takes measurements from the arduino
         print("Creating arduino thread")
