@@ -9,6 +9,7 @@ try:
 except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
+dbman = None
 product_id = None
 uid = None
 plant_name = None
@@ -59,7 +60,9 @@ def _connection_state_changed(event):
         _link_pi_with_user_setup()
 
 def run(database):
+    global dbman
     try:
+        dbman = database
         if not is_linked_with_user(database):
             _link_pi_with_user_setup()
             db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
@@ -68,6 +71,7 @@ def run(database):
         db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(_connection_state_changed)
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
+
 
 if __name__ == "__main__":
     run()
