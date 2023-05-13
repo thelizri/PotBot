@@ -4,18 +4,26 @@ import os
 
 try:
     from firebase_admin import db
+    from firebase_admin import credentials
+    from firebase_admin import initialize_app
     abspath = os.path.dirname(os.path.abspath(__file__))
     os.chdir(abspath)
+
+    initialize_app(
+        credentials.Certificate("/home/pi/PotBot/RasberryPi/firebase-key.json"),
+        {
+            "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
+        },
+    )
 except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
-dbman = None
 product_id = None
 uid = None
 plant_name = None
 is_linked = False
 
-def is_linked_with_user(database):
+def is_linked_with_user():
     global product_id, uid, plant_name
     try:
         user_id_file = open("user.id", "r")
@@ -25,7 +33,7 @@ def is_linked_with_user(database):
         plant_name_file = open("plant.id", "r")
         plant_name = plant_name_file.readline().strip()
 
-        ref = database.reference(f"/users/{uid}/plants/{plant_name}")
+        ref = db.reference(f"/users/{uid}/plants/{plant_name}")
         return ref.child("productID").get() == product_id
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
@@ -59,11 +67,10 @@ def _connection_state_changed(event):
     if event.data == None or event.data == "Raspberry Pi":
         _link_pi_with_user_setup()
 
-def run(database):
-    global dbman
+def run():
     try:
-        dbman = database
-        if not is_linked_with_user(database):
+        if not is_linked_with_user():
+            print("not linked")
             _link_pi_with_user_setup()
             db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
             while not is_linked:
