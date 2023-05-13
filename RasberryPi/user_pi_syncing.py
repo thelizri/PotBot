@@ -3,12 +3,12 @@ from time import sleep
 import os
 
 try:
+    from firebase_admin import db
     abspath = os.path.dirname(os.path.abspath(__file__))
     os.chdir(abspath)
 except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
-db = None
 product_id = None
 uid = None
 plant_name = None
@@ -59,9 +59,7 @@ def _connection_state_changed(event):
         _link_pi_with_user_setup()
 
 def run(database):
-    global db
     try:
-        db = database
         if not is_linked_with_user(database):
             _link_pi_with_user_setup()
             db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
