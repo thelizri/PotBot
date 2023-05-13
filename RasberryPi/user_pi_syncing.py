@@ -28,16 +28,16 @@ def is_linked_with_user():
     global product_id, uid, plant_name
     
     try:
-        product_id_file = open("product.id", "r")
-        product_id = product_id_file.readline().strip()
+        with open("product.id", "r") as product_id_file:
+            product_id = product_id_file.readline().strip()
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
 
     try:
-        user_id_file = open("user.id", "r")
-        uid = user_id_file.readline().strip()
-        plant_name_file = open("plant.id", "r")
-        plant_name = plant_name_file.readline().strip()
+        with open("user.id", "r") as user_id_file:
+            uid = user_id_file.readline().strip()
+        with open("plant.id", "r") as plant_name_file:
+            plant_name = plant_name_file.readline().strip()
     except Exception:
         return False
 
@@ -64,10 +64,12 @@ def _link_pi_with_user(event):
     uid = data["uid"]
     user_id_file = open("user.id", "w")
     user_id_file.write(uid)
+    user_id_file.close()
 
     plant_name = data["plant"]
     plant_file = open("plant.id", "w")
     plant_file.write(plant_name)
+    plant_file.close()
 
     db.reference(f"/users/{uid}/plants/{plant_name}").update({"productID": product_id})
     db.reference(f"/potbots/{product_id}").delete()
