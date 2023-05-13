@@ -25,14 +25,22 @@ is_linked = False
 
 def is_linked_with_user():
     global product_id, uid, plant_name
+    
     try:
         product_id_file = open("product.id", "r")
         product_id = product_id_file.readline().strip()
+    except Exception as error:
+        handle_errors("user_pi_syncing_error.log", error)
+
+    try:
         user_id_file = open("user.id", "r")
         uid = user_id_file.readline().strip()
         plant_name_file = open("plant.id", "r")
         plant_name = plant_name_file.readline().strip()
+    except Exception:
+        return False
 
+    try:
         ref = db.reference(f"/users/{uid}/plants/{plant_name}")
         return ref.child("productID").get() == product_id
     except Exception as error:
