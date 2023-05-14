@@ -4,8 +4,6 @@ import os
 
 dbman = None
 product_id = None
-uid = None
-plant_name = None
 is_linked = None
 connection_state_listener = None
 
@@ -28,8 +26,6 @@ except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
 def is_linked_with_user():
-    global uid, plant_name
-
     try:
         with open("user.id", "r") as user_id_file:
             uid = user_id_file.readline().strip()
@@ -54,7 +50,7 @@ def _link_pi_with_user_setup():
 
 def _link_pi_with_user(event):
     print("-----_link_pi_with_user called-----")
-    global uid, plant_name, is_linked, connection_state_listener
+    global is_linked, connection_state_listener
     if is_linked:
         return
 
@@ -63,26 +59,23 @@ def _link_pi_with_user(event):
     if data == None or data == "" or data == "Raspberry Pi":
         return
 
-    uid = data["uid"]
+    dbman.uid = data["uid"]
     user_id_file = open("user.id", "w")
-    user_id_file.write(uid)
+    user_id_file.write(dbman.uid)
     user_id_file.close()
 
-    plant_name = data["plant"]
+    dbman.plant_id = data["plant"]
     plant_file = open("plant.id", "w")
-    plant_file.write(plant_name)
+    plant_file.write(dbman.plant_id)
     plant_file.close()
-
-    dbman.uid = uid
-    dbman.plant_id = plant_name
     
-    db.reference(f"/users/{uid}/plants/{plant_name}").update({"productID": product_id})
+    db.reference(f"/users/{dbman.uid}/plants/{dbman.plant_id}").update({"productID": product_id})
     db.reference(f"/potbots/{product_id}").delete()
     is_linked = True
 
     if connection_state_listener != None:
         connection_state_listener.close()
-    connection_state_listener = db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(
+    connection_state_listener = db.reference(f"/users/{dbman.uid}/plants/{dbman.plant_id}/productID").listen(
                                 _connection_state_changed)
 
 def _connection_state_changed(event):
@@ -103,7 +96,7 @@ def run(database):
                 sleep(5)
             return
 
-        connection_state_listener = db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(
+        connection_state_listener = db.reference(f"/users/{dbman.uid}/plants/{dbman.plant_id}/productID").listen(
                                 _connection_state_changed)
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
