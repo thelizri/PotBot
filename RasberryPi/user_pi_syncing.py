@@ -93,10 +93,11 @@ def run(database):
     global dbman, connection_state_listener
     try:
         dbman = database
+        db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
+
         if not is_linked_with_user():
             print("not linked")
             _link_pi_with_user_setup()
-            db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
             while not is_linked:
                 sleep(5)
             return
