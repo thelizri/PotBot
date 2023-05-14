@@ -6,8 +6,8 @@
   align-items: center;
   /* max-width: 40vmin; */
   /* margin: 0 auto; */
-  background-color: rgba(32, 41, 31, 0.835);
-  border-radius: 10px;
+  /* background-color: rgba(32, 41, 31, 0.835);
+  border-radius: 10px; */
 }
 
 .logout-btn {

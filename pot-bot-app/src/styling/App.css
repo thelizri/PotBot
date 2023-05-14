@@ -22,7 +22,7 @@ body {
     to bottom,
     rgba(0, 0, 0, 0.75),
     rgba(0, 0, 0, 0.350)
-  ), url("./images/pexels-markus-spiske-1268129.jpg");
+  ), url("./images/sarah-dorweiler-x2Tmfd1-SgA-unsplash.jpg");
   background-size: cover;
   min-height: 130vh; /* this line har a flaw: if you have several plants and expand every card, 
   the background will at some point move. There must be a way to make it dynamic*/

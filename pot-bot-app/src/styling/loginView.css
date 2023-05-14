@@ -4,8 +4,20 @@
   align-items: center;
   justify-content: center;
   height: 50vh;
-  background-color: #fff; /* white background */
+  background-color: rgba(32, 41, 31, 0.835);
+  border-radius: 10px;
+  margin-left: 30%;
+  margin-right: 30%;
 }
+
+/* For small screens */
+@media screen and (max-width: 1180px) {
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 h1 {
   text-align: center;
@@ -36,7 +48,8 @@ form {
   padding: 20px;
   border: none;
   border-radius: 15px;
-  background-color: #fff; /* light grey background color */
+  /* background-color: #fff;  */
+  /* light grey background color */
 }
 
 label {
@@ -53,6 +66,12 @@ label {
   border-bottom: 1px solid #444; /* set a dark grey border color */
   border-radius: 0px;
   font-size: 16px;
+}
+/* For small screens */
+@media screen and (max-width: 1180px) {
+  .login-input, .signup-input, .api-search {
+    width: 80%;
+  }
 }
 
 button[type="submit"] {
@@ -72,8 +91,9 @@ button[type="submit"]:hover {
 }
 
 .create-account {
-  background-color: #eee; /* set a light grey button background color */
-  color: #444;
+  /* background-color: #eee;  */
+  /* set a light grey button background color */
+  /* color: #444; */
   border: none;
   border-radius: 4px;
   padding: 10px;
@@ -91,14 +111,10 @@ button[type="submit"]:hover {
   text-decoration: none;
 }
 
-/* moved this to the App.css so it is consistent throughout all views*/
-/* a{
-  margin-top: 10px;
-  font-size: 16px;
-  color: #444;
-  text-decoration: underline;
-  text-align: center;
-} */
+.create-account-text{
+  color: black;
+}
+
 
 .pLogin {
   text-align: center;
