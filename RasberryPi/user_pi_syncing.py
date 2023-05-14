@@ -2,6 +2,13 @@ from error_handler import handle_errors
 from time import sleep
 import os
 
+dbman = None
+product_id = None
+uid = None
+plant_name = None
+is_linked = False
+connection_state_listener = None
+
 try:
     from firebase_admin import db
     from firebase_admin import credentials
@@ -15,24 +22,13 @@ try:
             "databaseURL": "https://potbot-9f9ff-default-rtdb.europe-west1.firebasedatabase.app/"
         },
     )
+    with open("product.id", "r") as product_id_file:
+        product_id = product_id_file.readline().strip()
 except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
-dbman = None
-product_id = None
-uid = None
-plant_name = None
-is_linked = False
-connection_state_listener = None
-
 def is_linked_with_user():
-    global product_id, uid, plant_name
-    
-    try:
-        with open("product.id", "r") as product_id_file:
-            product_id = product_id_file.readline().strip()
-    except Exception as error:
-        handle_errors("user_pi_syncing_error.log", error)
+    global uid, plant_name
 
     try:
         with open("user.id", "r") as user_id_file:
