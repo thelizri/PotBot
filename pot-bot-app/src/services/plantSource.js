@@ -6,16 +6,17 @@ const API_KEY = 'sk-vhKW64412e6ecbc88586';
 
 
 export const searchPlants = async (searchTerm) => {
-  const dbRef = ref(db, "plantsData/species_data_detailed");
+  const dbRef = ref(db, "plantsData/species_data_dumb");
   const snapshot = await get(dbRef);
   const plantData = snapshot.val();
 
-  const results = Object.values(plantData).filter(
-    (plant) =>
-      plant.common_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plant.scientific_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (plant.other_name && plant.other_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
+  const results = Object.values(plantData).filter((plant) => {
+    const commonNameMatch = plant.common_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const scientificNameMatch = plant.scientific_name && plant.scientific_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const otherNameMatch = plant.other_name && plant.other_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    return commonNameMatch || scientificNameMatch || otherNameMatch;
+  });
 
   const capitalizedResults = results.map((plant) => {
     return {
@@ -30,7 +31,7 @@ export const searchPlants = async (searchTerm) => {
 };
 
 export const fetchPlantDetails = async (plantId) => {
-  const dbRef = ref(db, `plantsData/species_data_detailed/${plantId - 1}`);
+  const dbRef = ref(db, `plantsData/species_data_dumb/${plantId - 1}`);
   const snapshot = await get(dbRef);
   return snapshot.val();
 }
