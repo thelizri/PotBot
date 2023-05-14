@@ -47,6 +47,10 @@ def _link_pi_with_user_setup():
     db.reference(f"/potbots").update({product_id: ""})
     dbman.uid = None
     dbman.plant_id = None
+    with open("user.id", "w") as user_id_file:
+        user_id_file.write("None")
+    with open("plant.id", "w") as plant_name_file:
+        plant_name_file.write("None")
 
 def _link_pi_with_user(event):
     print("-----_link_pi_with_user called-----")
