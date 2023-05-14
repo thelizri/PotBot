@@ -18,6 +18,7 @@ try:
 except Exception as error:
     handle_errors("user_pi_syncing_error.log", error)
 
+dbman = None
 product_id = None
 uid = None
 plant_name = None
@@ -71,6 +72,9 @@ def _link_pi_with_user(event):
     plant_file.write(plant_name)
     plant_file.close()
 
+    dbman.uid = uid
+    dbman.plant_id = plant_name
+
     db.reference(f"/users/{uid}/plants/{plant_name}").update({"productID": product_id})
     db.reference(f"/potbots/{product_id}").delete()
     is_linked = True
@@ -85,8 +89,10 @@ def _connection_state_changed(event):
     if event.data == None or event.data == "Raspberry Pi":
         _link_pi_with_user_setup()
 
-def run():
+def run(database):
+    global dbman, connection_state_listener
     try:
+        dbman = database
         if not is_linked_with_user():
             print("not linked")
             _link_pi_with_user_setup()
