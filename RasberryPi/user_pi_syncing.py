@@ -49,6 +49,8 @@ def _link_pi_with_user_setup():
     global is_linked
     is_linked = False
     db.reference(f"/potbots").update({product_id: ""})
+    dbman.uid = None
+    dbman.plant_id = None
 
 def _link_pi_with_user(event):
     print("-----_link_pi_with_user called-----")
@@ -100,6 +102,7 @@ def run(database):
             while not is_linked:
                 sleep(5)
             return
+
         connection_state_listener = db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(
                                 _connection_state_changed)
     except Exception as error:
