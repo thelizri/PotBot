@@ -53,6 +53,9 @@ def _link_pi_with_user_setup():
 def _link_pi_with_user(event):
     print("-----_link_pi_with_user called-----")
     global uid, plant_name, is_linked, connection_state_listener
+    if is_linked:
+        return
+
     data = event.data
     print(f"-----data received: {data}-----")
     if data == None or data == "" or data == "Raspberry Pi":
