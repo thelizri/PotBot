@@ -180,7 +180,7 @@ export default function PlantPresenter() {
                 <div className="col">
                   <div className="circle"
                        style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}</div>
-                  <p><FontAwesomeIcon icon={faThermometerHalf}/> Temperature</p>
+                  <p><FontAwesomeIcon icon={faThermometerHalf} title={"10-30°C"} /> Temperature</p>
                 </div>
                 <div className="col">
                   <div className="circle"
