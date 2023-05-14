@@ -74,7 +74,7 @@ def _link_pi_with_user(event):
 
     dbman.uid = uid
     dbman.plant_id = plant_name
-
+    
     db.reference(f"/users/{uid}/plants/{plant_name}").update({"productID": product_id})
     db.reference(f"/potbots/{product_id}").delete()
     is_linked = True
@@ -99,6 +99,9 @@ def run(database):
             db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
             while not is_linked:
                 sleep(5)
+            return
+        connection_state_listener = db.reference(f"/users/{uid}/plants/{plant_name}/productID").listen(
+                                _connection_state_changed)
     except Exception as error:
         handle_errors("user_pi_syncing_error.log", error)
 
