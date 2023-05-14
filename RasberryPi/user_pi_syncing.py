@@ -6,7 +6,7 @@ dbman = None
 product_id = None
 uid = None
 plant_name = None
-is_linked = False
+is_linked = None
 connection_state_listener = None
 
 try:
@@ -89,12 +89,12 @@ def _connection_state_changed(event):
         _link_pi_with_user_setup()
 
 def run(database):
-    global dbman, connection_state_listener
+    global dbman, connection_state_listener, is_linked
     try:
         dbman = database
         db.reference(f"/potbots/{product_id}").listen(_link_pi_with_user)
-
-        if not is_linked_with_user():
+        is_linked = is_linked_with_user()
+        if not is_linked:
             print("not linked")
             _link_pi_with_user_setup()
             while not is_linked:
