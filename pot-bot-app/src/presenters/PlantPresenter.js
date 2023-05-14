@@ -188,14 +188,14 @@ export default function PlantPresenter() {
                   <p><FontAwesomeIcon icon={faFlask}/> Waterlevel</p>
                 </div>
               </div>
-              <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>{<img
+              <button alt="Delete" id="trash" className={"icon--small tooltip"} type={"button"} onClick={(event) => removePlant(name)}>{<img
                 src={trash}></img>}</button>
               <div id="icons__row" className="row">
-                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img
+                <Link alt="History" to={`/history/${name}`} state={data} id="graph" className={"icon--small tooltip"}>{<img
                   src={graph}></img>}</Link>
-                <button id="waterdrop" className={"icon--small"} type={"button"}
+                <button alt="Water your plant!" id="waterdrop" className={"icon--small tooltip"} type={"button"}
                         onClick={handleWaterClick}>{<img src={waterdrop}></img>}</button>
-                <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}><img
+                <div alt="Settings" id="settings-icon" className="icon--small tooltip"><Link to={`/settings/${name}`} state={plants}><img
                   src={settingsIcon}/></Link></div>
               </div>
             </div>
