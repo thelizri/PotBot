@@ -22,10 +22,14 @@ def _set_user_notification_setting(event):
 
 def _set_settings(event):
     key = event.path.replace("/", "")
-    print(f"_set_settings called, data recieved: {event.data}\nkey: {key}")
+    
     if key == "":
         if len(event.data) != 5:
-            return
+            with open("settings.json", "r") as file:
+                settings = json.load(file)
+                settings[event.data.keys()[0]] = event.data.values()[0]
+                event.data = settings
+
         with open("settings.json", "w") as file:
             # print(event.data)
             # print("No key")
