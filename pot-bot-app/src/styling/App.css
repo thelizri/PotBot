@@ -7,17 +7,6 @@ body {
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  /* background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.75),
-    rgba(0, 0, 0, 0.5)
-  ), url("./images/pexels-garrett-morrow-1638073.jpg"); */
-  /* background-image: url("./images/pexels-garrett-morrow-1638073.jpg"); */
-  /* background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.75),
-    rgba(0, 0, 0, 0.350)
-  ), url("./images/pexels-karolina-grabowska-4621652.jpg"); */
   background-image: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.75),
@@ -28,22 +17,19 @@ body {
   the background will at some point move. There must be a way to make it dynamic*/
   /* background-color: rgba(255, 255, 255, 0.794); */
 }
-/* .Home{
-  background-color: white;
-} */
-/* .plant-container{
-  background-color: white;
-} */
 
 .header {
   text-decoration: none;
 }
 
 hr {
-  opacity: 50%;
+  opacity: 20%;
 }
 h2{
   color: white;
+}
+h3{
+  color: rgb(192, 192, 192);
 }
 
 p {
@@ -83,6 +69,11 @@ a, button[type="button"] {
   height: auto;
 } */
 
+.about{
+  background-color: rgba(32, 41, 31, 0.835);
+  border-radius: 10px;
+  padding: 10px;
+}
 
 .about-content > p {
   text-align: left;
@@ -94,3 +85,12 @@ a, button[type="button"] {
   text-align: left;
 }
 
+.back-btn {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border-style: none none none none;
+  margin: auto;
+  padding: 15px;
+  color: white;
+}

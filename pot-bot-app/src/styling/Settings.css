@@ -7,34 +7,17 @@
     border-radius: 10px;
   }
   
-  .settings h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 30px;
-  }
+.settings h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+#watering-options, .interval, .checkbox{
+  padding: 4px;
+}
   
-  .toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 300px;
-    margin-bottom: 20px;
-  }
-  
-  label {
-    font-size: 1.2rem;
-  }
-  
-  input[type="checkbox"] {
-    transform: scale(1.5);
-    margin-left: 20px;
-  }
-  
-  input[type="checkbox"]:checked + label {
-    font-weight: bold;
-    color: #008000;
-  }
-  
-.dropdown-content, #Manual, #Automatic, #Scheduled{
-  border-radius: 10px;
+label {
+  font-size: 1.2rem;
+  color: rgb(194, 194, 194);
 }

@@ -93,8 +93,8 @@ export default function AddPlantView({addPlantToPersonalList}) {
           onChange={handleChange}
         />
         <button type="submit">Search</button>
-        <Link to="/home">
-          <button className="back-btn">Back to your plants</button>
+        <Link to="/home"> Back to your plants
+          {/* <button className="back-btn">Back to your plants</button> */}
         </Link>
       </form>
       {isLoading && (
