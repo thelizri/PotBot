@@ -97,7 +97,7 @@ function LoginView({username, setUsername, password, setPassword, handleSubmit, 
           <button className="sign-in" type="submit">Sign in</button>
         </form>
         <button className="create-account">
-          <Link to="/signup">Create an account</Link>
+          <Link to="/signup" className="create-account-text">Create an account</Link>
         </button>
       </div>
     </div>
