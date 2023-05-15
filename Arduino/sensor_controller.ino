@@ -70,7 +70,6 @@ int readWaterLevel() {
   delay(100);                                      // wait 100 milliseconds
   int value = averageAnalogRead(WATER_LEVEL_PIN);  // read the analog value from sensor
   digitalWrite(POWER_PIN, LOW);                    // turn the sensor OFF
-  Serial.println(value);
   if (value > WATER_THRESHHOLD) {
     return 1;
   }
