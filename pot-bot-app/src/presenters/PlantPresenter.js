@@ -1,14 +1,22 @@
-import {readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
+import {disconnectPlant, readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faFlask, faSun, faThermometerHalf, faTint} from '@fortawesome/free-solid-svg-icons';
-import trash from '../styling/images/trash.svg'
-import graph from '../styling/images/graph.svg'
-import waterdrop from '../styling/images/waterdrop.svg'
-import settingsIcon from '../styling/images/settings.svg'
+import {
+  faChartLine,
+  faCheckCircle,
+  faCloud,
+  faCloudSun,
+  faExclamationCircle,
+  faLink,
+  faSliders,
+  faSun,
+  faTint,
+  faTrashAlt,
+  faUnlink,
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from "../views/Modal";
 
 /*TODO: Check why sometimes getting an uncaught error */
@@ -33,9 +41,14 @@ export default function PlantPresenter() {
     const [latest, setLatest] = useState({})
     const [connected, setConnected] = useState(false)
     const [isWatering, setIsWatering] = useState(false);
+    const [lightOptions, setOptions] = useState([])
+    const {nav} = useNavigate();
     const {user} = useAuth()
 
     function handleWaterClick() {
+      if (plants[name].settings.type === "Automatic") {
+        return
+      }
       setWateredTrue(name);
       setIsWatering(true);
       setTimeout(() => {
@@ -51,7 +64,9 @@ export default function PlantPresenter() {
     useEffect(() => {
       let latestDate = Object.keys(data).map((x) =>
         parseInt(x)).reduce((a, b) => Math.max(a, b))
+      let latest = data[latestDate]
       setLatest(data[latestDate])
+      setOptions(weatherIcon(latest.uvIntensity))
       if (productID !== 'RaspberryPi') {
         setConnected(true)
       }
@@ -64,89 +79,46 @@ export default function PlantPresenter() {
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
-    function getLightColor(actual, sunlightPreset) {
-      const lowerLimit = sunlightPreset.min;
-      const upperLimit = sunlightPreset.max;
-
-      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
-    }
-
     function getTemperatureColor(temperature) {
       return (temperature >= 10 && temperature <= 30) ? 'green' : 'red';
     }
 
-    function getWaterlevelColor(waterLevel) {
-      return (waterLevel >= 1 && waterLevel <= 0) ? 'red' : 'green';
-    }
-
     function wateringToValue(watering) {
-
+      //The plan is to trigger the automatic watering system based on the minimum value.
       switch (watering) {
-        case 'frequent' || 'Frequent':
+        case 'Frequent':
           return {min: 60, max: 90};
-        case 'average' || 'Average':
+        case 'Average':
           return {min: 30, max: 60};
-        case 'minimum' || 'Minimum':
+        case 'Minimum':
           return {min: 15, max: 30};
-        case 'none' || 'None':
+        case 'None':
           return {min: 0, max: 15};
+        //Default values in case a plant has no watering information.
         default:
-          return {min: 0, max: 0};
+          return {min: 30, max: 60};
       }
     }
 
     function sunlightToValue(sunlight) {
-      if (!Array.isArray(sunlight)) {
-        return {min: 0, max: 0};
-      }
+      const mapping = {
+        'Full shade': {min: 0.1, max: 0.4},
+        'Part shade': {min: 0.4, max: 0.7},
+        'Full sun': {min: 0.7, max: 1.0},
+      };
+      //Default values in case a plant has no sunlight information.
+      let min = 0.3;
+      let max = 0.8;
 
-      let total = 0;
-      let count = 0;
-
-      sunlight.forEach((element) => {
-        switch (element) {
-          case 'full_shade' || 'Full_shade':
-            total += 0.1;
-            count += 1;
-            break;
-          case 'part_shade' || 'Part_shade':
-            total += 0.35;
-            count += 1;
-            break;
-          case 'sun-part_shade' || 'Sun-part_shade':
-            total += 0.65;
-            count += 1;
-            break;
-          case 'full_sun' || 'Full_sun':
-            total += 0.9;
-            count += 1;
-            break;
-          default:
-            break;
+      if (Array.isArray(sunlight)) {
+        const values = sunlight.filter((value) => mapping.hasOwnProperty(value));
+        if (values.length > 0) {
+          min = Math.min(...values.map((value) => mapping[value].min));
+          max = Math.max(...values.map((value) => mapping[value].max));
         }
-      })
-
-      const avg = total / count;
-
-      let min = 0, max = 0;
-
-      if (avg >= 0 && avg < 0.2) {
-        min = 0;
-        max = 0.2;
-      } else if (avg >= 0.2 && avg < 0.5) {
-        min = 0.2;
-        max = 0.5;
-      } else if (avg >= 0.5 && avg < 0.8) {
-        min = 0.5;
-        max = 0.8;
-      } else if (avg >= 0.8 && avg <= 1.0) {
-        min = 0.8;
-        max = 1.0;
       }
-
       return {min, max};
     }
-
 
     let wateringValue = wateringToValue(watering);
     let sunlightValue = sunlightToValue(sunlight);
@@ -154,49 +126,97 @@ export default function PlantPresenter() {
     if (!image || image === "NaN") {
       image = elephant
     }
-
+    const weatherIcon = (sunlight) => {
+      if (sunlight < 0.4) {
+        return (
+          [faCloud, {color: 'black'}]
+        )
+      }
+      if (sunlight >= 0.4 && sunlight < 0.7) {
+        return (
+          [faCloudSun, {color: 'grey'}]
+        )
+      } else {
+        return (
+          [faSun, {color: 'yellow'}]
+        )
+      }
+    }
     return (
-      <>
+      <div className="plant-container" style={{color: 'white'}}>
         {connected ?
           <div id={name} className={`expandable-div ${expanded && connected ? "expanded" : ""}`}
                onClick={handleClick}>
-            <div className="card-title">
+            <div className="card-title" style={{container: "center"}}>
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <span style={{padding: "0.5em"}}>{name}</span>
+              <span style={{padding: "0.5em", textTransform: 'capitalize'}}><b>{name}</b></span>
             </div>
             <div className="plant-data">
               <div className="row">
                 <div className="col">
                   <div className="circle"
-                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture}</div>
-                  <p><FontAwesomeIcon icon={faTint} title={watering}/> Moisture</p>
+                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>
+                    <b>{latest.soilMoisture}{'%'}</b></div>
+                  <p title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}>Moisture</p>
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
-                  <p><FontAwesomeIcon icon={faSun} title={sunlight.join(', ')}/> Light</p>
+                  >
+                    <FontAwesomeIcon icon={lightOptions.at(0)}
+                                     style={{color: (latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? 'green' : 'red'}}
+                                     size='2xl'
+                                     title={(latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? `Light in optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}` : `Light outside optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}/>
+                  </div>
+                  <p
+                    title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}>Light
+                  </p>
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}</div>
-                  <p><FontAwesomeIcon icon={faThermometerHalf}/> Temperature</p>
+                       style={{color: getTemperatureColor(latest.temperature)}}>
+                    <b>{latest.temperature}{"\u00B0" + "C"}</b></div>
+                  <p title={'Optimal 10\u00B0C - 30\u00B0C'}>Temperature
+                  </p>
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={{color: getWaterlevelColor(latest.waterLevel)}}>{latest.waterLevel}</div>
-                  <p><FontAwesomeIcon icon={faFlask}/> Waterlevel</p>
+                       style={(latest.waterLevel) ? {color: 'green'} : {color: 'red'}}><FontAwesomeIcon
+                    icon={latest.waterLevel ? faCheckCircle : faExclamationCircle} size='2xl'
+                    title={latest.waterLevel ? 'Full' : 'Refill water tank'}/>
+                  </div>
+                  <p>Waterlevel</p>
                 </div>
               </div>
-              <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>{<img
-                src={trash}></img>}</button>
+
               <div id="icons__row" className="row">
-                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img
-                  src={graph}></img>}</Link>
-                <button id="waterdrop" className={"icon--small"} type={"button"}
-                        onClick={handleWaterClick}>{<img src={waterdrop}></img>}</button>
-                <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}><img
-                  src={settingsIcon}/></Link></div>
+                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small tooltip"}
+                      title={'History'}>{
+                  <FontAwesomeIcon
+                    icon={faChartLine} style={{color: 'black'}} size='xl'/>}</Link>
+
+                <button id="waterdrop" className={"icon--small tooltip"} type={"button"} title='Water your plant'
+                        onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'black'}}
+                                                                     size='xl'/>}
+                </button>
+                <div id="settings-icon" className="icon--small tooltip" title='Settings'><Link to={`/settings/${name}`}
+                                                                                               state={plants}>
+                  <FontAwesomeIcon icon={faSliders} size='xl' style={{color: 'black'}}/>
+                </Link></div>
+                <button id="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
+                        style={{verticalAlign: 'super'}}
+                        onClick={(event) => removePlant(name).then(() => {
+                          window.location.reload();
+                        })}>
+                  {<FontAwesomeIcon icon={faTrashAlt} size='xl'
+                                    style={{color: 'black'}}/>}</button>
+                <button id="Update" className={"icon--small tooltip"} title='Disconnect plant' type={"button"}
+                        style={{verticalAlign: 'super'}}
+                        onClick={(event) => disconnectPlant(user, name).then(() => {
+                          window.location.reload();
+                        })}>
+                  {<FontAwesomeIcon icon={faUnlink} size='xl'
+                                    style={{color: 'black'}}/>}</button>
               </div>
             </div>
           </div> :
@@ -204,23 +224,31 @@ export default function PlantPresenter() {
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <span style={{padding: "0.5em"}}>
-                <Link className='expandable-div' to='/connect' state={{plantName: name}}>
-                  Connect {name} to PotBot</Link><p/>
-                <button className='connect' type={"button"}
-                        onClick={(event) =>
-                          removePlant(name)}>Not right plant? Delete plant
+              <span style={{padding: "0.5em", textTransform: 'capitalize'}}>
+                <b>{name}</b>
+                <p>
+                  <Link className='expandable-div unconnected' to='/connect'
+                        state={{plantName: name}}> <FontAwesomeIcon
+                    icon={faLink}
+                    title='Delete'
+                    size='xl'
+                    title='Connect to PotBot'
+                    style={{color: 'white'}}/>
+                   </Link>
+                  <button className='connect' type={"button"}
+                          onClick={(event) =>
+                            removePlant(name).then(() => {
+                              window.location.reload();
+                            })}><FontAwesomeIcon icon={faTrashAlt} size='xl'
+                                                 title='Delete plant' style={{color: 'white'}}/>
                   </button>
+                </p>
               </span>
-
             </div>
           </div>}
         <Modal active={isWatering} message={"Your plant is being watered!"}/>
-      </>)
-
-
+      </div>)
   }
-
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>
 }

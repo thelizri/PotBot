@@ -82,9 +82,9 @@ function SignUpView({username, setUsername, password, setPassword, handleSubmit,
             required
           />
           <button type="submit">Sign up</button>
-          <button className="create-account">
-            <Link to="/">Back to login</Link>
-          </button>
+          <Link to="/" className="back-btn"> Back to login
+            {/* <button className="back-btn">Back to login</button> */}
+          </Link>
         </form>
       </div>
     </div>
