@@ -18,26 +18,27 @@ import database_manager
 # Function to create the Gmail API service
 def create_gmail_service():
     # Replace 'client_secret.json' with the name of your client secret file
-    client_secret_file = "credentials.json"
+    client_secret_file = "client_secret.json"
     token_file = "token.json"
-    scopes = ["https://www.googleapis.com/auth/gmail.send"]
+    SCOPES = [
+        "https://www.googleapis.com/auth/gmail.readonly",
+        "https://www.googleapis.com/auth/gmail.send",
+    ]
 
     creds = None
     if os.path.exists(token_file):
         with open(token_file, "r") as token:
-            creds = Credentials.from_authorized_user_info(
-                info=json.load(token), scopes=scopes
-            )
+            creds = Credentials.from_authorized_user_file(token_file, SCOPES)
 
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(client_secret_file, scopes)
+            flow = InstalledAppFlow.from_client_secrets_file(client_secret_file, SCOPES)
             creds = flow.run_local_server(port=0)
             # Save the credentials for future use
-            with open(token_file, "w") as token:
-                token.write(creds.to_json())
+        with open(token_file, "w") as token:
+            token.write(creds.to_json())
 
     try:
         service = build("gmail", "v1", credentials=creds)
@@ -84,9 +85,19 @@ def send_notification(database):
     attachment = None  # Replace with file path if you want to attach a file
     send_email(service, to, subject, body, attachment)
 
+
 def get_email(database):
     if not utils.check_if_file_exist_and_is_not_empty("email.id"):
         database.fetch_user_email()
     with open("email.id", "r") as file:
         email = file.readline().strip()
         return email
+
+
+if __name__ == "__main__":
+    service = create_gmail_service()
+    to = "wcar@kth.se"
+    subject = "PotBot"
+    body = "Please refill water tank. Water level is low."
+    attachment = None  # Replace with file path if you want to attach a file
+    send_email(service, to, subject, body, attachment)
