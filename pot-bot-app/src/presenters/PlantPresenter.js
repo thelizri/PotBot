@@ -5,18 +5,17 @@ import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
-  faBatteryEmpty,
-  faBatteryFull,
+  faChartLine,
   faCloud,
   faCloudSun,
-  faFlask,
+  faExclamationCircle,
+  faSliders,
   faSun,
   faThermometerHalf,
-  faTint
+  faTint,
+  faTrashAlt,
+  faWater
 } from '@fortawesome/free-solid-svg-icons';
-import trash from '../styling/images/trash.svg'
-import graph from '../styling/images/graph.svg'
-import settingsIcon from '../styling/images/settings.svg'
 import Modal from "../views/Modal";
 
 /*TODO: Check why sometimes getting an uncaught error */
@@ -76,13 +75,6 @@ export default function PlantPresenter() {
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
-    function getLightColor(actual, sunlightPreset) {
-      const lowerLimit = sunlightPreset.min;
-      const upperLimit = sunlightPreset.max;
-
-      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
-    }
-
     function getTemperatureColor(temperature) {
       return (temperature >= 10 && temperature <= 30) ? 'green' : 'red';
     }
@@ -131,26 +123,21 @@ export default function PlantPresenter() {
       image = elephant
     }
     const weatherIcon = (sunlight) => {
-      console.log(sunlight)
       if (sunlight < 0.4) {
         return (
-          [faCloud, {color: 'darkgrey'}]
-
+          [faCloud, {color: 'black'}]
         )
       }
       if (sunlight >= 0.4 && sunlight < 0.7) {
         return (
-          [faCloudSun, {color: 'red'}]
+          [faCloudSun, {color: 'grey'}]
         )
       } else {
         return (
-
           [faSun, {color: 'yellow'}]
-
         )
       }
     }
-    console.log(weatherIcon(latest.uvIntensity))
     return (
       <>
         {connected ?
@@ -165,45 +152,58 @@ export default function PlantPresenter() {
               <div className="row">
                 <div className="col">
                   <div className="circle"
-                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture}</div>
-                  <p><FontAwesomeIcon icon={faTint} style={{color: 'saddlebrown'}} title={watering}/> Moisture</p>
+                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture}{'%'}</div>
+                  <p><FontAwesomeIcon icon={faTint} style={{color: 'saddlebrown'}}
+                                      title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}/> Moisture</p>
                 </div>
                 <div className="col">
                   <div className="circle"
                   >
-                    <FontAwesomeIcon icon={lightOptions.at(0)} style={lightOptions.at(1)} size='2xl'
-                                     title={`Light ${latest.uvIntensity}`}/>
+                    <FontAwesomeIcon icon={lightOptions.at(0)}
+                                     style={{color: (latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? 'green' : 'red'}}
+                                     size='2xl'
+                                     title={(latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? `Light in optimal range: ${latest.uvIntensity}` : `Light outside optimal range: ${latest.uvIntensity}`}/>
                   </div>
-                  <p><FontAwesomeIcon icon={faSun} style={{color: 'yellow'}}
-                                      title={sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}/> Light
+                  <p
+                    title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}>
+                    <FontAwesomeIcon icon={weatherIcon(sunlightValue.max).at(0)}
+                                     style={weatherIcon(sunlightValue.max).at(1)}
+                    />
+                    <FontAwesomeIcon icon={weatherIcon(sunlightValue.min).at(0)}
+                                     style={weatherIcon(sunlightValue.min).at(1)}
+                    />
+                    Light
                   </p>
                 </div>
                 <div className="col">
                   <div className="circle"
                        style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}{"\u00B0" + "C"}</div>
-                  <p><FontAwesomeIcon icon={faThermometerHalf}/> Temperature</p>
+                  <p><FontAwesomeIcon icon={faThermometerHalf} title={'Optimal 10\u00B0C - 30\u00B0C'}/> Temperature
+                  </p>
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={(latest.waterLevel) ? {color: 'blue'} : {color: 'red'}}><FontAwesomeIcon
-                    icon={latest.waterLevel ? faBatteryFull : faBatteryEmpty} size='2xl'
-                    title={latest.waterLevel ? 'Full' : 'Empty'}/>
+                       style={(latest.waterLevel) ? {color: 'green'} : {color: 'red'}}><FontAwesomeIcon
+                    icon={latest.waterLevel ? faWater : faExclamationCircle} size='2xl'
+                    title={latest.waterLevel ? 'Full' : 'Refill water tank'}/>
                   </div>
-                  <p><FontAwesomeIcon icon={faFlask} style={{color: 'blue'}}/> Waterlevel</p>
+                  <p><FontAwesomeIcon icon={faWater} style={{color: 'blue'}}/> Waterlevel</p>
                 </div>
               </div>
-              <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>{<img
-                src={trash}></img>}</button>
+              <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>
+                {<FontAwesomeIcon icon={faTrashAlt} size='xl' title='Delete plant' style={{color: 'black'}}/>}</button>
               <div id="icons__row" className="row">
-                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img
-                  src={graph}></img>}</Link>
+                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<FontAwesomeIcon
+                  icon={faChartLine} style={{color: 'black'}} size='xl' title={'History'}/>}</Link>
 
                 <button id="waterdrop" className={"icon--small"} type={"button"}
-                        onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'blue'}} title='water'
+                        onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'black'}}
+                                                                     title='Water your plant'
                                                                      size='xl'/>}
                 </button>
-                <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}><img
-                  src={settingsIcon}/></Link></div>
+                <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}>
+                  <FontAwesomeIcon icon={faSliders} size='xl' title='Settings' style={{color: 'black'}}/>
+                </Link></div>
               </div>
             </div>
           </div> :
