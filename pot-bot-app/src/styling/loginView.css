@@ -24,6 +24,7 @@ h1 {
   font-weight: bold;
   font-size: 3rem;
   margin-bottom: 0px;
+  color: white;
 }
 
 h2 {
@@ -66,6 +67,12 @@ label {
   border-bottom: 1px solid #444; /* set a dark grey border color */
   border-radius: 0px;
   font-size: 16px;
+}
+/* For small screens */
+@media screen and (max-width: 1180px) {
+  .login-input, .signup-input, .api-search {
+    width: 80%;
+  }
 }
 
 /* For small screens */

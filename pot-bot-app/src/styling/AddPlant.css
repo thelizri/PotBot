@@ -1,11 +1,10 @@
-.add-plant {
+.add-plant{
   padding: 10px;
-  background-color: rgba(32, 41, 31, 0.835);
+  /*background-color: rgba(32, 41, 31, 0.835);*/
   border-radius: 10px;
   margin-left: 30%;
   margin-right: 30%;
 }
-
 /* For small screens */
 @media screen and (max-width: 1180px) {
   .add-plant {

@@ -9,7 +9,7 @@ export default function HomeView() {
   const {user, logOut} = useAuth();
 
   return (
-    <div className="Home">
+    <div className="Home module">
       {user && <PlantPresenter/>}
       {user && <LogoutBtn/>}
       {!user && <Login/>}

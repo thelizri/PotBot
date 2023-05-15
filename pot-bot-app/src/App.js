@@ -21,8 +21,8 @@ function App() {
       <Router>
         <UserAuthContextProvider>
           {/* Render the side menu view on all pages except login and signup */}
-          {window.location.pathname !== "/signup" &&
-            window.location.pathname !== "/login" && <SideMenuView/>}
+          {/*{window.location.pathname !== "/signup" &&*/}
+          {/*  window.location.pathname !== "/login" && <SideMenuView/>}*/}
           <Header/>
           <Routes>
             <Route path="/" element={<LoginPresenter/>}/>

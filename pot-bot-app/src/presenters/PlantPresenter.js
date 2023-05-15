@@ -143,7 +143,7 @@ export default function PlantPresenter() {
       }
     }
     return (
-      <div className="plant-container" style={{color: 'white'}}>
+      <div className="plant-container">
         {connected ?
           <div id={name} className={`expandable-div ${expanded && connected ? "expanded" : ""}`}
                onClick={handleClick}>
