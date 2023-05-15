@@ -36,7 +36,7 @@ export default function AddPlantPresenter() {
 
 
   return (
-    <div className='addPlant'>
+    <div className='addPlant module'>
       <AddPlantView addPlantToPersonalList={addPlantToPersonalList}/>
 
 
