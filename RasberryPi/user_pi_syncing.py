@@ -60,7 +60,7 @@ def _link_pi_with_user(event):
 
     data = event.data
     print(f"-----data received: {data}-----")
-    if data == None or data == "" or data == "Raspberry Pi":
+    if data == None or data == "" or data == "RaspberryPi":
         return
 
     dbman.uid = data["uid"]
@@ -84,7 +84,7 @@ def _link_pi_with_user(event):
 
 def _connection_state_changed(event):
     print("Connection state changed, callback has been called")
-    if event.data == None or event.data == "Raspberry Pi":
+    if event.data == None or event.data == "RaspberryPi":
         _link_pi_with_user_setup()
 
 def run(database):
