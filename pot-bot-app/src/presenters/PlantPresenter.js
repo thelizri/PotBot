@@ -8,6 +8,7 @@ import {
   faChartLine,
   faCloud,
   faCloudSun,
+  faExclamationCircle,
   faSliders,
   faSun,
   faSync,
@@ -74,6 +75,9 @@ export default function PlantPresenter() {
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
+    function getTemperatureColor(temperature) {
+      return (temperature >= 10 && temperature <= 30) ? 'green' : 'red';
+    }
 
     function wateringToValue(watering) {
       //The plan is to trigger the automatic watering system based on the minimum value.
@@ -229,7 +233,7 @@ export default function PlantPresenter() {
 
                   <button className='connect' type={"button"}
                           onClick={(event) =>
-                            removePlant(name)}><FontAwesomeIcon icon={faTrashAlt} size='xl'
+                            removePlant(name)}><FontAwesomeIcon icon={faTrashAlt} title='Delete' size='xl'
                                                                 title='Delete plant' style={{color: 'white'}}/>
                   </button>
 
