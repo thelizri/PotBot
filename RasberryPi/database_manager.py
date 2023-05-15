@@ -83,7 +83,8 @@ class DatabaseManager:
         with open(filepath) as file:
             data = json.load(file)
 
-        self.push_data(f"/users/{self.uid}/plants/{self.plant_id}", "measureData", data)
+        if self.uid and self.plant_id:
+            self.push_data(f"/users/{self.uid}/plants/{self.plant_id}", "measureData", data)
 
     def run(self):
         print("database_manager.run()")

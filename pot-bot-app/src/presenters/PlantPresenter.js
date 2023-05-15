@@ -11,6 +11,7 @@ import {
   faExclamationCircle,
   faSliders,
   faSun,
+  faSync,
   faThermometerHalf,
   faTint,
   faTrashAlt,
@@ -54,7 +55,6 @@ export default function PlantPresenter() {
     function handleClick(e) {
       e.preventDefault()
       setExpanded(prevState => !prevState);
-
     }
 
     useEffect(() => {
@@ -75,8 +75,19 @@ export default function PlantPresenter() {
       return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
     }
 
+    function getLightColor(actual, sunlightPreset) {
+      const lowerLimit = sunlightPreset.min;
+      const upperLimit = sunlightPreset.max;
+
+      return (actual >= lowerLimit && actual <= upperLimit) ? 'green' : 'red';
+    }
+
     function getTemperatureColor(temperature) {
       return (temperature >= 10 && temperature <= 30) ? 'green' : 'red';
+    }
+
+    function getWaterlevelColor(waterLevel) {
+      return (waterLevel >= 1 && waterLevel <= 0) ? 'red' : 'green';
     }
 
     function wateringToValue(watering) {
@@ -139,21 +150,22 @@ export default function PlantPresenter() {
       }
     }
     return (
-      <>
+      <div className="plant-container" style={{color: 'white'}}>
         {connected ?
           <div id={name} className={`expandable-div ${expanded && connected ? "expanded" : ""}`}
                onClick={handleClick}>
             <div className="card-title">
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
-              <span style={{padding: "0.5em", textTransform: 'capitalize'}}>{name}</span>
+              <span style={{padding: "0.5em", textTransform: 'capitalize'}}><b>{name}</b></span>
             </div>
             <div className="plant-data">
               <div className="row">
                 <div className="col">
                   <div className="circle"
-                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture}{'%'}</div>
-                  <p><FontAwesomeIcon icon={faTint} style={{color: 'saddlebrown'}}
+                       style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>
+                    <b>{latest.soilMoisture}{'%'}</b></div>
+                  <p><FontAwesomeIcon icon={faTint} style={{color: 'darkgoldenrod'}}
                                       title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}/> Moisture</p>
                 </div>
                 <div className="col">
@@ -162,7 +174,7 @@ export default function PlantPresenter() {
                     <FontAwesomeIcon icon={lightOptions.at(0)}
                                      style={{color: (latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? 'green' : 'red'}}
                                      size='2xl'
-                                     title={(latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? `Light in optimal range: ${latest.uvIntensity}` : `Light outside optimal range: ${latest.uvIntensity}`}/>
+                                     title={(latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? `Light in optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}` : `Light outside optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}/>
                   </div>
                   <p
                     title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}>
@@ -177,8 +189,10 @@ export default function PlantPresenter() {
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}{"\u00B0" + "C"}</div>
-                  <p><FontAwesomeIcon icon={faThermometerHalf} title={'Optimal 10\u00B0C - 30\u00B0C'}/> Temperature
+                       style={{color: getTemperatureColor(latest.temperature)}}>
+                    <b>{latest.temperature}{"\u00B0" + "C"}</b></div>
+                  <p title={'Optimal 10\u00B0C - 30\u00B0C'}><FontAwesomeIcon icon={faThermometerHalf}
+                                                                              title={'Optimal 10\u00B0C - 30\u00B0C'}/> Temperature
                   </p>
                 </div>
                 <div className="col">
@@ -190,20 +204,24 @@ export default function PlantPresenter() {
                   <p><FontAwesomeIcon icon={faWater} style={{color: 'blue'}}/> Waterlevel</p>
                 </div>
               </div>
-              <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>
-                {<FontAwesomeIcon icon={faTrashAlt} size='xl' title='Delete plant' style={{color: 'black'}}/>}</button>
-              <div id="icons__row" className="row">
-                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<FontAwesomeIcon
-                  icon={faChartLine} style={{color: 'black'}} size='xl' title={'History'}/>}</Link>
 
-                <button id="waterdrop" className={"icon--small"} type={"button"}
+              <div id="icons__row" className="row">
+                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small tooltip"}>{
+                  <FontAwesomeIcon
+                    icon={faChartLine} style={{color: 'black'}} size='xl' title={'History'}/>}</Link>
+
+                <button id="waterdrop" className={"icon--small tooltip"} type={"button"}
                         onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'black'}}
                                                                      title='Water your plant'
                                                                      size='xl'/>}
                 </button>
-                <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}>
+                <div id="settings-icon" className="icon--small tooltip"><Link to={`/settings/${name}`} state={plants}>
                   <FontAwesomeIcon icon={faSliders} size='xl' title='Settings' style={{color: 'black'}}/>
                 </Link></div>
+                <button id="Delete" className={"icon--small tooltip"} type={"button"} style={{verticalAlign: 'super'}}
+                        onClick={(event) => removePlant(name)}>
+                  {<FontAwesomeIcon icon={faTrashAlt} size='xl' title='Delete plant'
+                                    style={{color: 'black'}}/>}</button>
               </div>
             </div>
           </div> :
@@ -212,20 +230,33 @@ export default function PlantPresenter() {
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
               <span style={{padding: "0.5em", textTransform: 'capitalize'}}>
-                <Link className='expandable-div' to='/connect' state={{plantName: name}}>
-                  Connect {name} to PotBot</Link><p/>
-                <button className='connect' type={"button"}
-                        onClick={(event) =>
-                          removePlant(name)}>Not right plant? Delete plant
+                <b>{name}</b>
+                <p>
+                  <Link className='expandable-div' to='/connect'
+                        state={{plantName: name}}> <FontAwesomeIcon
+                    icon={faSync}
+                    title='Delete'
+                    size='xl'
+                    title='Connect to PotBot'
+                    style={{color: 'white'}}/>
+                   </Link>
+
+
+                  <button className='connect' type={"button"}
+                          onClick={(event) =>
+                            removePlant(name)}><FontAwesomeIcon icon={faTrashAlt} title='Delete' size='xl'
+                                                                title='Delete plant' style={{color: 'white'}}/>
                   </button>
+
+
+                </p>
+
               </span>
 
             </div>
           </div>}
         <Modal active={isWatering} message={"Your plant is being watered!"}/>
-      </>)
-
-
+      </div>)
   }
 
 

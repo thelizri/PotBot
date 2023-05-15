@@ -14,7 +14,12 @@ function ResetPasswordView() {
         <h2 className='reset'>Forgot your password?</h2>
         <p>Enter your email address and we will send you a reset link.</p>
         <form onSubmit={handleSubmit}>
-          <input type="email" id="email" name="email" placeholder="E-mail" required/>
+          <input type="email"
+                 id="email"
+                 name="email"
+                 placeholder="E-mail"
+                 className="signup-input"
+                 required/>
           <button type="submit"> Send email</button>
           <p><Link to="/">Back</Link></p>
         </form>

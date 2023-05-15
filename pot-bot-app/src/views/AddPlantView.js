@@ -76,7 +76,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
   }, [searchResults]);
 
   return (
-    <div className="addPlant">
+    <div className="add-plant">
       <div className="addPlantDescr">
         <h2>Connect your plant to the PotBot</h2>
         <p>First choose what kind of plant you have and we will calibrate the optimal conditions for it</p>
@@ -90,8 +90,8 @@ export default function AddPlantView({addPlantToPersonalList}) {
           onChange={handleChange}
         />
         <button type="submit">Search</button>
-        <Link to="/home">
-          <button className="back-btn">Back to your plants</button>
+        <Link to="/home"> Back to your plants
+          {/* <button className="back-btn">Back to your plants</button> */}
         </Link>
       </form>
       {isLoading && (
