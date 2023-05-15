@@ -9,10 +9,8 @@ export default function AddPlantView({addPlantToPersonalList}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [expandedPlantId, setExpandedPlantId] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const observer = useRef();
   const loaderRef = useRef();
 
@@ -36,7 +34,6 @@ export default function AddPlantView({addPlantToPersonalList}) {
     event.preventDefault();
     setIsLoading(true);
     const result = await searchPlants(searchTerm);
-    console.log("Search Results:", result);
     if (result && result.length > 0) {
       setSearchResults(result);
     } else {

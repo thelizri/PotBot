@@ -4,10 +4,18 @@ import PlantView from "../views/PlantView";
 import {Link} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faFlask, faSun, faThermometerHalf, faTint} from '@fortawesome/free-solid-svg-icons';
+import {
+  faBatteryEmpty,
+  faBatteryFull,
+  faCloud,
+  faCloudSun,
+  faFlask,
+  faSun,
+  faThermometerHalf,
+  faTint
+} from '@fortawesome/free-solid-svg-icons';
 import trash from '../styling/images/trash.svg'
 import graph from '../styling/images/graph.svg'
-import waterdrop from '../styling/images/waterdrop.svg'
 import settingsIcon from '../styling/images/settings.svg'
 import Modal from "../views/Modal";
 
@@ -33,6 +41,7 @@ export default function PlantPresenter() {
     const [latest, setLatest] = useState({})
     const [connected, setConnected] = useState(false)
     const [isWatering, setIsWatering] = useState(false);
+    const [lightOptions, setOptions] = useState([])
     const {user} = useAuth()
 
     function handleWaterClick() {
@@ -46,12 +55,15 @@ export default function PlantPresenter() {
     function handleClick(e) {
       e.preventDefault()
       setExpanded(prevState => !prevState);
+
     }
 
     useEffect(() => {
       let latestDate = Object.keys(data).map((x) =>
         parseInt(x)).reduce((a, b) => Math.max(a, b))
+      let latest = data[latestDate]
       setLatest(data[latestDate])
+      setOptions(weatherIcon(latest.uvIntensity))
       if (productID !== 'RaspberryPi') {
         setConnected(true)
       }
@@ -73,10 +85,6 @@ export default function PlantPresenter() {
 
     function getTemperatureColor(temperature) {
       return (temperature >= 10 && temperature <= 30) ? 'green' : 'red';
-    }
-
-    function getWaterlevelColor(waterLevel) {
-      return (waterLevel >= 1 && waterLevel <= 0) ? 'red' : 'green';
     }
 
     function wateringToValue(watering) {
@@ -122,7 +130,27 @@ export default function PlantPresenter() {
     if (!image || image === "NaN") {
       image = elephant
     }
+    const weatherIcon = (sunlight) => {
+      console.log(sunlight)
+      if (sunlight < 0.4) {
+        return (
+          [faCloud, {color: 'darkgrey'}]
 
+        )
+      }
+      if (sunlight >= 0.4 && sunlight < 0.7) {
+        return (
+          [faCloudSun, {color: 'red'}]
+        )
+      } else {
+        return (
+
+          [faSun, {color: 'yellow'}]
+
+        )
+      }
+    }
+    console.log(weatherIcon(latest.uvIntensity))
     return (
       <>
         {connected ?
@@ -138,24 +166,30 @@ export default function PlantPresenter() {
                 <div className="col">
                   <div className="circle"
                        style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>{latest.soilMoisture}</div>
-                  <p><FontAwesomeIcon icon={faTint} title={watering}/> Moisture</p>
+                  <p><FontAwesomeIcon icon={faTint} style={{color: 'saddlebrown'}} title={watering}/> Moisture</p>
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={{color: getLightColor(latest.uvIntensity, sunlightValue)}}>{latest.uvIntensity}</div>
-                  <p><FontAwesomeIcon icon={faSun}
+                  >
+                    <FontAwesomeIcon icon={lightOptions.at(0)} style={lightOptions.at(1)} size='2xl'
+                                     title={`Light ${latest.uvIntensity}`}/>
+                  </div>
+                  <p><FontAwesomeIcon icon={faSun} style={{color: 'yellow'}}
                                       title={sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}/> Light
                   </p>
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}</div>
+                       style={{color: getTemperatureColor(latest.temperature)}}>{latest.temperature}{"\u00B0" + "C"}</div>
                   <p><FontAwesomeIcon icon={faThermometerHalf}/> Temperature</p>
                 </div>
                 <div className="col">
                   <div className="circle"
-                       style={{color: getWaterlevelColor(latest.waterLevel)}}>{latest.waterLevel}</div>
-                  <p><FontAwesomeIcon icon={faFlask}/> Waterlevel</p>
+                       style={(latest.waterLevel) ? {color: 'blue'} : {color: 'red'}}><FontAwesomeIcon
+                    icon={latest.waterLevel ? faBatteryFull : faBatteryEmpty} size='2xl'
+                    title={latest.waterLevel ? 'Full' : 'Empty'}/>
+                  </div>
+                  <p><FontAwesomeIcon icon={faFlask} style={{color: 'blue'}}/> Waterlevel</p>
                 </div>
               </div>
               <button id="trash" className={"icon--small"} type={"button"} onClick={(event) => removePlant(name)}>{<img
@@ -163,8 +197,11 @@ export default function PlantPresenter() {
               <div id="icons__row" className="row">
                 <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small"}>{<img
                   src={graph}></img>}</Link>
+
                 <button id="waterdrop" className={"icon--small"} type={"button"}
-                        onClick={handleWaterClick}>{<img src={waterdrop}></img>}</button>
+                        onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'blue'}} title='water'
+                                                                     size='xl'/>}
+                </button>
                 <div id="settings-icon" className="icon--small"><Link to={`/settings/${name}`} state={plants}><img
                   src={settingsIcon}/></Link></div>
               </div>

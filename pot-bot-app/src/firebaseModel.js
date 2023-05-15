@@ -65,14 +65,13 @@ async function writeUserData(name, email) {
   return await set(ref(db, 'users/' + auth.currentUser.uid), {
     name: name,
     email: email,
-    plants: []//maybe add this later
+    plants: ""//maybe add this later
   })
 }
 
 async function readUserData(user, path) {
   const dbRef = ref(db, `users/${user.uid}/${path}`)
   return get(dbRef).then(snapshot => {
-    //console.log(snapshot.val())
     return snapshot.val();
   }).catch(err => {
     console.log(err.message)
@@ -101,8 +100,8 @@ async function addNewPlant(user, plantName, data) {
   //so the user can add another plant with this name
   await get(child(dbRef, `/plants/${plantName}`)).then((response) => {
     if (response.exists()) {
-      console.log(response.val())
       //Plant with this name already exists
+      //Add functionality to have own name for plant
     } else {
       console.log("no data found")
       //Create folder with plants and a folder with this plant name
@@ -170,7 +169,6 @@ async function hasPlants(user) {
 function setWateredTrue(name) {
   const path = `/plants/${name}/settings`;
   const data = {water: 1};
-  console.log("watered plant");
   updatePlantData(auth.currentUser, path, data);
   /** DONE
    * Return some sort of confirmation to the user that the plant has been watered
@@ -179,7 +177,6 @@ function setWateredTrue(name) {
 }
 
 async function notificationToggle(user, toggleValue) {
-  console.log(user)
   const dbRef = ref(db, `users/${user.uid}/notificationSettings`);
   try {
     await update(dbRef, {
@@ -199,7 +196,7 @@ async function setWateringPreference(event, name) {
 }
 
 async function searchPlants(searchTerm) {
-  const dbRef = ref(db, "plantsData/species_data_detailed");
+  const dbRef = ref(db, "plantsData/species_data_dumb");
   const snapshot = await get(dbRef);
   const plantData = snapshot.val();
 
