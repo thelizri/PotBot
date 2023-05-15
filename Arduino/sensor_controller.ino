@@ -8,7 +8,7 @@ DHT dht(DHTPIN, DHPTYPE);
 //Water Sensor: 3.3 Volt
 #define POWER_PIN 2
 #define WATER_LEVEL_PIN A1
-#define WATER_THRESHHOLD 60
+#define WATER_THRESHHOLD 5
 
 //UV Sensor: 5 Volt
 #define UV_INTENSITY_PIN A0
@@ -70,6 +70,7 @@ int readWaterLevel() {
   delay(100);                                      // wait 100 milliseconds
   int value = averageAnalogRead(WATER_LEVEL_PIN);  // read the analog value from sensor
   digitalWrite(POWER_PIN, LOW);                    // turn the sensor OFF
+  Serial.println(value);
   if (value > WATER_THRESHHOLD) {
     return 1;
   }
