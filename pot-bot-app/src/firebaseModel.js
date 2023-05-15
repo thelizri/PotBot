@@ -142,6 +142,12 @@ async function connectPotBot(potBotKey, data) {
   return await update(dbRef, data);
 }
 
+async function disconnectPlant(user, name) {
+  if (!window.confirm(`Are you sure you want to disconnect your ${name}? :(`)) return;
+  const dbRef = await ref(db, `users/${user.uid}/plants/${name}`);
+  return await update(dbRef, {productID: "RaspberryPi"})
+}
+
 async function removePlant(name) {
   if (!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
   const {uid} = auth.currentUser;
@@ -223,7 +229,8 @@ export {
   notificationToggle,
   readPlantDatabase,
   db,
-  setWateringPreference
+  setWateringPreference,
+  disconnectPlant
 }
 
 export function useAuth() {

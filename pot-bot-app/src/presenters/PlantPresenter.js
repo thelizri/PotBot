@@ -1,21 +1,21 @@
-import {readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
+import {disconnectPlant, readUserData, removePlant, setWateredTrue, useAuth} from "../firebaseModel";
 import React, {useEffect, useState} from "react";
 import PlantView from "../views/PlantView";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import elephant from "../styling/images/elefant.jpg";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
   faChartLine,
+  faCheckCircle,
   faCloud,
   faCloudSun,
   faExclamationCircle,
+  faLink,
   faSliders,
   faSun,
-  faSync,
-  faThermometerHalf,
   faTint,
   faTrashAlt,
-  faWater
+  faUnlink,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from "../views/Modal";
 
@@ -42,9 +42,13 @@ export default function PlantPresenter() {
     const [connected, setConnected] = useState(false)
     const [isWatering, setIsWatering] = useState(false);
     const [lightOptions, setOptions] = useState([])
+    const {nav} = useNavigate();
     const {user} = useAuth()
 
     function handleWaterClick() {
+      if (plants[name].settings.type === "Automatic") {
+        return
+      }
       setWateredTrue(name);
       setIsWatering(true);
       setTimeout(() => {
@@ -143,7 +147,7 @@ export default function PlantPresenter() {
         {connected ?
           <div id={name} className={`expandable-div ${expanded && connected ? "expanded" : ""}`}
                onClick={handleClick}>
-            <div className="card-title">
+            <div className="card-title" style={{container: "center"}}>
               <img src={image} width="100" height="100"
                    alt={"Oh no your plant picture is gone"}/>
               <span style={{padding: "0.5em", textTransform: 'capitalize'}}><b>{name}</b></span>
@@ -154,8 +158,7 @@ export default function PlantPresenter() {
                   <div className="circle"
                        style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>
                     <b>{latest.soilMoisture}{'%'}</b></div>
-                  <p><FontAwesomeIcon icon={faTint} style={{color: 'darkgoldenrod'}}
-                                      title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}/> Moisture</p>
+                  <p title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}>Moisture</p>
                 </div>
                 <div className="col">
                   <div className="circle"
@@ -166,50 +169,53 @@ export default function PlantPresenter() {
                                      title={(latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? `Light in optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}` : `Light outside optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}/>
                   </div>
                   <p
-                    title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}>
-                    <FontAwesomeIcon icon={weatherIcon(sunlightValue.max).at(0)}
-                                     style={weatherIcon(sunlightValue.max).at(1)}
-                    />
-                    <FontAwesomeIcon icon={weatherIcon(sunlightValue.min).at(0)}
-                                     style={weatherIcon(sunlightValue.min).at(1)}
-                    />
-                    Light
+                    title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}>Light
                   </p>
                 </div>
                 <div className="col">
                   <div className="circle"
                        style={{color: getTemperatureColor(latest.temperature)}}>
                     <b>{latest.temperature}{"\u00B0" + "C"}</b></div>
-                  <p title={'Optimal 10\u00B0C - 30\u00B0C'}><FontAwesomeIcon icon={faThermometerHalf}
-                                                                              title={'Optimal 10\u00B0C - 30\u00B0C'}/> Temperature
+                  <p title={'Optimal 10\u00B0C - 30\u00B0C'}>Temperature
                   </p>
                 </div>
                 <div className="col">
                   <div className="circle"
                        style={(latest.waterLevel) ? {color: 'green'} : {color: 'red'}}><FontAwesomeIcon
-                    icon={latest.waterLevel ? faWater : faExclamationCircle} size='2xl'
+                    icon={latest.waterLevel ? faCheckCircle : faExclamationCircle} size='2xl'
                     title={latest.waterLevel ? 'Full' : 'Refill water tank'}/>
                   </div>
-                  <p><FontAwesomeIcon icon={faWater} style={{color: 'blue'}}/> Waterlevel</p>
+                  <p>Waterlevel</p>
                 </div>
               </div>
 
               <div id="icons__row" className="row">
-                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small tooltip"}>{
+                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small tooltip"}
+                      title={'History'}>{
                   <FontAwesomeIcon
-                    icon={faChartLine} style={{color: 'black'}} size='xl' title={'History'}/>}</Link>
+                    icon={faChartLine} style={{color: 'black'}} size='xl'/>}</Link>
 
-                <button id="waterdrop" className={"icon--small tooltip"} type={"button"}
+                <button id="waterdrop" className={"icon--small tooltip"} type={"button"} title='Water your plant'
                         onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'black'}}
-                                                                     title='Water your plant'
                                                                      size='xl'/>}
                 </button>
-                <div id="settings-icon" className="icon--small tooltip"><Link to={`/settings/${name}`} state={plants}>
-                  <FontAwesomeIcon icon={faSliders} size='xl' title='Settings' style={{color: 'black'}}/>
+                <div id="settings-icon" className="icon--small tooltip" title='Settings'><Link to={`/settings/${name}`}
+                                                                                               state={plants}>
+                  <FontAwesomeIcon icon={faSliders} size='xl' style={{color: 'black'}}/>
                 </Link></div>
-                <button id="Delete" className={"icon--small tooltip"} type={"button"} style={{verticalAlign: 'super'}}
-                        onClick={(event) => removePlant(name)}>
-                  {<FontAwesomeIcon icon={faTrashAlt} size='xl' title='Delete plant'
+                <button id="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
+                        style={{verticalAlign: 'super'}}
+                        onClick={(event) => removePlant(name).then(() => {
+                          window.location.reload();
+                        })}>
+                  {<FontAwesomeIcon icon={faTrashAlt} size='xl'
+                                    style={{color: 'black'}}/>}</button>
+                <button id="Update" className={"icon--small tooltip"} title='Disconnect plant' type={"button"}
+                        style={{verticalAlign: 'super'}}
+                        onClick={(event) => disconnectPlant(user, name).then(() => {
+                          window.location.reload();
+                        })}>
+                  {<FontAwesomeIcon icon={faUnlink} size='xl'
                                     style={{color: 'black'}}/>}</button>
               </div>
             </div>
@@ -221,33 +227,28 @@ export default function PlantPresenter() {
               <span style={{padding: "0.5em", textTransform: 'capitalize'}}>
                 <b>{name}</b>
                 <p>
-                  <Link className='expandable-div' to='/connect'
+                  <Link className='expandable-div unconnected' to='/connect'
                         state={{plantName: name}}> <FontAwesomeIcon
-                    icon={faSync}
+                    icon={faLink}
                     title='Delete'
                     size='xl'
                     title='Connect to PotBot'
                     style={{color: 'white'}}/>
                    </Link>
-
-
                   <button className='connect' type={"button"}
                           onClick={(event) =>
-                            removePlant(name)}><FontAwesomeIcon icon={faTrashAlt} title='Delete' size='xl'
-                                                                title='Delete plant' style={{color: 'white'}}/>
+                            removePlant(name).then(() => {
+                              window.location.reload();
+                            })}><FontAwesomeIcon icon={faTrashAlt} size='xl'
+                                                 title='Delete plant' style={{color: 'white'}}/>
                   </button>
-
-
                 </p>
-
               </span>
-
             </div>
           </div>}
         <Modal active={isWatering} message={"Your plant is being watered!"}/>
       </div>)
   }
-
 
   return <PlantView user={user} plants={plants} Plant={Plant}/>
 }
