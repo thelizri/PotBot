@@ -1,23 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import plantSource from '../services/plantSource';
-import { ThreeDots } from 'react-loader-spinner'
+import React, {useEffect, useRef, useState} from "react";
+import {Link} from "react-router-dom";
+import {searchPlants} from '../firebaseModel';
+import {ThreeDots} from 'react-loader-spinner'
 import '../styling/AddPlant.css'
-
 /*TODO:Flytta konstanter till presenter från app */
-const {searchPlants, fetchPlantDetails} = plantSource;
 
-
-export default function AddPlantView({ addPlantToPersonalList }) {
+export default function AddPlantView({addPlantToPersonalList}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [expandedPlantId, setExpandedPlantId] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [, setIsSearchMade] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [isLoading,setIsLoading] = useState(false);
-
-
+  const [isLoading, setIsLoading] = useState(false);
   const observer = useRef();
   const loaderRef = useRef();
 
@@ -39,75 +32,74 @@ export default function AddPlantView({ addPlantToPersonalList }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const result = await searchPlants(searchTerm);
-    console.log("Search Results:", result);
     if (result && result.length > 0) {
-      const plantDetails = await Promise.all(
-        result.map((plant) => fetchPlantDetails(plant.id))
-      );
-      console.log("Plant Details:", plantDetails);
-      setSearchResults(plantDetails);
-      setIsSearchMade(true); // Set isSearchMade to true when search is made
-      setIsLoading(true)
-
+      setSearchResults(result);
     } else {
       setSearchResults([]);
     }
-  };
-
-  const handleLoadMore = async () => {
-    const nextPage = currentPage + 1;
-    const results = await searchPlants(searchTerm, nextPage);
-    setCurrentPage(nextPage);
-    const plantDetails = await Promise.all(
-      results.map((plant) => fetchPlantDetails(plant.id))
-    );
-    setSearchResults([...searchResults, ...plantDetails]);
-    setIsFetchingMore(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (observer.current) {
-      observer.current.disconnect();
-    }
-    observer.current = new IntersectionObserver((entries) => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+
+    const observerCallback = (entries) => {
       const first = entries[0];
       if (first.isIntersecting && !isFetchingMore) {
         setIsFetchingMore(true);
       }
-    });
-  }, []);
+    };
 
-  useEffect(() => {
-    if (isFetchingMore) {
-      handleLoadMore();
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
     }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
   }, [isFetchingMore]);
 
   useEffect(() => {
     if (observer.current && searchResults.length > 0) {
-      observer.current.observe(document.querySelector(".plant-card:last-child"));
+      observer.current.observe(loaderRef.current);
     }
   }, [searchResults]);
 
   return (
-    <div className="addPlant">
+    <div className="add-plant">
       <div className="addPlantDescr">
         <h2>Connect your plant to the PotBot</h2>
         <p>First choose what kind of plant you have and we will calibrate the optimal conditions for it</p>
       </div>
       <form className="plant-form" onSubmit={handleSubmit}>
         <input
+          className="api-search"
           type="text"
           placeholder="Choose your plant"
           value={searchTerm}
           onChange={handleChange}
         />
         <button type="submit">Search</button>
-        <Link to="/home">
-          <button className="back-btn">Back to your plants</button>
+        <Link to="/home"> Back to your plants
+          {/* <button className="back-btn">Back to your plants</button> */}
         </Link>
       </form>
+      {isLoading && (
+              <div className="loading">
+                <ThreeDots type="ThreeDots" color="#2BAD60" height={200} width={200}/>
+              </div>
+            )}
+
       <div className="search-results-grid">
         {searchResults.map((plant, index) => (
           <div
@@ -115,8 +107,15 @@ export default function AddPlantView({ addPlantToPersonalList }) {
             key={plant.id}
             onClick={() => handlePlantClick(plant.id)}
           >
-            <div key={plant.id}>
-              <img src={plant.default_image.regular_url} alt={plant.common_name} width="100" height="100" />
+            <div key={plant.id} style={{textTransform: 'capitalize'}}>
+              {plant.default_image && (
+                <img
+                  src={plant.default_image.original_url}
+                  alt={plant.common_name}
+                  width="100"
+                  height="100"
+                />
+              )}
               <p>{plant.common_name}</p>
             </div>
             {expandedPlantId === plant.id && (
@@ -131,12 +130,7 @@ export default function AddPlantView({ addPlantToPersonalList }) {
             )}
             {index === searchResults.length - 1 && !isLoading && (
               <div className="load-more" ref={loaderRef}>
-                Load More
-              </div>
-            )}
-            {isLoading && (
-              <div className="loading">
-                <ThreeDots type="ThreeDots" color="#2BAD60" height={40} width={40} />
+                {isFetchingMore && <p>Loading...</p>}
               </div>
             )}
           </div>
@@ -144,5 +138,4 @@ export default function AddPlantView({ addPlantToPersonalList }) {
       </div>
     </div>
   );
-
 }

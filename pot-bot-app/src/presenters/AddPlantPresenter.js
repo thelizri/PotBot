@@ -2,10 +2,7 @@ import {addNewPlant, useAuth} from '../firebaseModel';
 import AddPlantView from '../views/AddPlantView';
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-//Man bör väl bara kunna lägga till en planta i taget.
-/** Gick igenom er kod och modifierade lite och lyckas skriva till db med användare inloggad.
- * Men det behöver struktureras upp lite gällande logik. Nu har jag flyttat allt från App.js
- * TODO:skicka med all data som ska med, typ bild, temp, osv, samt ovan.*/
+
 export default function AddPlantPresenter() {
   const {user} = useAuth();
   const navigate = useNavigate()
@@ -15,17 +12,16 @@ export default function AddPlantPresenter() {
     setPersonalPlantList(plant);
     setPlant(true)
   };
-  console.log(personalPlantList);
   useEffect(() => {
     //function för att extrahera den data vi behöver
     if (addPlant) {
+      //TODO: Maybe add so you can chose your plant name
       addNewPlant(user, personalPlantList.common_name, {
-        image:personalPlantList.default_image.regular_url,
+        image: personalPlantList.default_image.original_url,
         sunlight: personalPlantList.sunlight,
         watering: personalPlantList.watering,
         temperature: '15'
-      }).then((p) => {
-        console.log(p)
+      }).then(() => {
         setPersonalPlantList([])
         setPlant(false)
         navigate("/home")
@@ -36,10 +32,8 @@ export default function AddPlantPresenter() {
 
 
   return (
-    <div className='addPlant'>
+    <div className='addPlant module'>
       <AddPlantView addPlantToPersonalList={addPlantToPersonalList}/>
-
-
     </div>
   );
 }

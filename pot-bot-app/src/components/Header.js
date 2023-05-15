@@ -1,10 +1,11 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 
 function Header() {
   return (
-    <div>
-      <h1>PotBot.</h1>
-      <hr></hr>
+    <div className={"header"}>
+      <Link to="/home"><h1>PotBot.</h1></Link>
+      <Link to="/about">About us</Link>
     </div>
   );
 }

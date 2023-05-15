@@ -8,7 +8,7 @@ DHT dht(DHTPIN, DHPTYPE);
 //Water Sensor: 3.3 Volt
 #define POWER_PIN 2
 #define WATER_LEVEL_PIN A1
-#define WATER_THRESHHOLD 60
+#define WATER_THRESHHOLD 5
 
 //UV Sensor: 5 Volt
 #define UV_INTENSITY_PIN A0
@@ -53,7 +53,7 @@ String readMessageFromRaspberryPi() {
 
 int readSoilMoisture() {
   int soilMoisture = averageAnalogRead(SOIL_PIN);
-  int soilMoisturePercent = map(soilMoisture, AIR_VALUE, WATER_VALUE, 0, 100);
+  int soilMoisturePercent = constrain(map(soilMoisture, AIR_VALUE, WATER_VALUE, 0, 100), 0, 100);
   return soilMoisturePercent;
 }
 
@@ -112,7 +112,7 @@ int counter = 0;
 
 void loop() {
 
-  if (counter > 600){
+  if (counter > 10){
     int waterLevel = readWaterLevel();
     float temperature = readTemperature();
     float uvIntensity = readUVIntensity();

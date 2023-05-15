@@ -1,5 +1,15 @@
 {
   "rules": {
+    "plantsData": {
+      "$key": {
+        ".read": "auth !== null"
+      }
+    },
+    "potbots": {
+      "$key": {
+        ".write": "auth !== null"
+      }
+    },
     "users": {
       "$user_id": {
         ".read": "$user_id === auth.uid",

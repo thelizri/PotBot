@@ -10,7 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {firebaseConfig} from "./firebaseConfig";
-import {child, get, getDatabase, ref, set, update, remove} from "firebase/database";
+import {child, get, getDatabase, ref, remove, set, update} from "firebase/database";
 import {initializeApp} from "firebase/app";
 /*
 TODO: add functions for reset password
@@ -65,20 +65,34 @@ async function writeUserData(name, email) {
   return await set(ref(db, 'users/' + auth.currentUser.uid), {
     name: name,
     email: email,
-    plants: []//maybe add this later
+    plants: ""//maybe add this later
   })
 }
 
 async function readUserData(user, path) {
   const dbRef = ref(db, `users/${user.uid}/${path}`)
   return get(dbRef).then(snapshot => {
-    //console.log(snapshot.val())
     return snapshot.val();
   }).catch(err => {
-    console.log(err)
+    console.log(err.message)
   })
 }
 
+async function readPlantDatabase(pathKey) {
+  const dbRef = ref(db, `/plantsData/${pathKey}`)
+  return get(dbRef).then(snapshot => {
+    return snapshot.val();
+  }).catch(err => {
+    console.log(err.message)
+  })
+}
+
+/*
+ * @param {Object} data contains all plantVitals from API, need to get this from user when API not working
+ * @param {String} plantName plants name taken from API, need to get this from user when API not working
+ * @param {Object} user this user
+ ** Setting for frequency and soil_moisture need to be taken from the data object *
+ * */
 async function addNewPlant(user, plantName, data) {
   const dbRef = await ref(db, `users/${user.uid}`);
   //Check if the user already has this plant
@@ -86,21 +100,22 @@ async function addNewPlant(user, plantName, data) {
   //so the user can add another plant with this name
   await get(child(dbRef, `/plants/${plantName}`)).then((response) => {
     if (response.exists()) {
-      console.log(response.val())
       //Plant with this name already exists
+      //Add functionality to have own name for plant
     } else {
       console.log("no data found")
       //Create folder with plants and a folder with this plant name
       set(ref(db, `users/${user.uid}/plants/${plantName}`), {
         productID: 'RaspberryPi',
         measureData: 'To be added',
+        notificationSettings: {notificationToggle: true},
         plantRecommendedVitals: data,
-        settings:{
+        settings: {
           amount: 100,
-          frequency: "None",
-          soil_moisture: "None",
+          frequency: 0,
+          soil_moisture: data.watering,
           type: "Manual",
-          water:0
+          water: 0
         }
       })
     }
@@ -116,15 +131,32 @@ async function updatePlantData(user, path, data) {
   return await update(dbRef, data);
 }
 
-async function removePlant(name){
-  if(!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
+/*
+ * Connect the potBot to the users currentPlant
+ * @param {string} potBotKey input from user
+ * @param {Object} data {uid: user.uid, plant: name}
+ * when potBot is connected it will write the productID to user plant
+ */
+async function connectPotBot(potBotKey, data) {
+  const dbRef = await ref(db, `potbots/${potBotKey}`);
+  return await update(dbRef, data);
+}
+
+async function disconnectPlant(user, name) {
+  if (!window.confirm(`Are you sure you want to disconnect your ${name}? :(`)) return;
+  const dbRef = await ref(db, `users/${user.uid}/plants/${name}`);
+  return await update(dbRef, {productID: "RaspberryPi"})
+}
+
+async function removePlant(name) {
+  if (!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
   const {uid} = auth.currentUser;
   const dbRef = await ref(db, `users/${uid}/plants/${name}`);
   return await remove(dbRef)
 }
 
 /*
-* boolean to check if user has a plant registred*/
+* boolean to check if user has a plant registered*/
 async function hasPlants(user) {
   const dbRef = ref(db, `users/${user.uid}`);
   try {
@@ -134,25 +166,67 @@ async function hasPlants(user) {
     return console.error(err.message);
   }
 }
-  
-  /**
-   * This function is used by the "water plant"-button
-   * When clicked it sends a "1" to the database
-   * @param {*} user 
-   */
-function setWateredTrue(user){
-    const path = 'plants/Parasollpilea/settings';
-    const data = {water: 1};
-    console.log("watered plant");
-    updatePlantData(user, path, data);
-    /**TODO
-     * Return some sort of confirmation to the user that the plant has been watered 
-     * aka 'water' setting has been changed to 0
-     */
-}
-  
 
-export {hasPlants, updatePlantData, addNewPlant,readUserData,writeUserData,setWateredTrue, removePlant}
+/**
+ * This function is used by the "water plant"-button
+ * When clicked it sends a "1" to the database
+ * @param {*} user
+ */
+function setWateredTrue(name) {
+  const path = `/plants/${name}/settings`;
+  const data = {water: 1};
+  updatePlantData(auth.currentUser, path, data);
+  /** DONE
+   * Return some sort of confirmation to the user that the plant has been watered
+   * aka 'water' setting has been changed to 0
+   */
+}
+
+async function notificationToggle(user, toggleValue) {
+  const dbRef = ref(db, `users/${user.uid}/notificationSettings`);
+  try {
+    await update(dbRef, {
+      notificationToggle: toggleValue
+    });
+    console.log("Notification settings updated successfully!");
+  } catch (error) {
+    console.error("Error updating notification settings: ", error);
+  }
+}
+
+async function searchPlants(searchTerm) {
+  const dbRef = ref(db, "plantsData/species_data_dumb");
+  const snapshot = await get(dbRef);
+  const plantData = snapshot.val();
+
+  return Object.values(plantData).filter(
+    (plant) => {
+      const commonNameMatch = plant.common_name.toLowerCase().includes(searchTerm.toLowerCase());
+      const scientificNameMatch = plant.scientific_name && plant.scientific_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+      const otherNameMatch = plant.other_name && plant.other_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      return commonNameMatch || scientificNameMatch || otherNameMatch
+    });
+
+}
+
+
+export {
+  searchPlants,
+  connectPotBot,
+  hasPlants,
+  updatePlantData,
+  addNewPlant,
+  readUserData,
+  writeUserData,
+  setWateredTrue,
+  removePlant,
+  notificationToggle,
+  readPlantDatabase,
+  db,
+  disconnectPlant
+}
+
 export function useAuth() {
   return useContext(AuthContext);
 }
