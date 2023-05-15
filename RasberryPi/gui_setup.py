@@ -29,7 +29,7 @@ def create_window():
     window = Tk()
     window.attributes("-fullscreen", True)
     window.title("PotBot")
-    window.configure(bg=bg_color, cursor=None)
+    window.configure(bg=bg_color, cursor="none")
 
     style = ttk.Style()
     style.configure("TFrame", background=bg_color)
@@ -44,9 +44,9 @@ def create_window():
     label = Label(frame, text=label_text, font=myfont, bg=bg_color, fg=fg_color)
     label.grid(column=0, row=0, pady=5, padx=(0, 10), sticky="w")
 
-    ttk.Button(frame, text="Quit", command=window.destroy).grid(
-        column=0, row=1, pady=10
-    )
+    # ttk.Button(frame, text="Quit", command=window.destroy).grid(
+    #    column=0, row=1, pady=10
+    # )
 
     # Centering the frame on the window
     frame.update_idletasks()
