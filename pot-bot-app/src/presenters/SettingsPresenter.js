@@ -16,7 +16,7 @@ function SettingsPresenter() {
 
   useEffect(() => {
     const path = `plants/${plantName}/settings/type`
-    readUserData(user, path).then(setWateringType)
+    readUserData(user, path).then(setWateringType);
   }, [user])
 
   useEffect(() => {
@@ -24,7 +24,6 @@ function SettingsPresenter() {
     const path = `plants/${plantName}/settings/`
     updatePlantData(user, path, {frequency: interval})
   }, [interval, user])
-
 
   return (
     <SettingsView interval={interval} setInterval={setInterval} wateringType={wateringType} plantName={plantName}
