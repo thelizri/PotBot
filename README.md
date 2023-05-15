@@ -36,7 +36,7 @@ Overall, the smart plant pot will provide a convenient way to ensure that plants
 need for constant monitoring and manual intervention. The data collected by the various sensors can also be used to
 analyze and optimize plant growth over time.
 
-![alt text](https://github.com/thelizri/PotBot/tree/prototype-image/PotBotPrototype.png?raw=true)
+![alt text](https://github.com/thelizri/PotBot/blob/prototype-image/PotBotProtoype.png?raw=true)
 
 ## Developers
 
