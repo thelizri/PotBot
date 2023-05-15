@@ -194,13 +194,6 @@ async function notificationToggle(user, toggleValue) {
   }
 }
 
-async function setWateringPreference(event, name) {
-  const type = event.target.value;
-  const path = `/plants/${name}/settings`;
-  const data = {type: type};
-  updatePlantData(auth.currentUser, path, data)
-}
-
 async function searchPlants(searchTerm) {
   const dbRef = ref(db, "plantsData/species_data_dumb");
   const snapshot = await get(dbRef);
@@ -231,7 +224,6 @@ export {
   notificationToggle,
   readPlantDatabase,
   db,
-  setWateringPreference,
   disconnectPlant
 }
 
