@@ -207,11 +207,13 @@ async function searchPlants(searchTerm) {
   const plantData = snapshot.val();
 
   return Object.values(plantData).filter(
-    (plant) =>
-      plant.common_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plant.scientific_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (plant.other_name && plant.other_name.some(name => name.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
+    (plant) => {
+      const commonNameMatch = plant.common_name.toLowerCase().includes(searchTerm.toLowerCase());
+      const scientificNameMatch = plant.scientific_name && plant.scientific_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+      const otherNameMatch = plant.other_name && plant.other_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      return commonNameMatch || scientificNameMatch || otherNameMatch
+    });
 
 }
 
