@@ -6,7 +6,7 @@
     background-color: rgba(32, 41, 31, 0.835);
     border-radius: 10px;
   }
-  
+
 .settings h2 {
   font-size: 2rem;
   font-weight: bold;
@@ -16,7 +16,7 @@
 #watering-options, .interval, .checkbox{
   padding: 4px;
 }
-  
+
 label {
   font-size: 1.2rem;
   color: rgb(194, 194, 194);

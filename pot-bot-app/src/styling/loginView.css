@@ -75,6 +75,13 @@ label {
   }
 }
 
+/* For small screens */
+@media screen and (max-width: 1180px) {
+  .login-input, .signup-input, .api-search {
+    width: 80%;
+  }
+}
+
 button[type="submit"] {
   background-color: #444; /* set a dark grey button background color */
   color: #fff;
@@ -112,7 +119,7 @@ button[type="submit"]:hover {
   text-decoration: none;
 }
 
-.create-account-text{
+.create-account-text {
   color: black;
 }
 

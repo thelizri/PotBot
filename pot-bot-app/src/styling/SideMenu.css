@@ -1,12 +1,11 @@
 .SideMenu {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
-    
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
 
   }
-  
+
   .hamburger {
     background: none;
     border: none;
@@ -14,11 +13,11 @@
     cursor: pointer;
     color: white;
   }
-  
+
   .icon {
     font-size: 40px;
   }
-  
+
   ul {
     list-style-type: none;
     margin: 0;
@@ -33,17 +32,17 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
-  
+
   li {
     padding: 10px;
     border-bottom: 1px solid #ddd;
     color: black
   }
-  
+
   li:last-child {
     border-bottom: none;
   }
-  
+
 .menu-option{
   color: black;
 }

@@ -2,7 +2,6 @@ import React from "react";
 import {Link, useLocation} from 'react-router-dom';
 import "../styling/Settings.css";
 import "../styling/dropdown.css"
-import arrow from "../styling/images/dropdown-arrow.svg"
 
 function SettingsView({
                         plantName,
@@ -29,19 +28,20 @@ function SettingsView({
         <label for="watering-options" className="notifications">Chose what watering you want</label>
         <select id="watering-options" onChange={(event) => setWateringPreference(event, plantName)}>
           <option value="Choose an option">{wateringType}</option>
-          <option value="Manual" >Manual</option>
-          <option value="Automatic" >Automatic</option>
-          <option value="Scheduled" >Scheduled</option>
+          <option value="Manual">Manual</option>
+          <option value="Automatic">Automatic</option>
+          <option value="Scheduled">Scheduled</option>
         </select>
-      {wateringType === "Scheduled" && (
-        <select onChange={(event) => setInterval(event.target.value)} className="interval">
-        <optgroup label="Scheduled" id="Scheduled" onChange={(event) => setWateringPreference(event, plantName)}>Scheduled
+        {wateringType === "Scheduled" && (
+          <select onChange={(event) => setInterval(event.target.value)} className="interval">
+            <optgroup label="Scheduled" id="Scheduled"
+                      onChange={(event) => setWateringPreference(event, plantName)}>Scheduled
               <option id="four-days" value={96}>4 days</option>
               <option id="one-week" value={168}>1 week</option>
               <option id="two-week" value={336}>2 weeks</option>
-          </optgroup>
-        </select>
-      )}
+            </optgroup>
+          </select>
+        )}
       </div>
       <Link to="/home" className="back-btn"> Back to your plants
         {/* <button className="back-btn">Back to your plants</button> */}

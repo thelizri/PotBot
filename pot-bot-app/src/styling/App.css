@@ -47,7 +47,7 @@ body {
   box-shadow: 2px 4px 6px 8px #000;
 }
 
-.module * {
+.module *:not(.circle *) {
   color: #000;
 }
 
@@ -94,7 +94,7 @@ a, button[type="button"] {
   height: auto;
 } */
 
-.about{
+.about {
   background-color: rgba(32, 41, 31, 0.835);
   border-radius: 10px;
   padding: 10px;

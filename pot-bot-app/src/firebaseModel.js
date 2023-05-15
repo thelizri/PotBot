@@ -65,14 +65,13 @@ async function writeUserData(name, email) {
   return await set(ref(db, 'users/' + auth.currentUser.uid), {
     name: name,
     email: email,
-    plants: []//maybe add this later
+    plants: ""//maybe add this later
   })
 }
 
 async function readUserData(user, path) {
   const dbRef = ref(db, `users/${user.uid}/${path}`)
   return get(dbRef).then(snapshot => {
-    //console.log(snapshot.val())
     return snapshot.val();
   }).catch(err => {
     console.log(err.message)
@@ -101,8 +100,8 @@ async function addNewPlant(user, plantName, data) {
   //so the user can add another plant with this name
   await get(child(dbRef, `/plants/${plantName}`)).then((response) => {
     if (response.exists()) {
-      console.log(response.val())
       //Plant with this name already exists
+      //Add functionality to have own name for plant
     } else {
       console.log("no data found")
       //Create folder with plants and a folder with this plant name
@@ -143,6 +142,12 @@ async function connectPotBot(potBotKey, data) {
   return await update(dbRef, data);
 }
 
+async function disconnectPlant(user, name) {
+  if (!window.confirm(`Are you sure you want to disconnect your ${name}? :(`)) return;
+  const dbRef = await ref(db, `users/${user.uid}/plants/${name}`);
+  return await update(dbRef, {productID: "RaspberryPi"})
+}
+
 async function removePlant(name) {
   if (!window.confirm(`Are you sure you want to remove your ${name}? :(`)) return;
   const {uid} = auth.currentUser;
@@ -170,7 +175,6 @@ async function hasPlants(user) {
 function setWateredTrue(name) {
   const path = `/plants/${name}/settings`;
   const data = {water: 1};
-  console.log("watered plant");
   updatePlantData(auth.currentUser, path, data);
   /** DONE
    * Return some sort of confirmation to the user that the plant has been watered
@@ -179,7 +183,6 @@ function setWateredTrue(name) {
 }
 
 async function notificationToggle(user, toggleValue) {
-  console.log(user)
   const dbRef = ref(db, `users/${user.uid}/notificationSettings`);
   try {
     await update(dbRef, {
@@ -198,8 +201,25 @@ async function setWateringPreference(event, name) {
   updatePlantData(auth.currentUser, path, data)
 }
 
+async function searchPlants(searchTerm) {
+  const dbRef = ref(db, "plantsData/species_data_dumb");
+  const snapshot = await get(dbRef);
+  const plantData = snapshot.val();
+
+  return Object.values(plantData).filter(
+    (plant) => {
+      const commonNameMatch = plant.common_name.toLowerCase().includes(searchTerm.toLowerCase());
+      const scientificNameMatch = plant.scientific_name && plant.scientific_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+      const otherNameMatch = plant.other_name && plant.other_name.some((name) => name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      return commonNameMatch || scientificNameMatch || otherNameMatch
+    });
+
+}
+
 
 export {
+  searchPlants,
   connectPotBot,
   hasPlants,
   updatePlantData,
@@ -211,7 +231,8 @@ export {
   notificationToggle,
   readPlantDatabase,
   db,
-  setWateringPreference
+  setWateringPreference,
+  disconnectPlant
 }
 
 export function useAuth() {
