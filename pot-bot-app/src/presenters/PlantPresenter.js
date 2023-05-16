@@ -9,6 +9,7 @@ import {
   faCheckCircle,
   faCloud,
   faCloudSun,
+  faCloudUpload,
   faExclamationCircle,
   faLink,
   faSliders,
@@ -203,6 +204,11 @@ export default function PlantPresenter() {
                                                                                                state={plants}>
                   <FontAwesomeIcon icon={faSliders} size='xl' style={{color: 'black'}}/>
                 </Link></div>
+                <div id="picture-icon" className="icon--small tooltip" title='Change picture'>
+                  <Link to="/image" state={name}><FontAwesomeIcon icon={faCloudUpload} size="xl"></FontAwesomeIcon>
+                  </Link>
+                </div>
+
                 <button id="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
                         style={{verticalAlign: 'super'}}
                         onClick={(event) => removePlant(name).then(() => {
@@ -242,6 +248,9 @@ export default function PlantPresenter() {
                             })}><FontAwesomeIcon icon={faTrashAlt} size='xl'
                                                  title='Delete plant' style={{color: 'white'}}/>
                   </button>
+                  <Link to='/image' state={{plantName: name}}><FontAwesomeIcon icon={faCloudUpload}
+                                                                               title={"Upload your own picture"}
+                                                                               size="xl"></FontAwesomeIcon> </Link>
                 </p>
               </span>
             </div>

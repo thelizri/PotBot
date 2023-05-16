@@ -11,9 +11,9 @@ import ProfilePresenter from "./presenters/ProfilePresenter";
 import AboutPresenter from "./presenters/AboutPresenter";
 import ChangeUserName from "./views/ChangeUserName";
 import {UserAuthContextProvider} from "./firebaseModel";
-import SideMenuView from "./views/SideMenuView";
 import "./styling/App.css";
 import ConnectPotBotPresenter from "./presenters/ConnectPotBotPresenter";
+import ImageUploadPresenter from "./presenters/ImageUploadPresenter";
 
 function App() {
   return (
@@ -39,6 +39,7 @@ function App() {
             <Route path="/history/:plantName" element={<HistoryPresenter/>}/>
             <Route path="/profile" element={<ProfilePresenter/>}/>
             <Route path="/about" element={<AboutPresenter/>}/>
+            <Route path="/image" element={<ImageUploadPresenter/>}/>
           </Routes>
         </UserAuthContextProvider>
       </Router>
