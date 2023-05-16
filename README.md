@@ -40,7 +40,7 @@ Below is a 3D model of what the first prototype PotBot is imagined to look like.
 Raspberry Pi with an attatched screen as well as an Arduino. The bigger piece is both pot and water reservoir, the
 smaller container inside being the pot and the surronding area being the reservoir.
 
-![alt text](https://github.com/thelizri/PotBot/blob/main/PotBotProtoype.png?raw=true)
+![alt text](images\PotBotProtoype.png)
 
 ## Developers
 
@@ -52,44 +52,10 @@ Robert: rfu@kth.se
 Veronica: nadler@kth.se  
 William: wcar@kth.se
 
-# Git
-
-## Common Commands
-
-- git init: Initializes a new Git repository in the current directory.
-- git clone <repository>: Creates a copy of a remote repository on your local machine.
-- git add <file(s)>: Adds file(s) to the staging area, preparing them for a commit.
-- git commit -m "<message>": Commits the staged changes to the repository with a descriptive message.
-- git status: Shows the status of your working directory, including modified, staged, and untracked files.
-- git diff: Shows differences between the working directory and the latest commit.
-- git log: Displays a log of all commits in the repository.
-- git remote add <name> <url>: Adds a remote repository to your local repository with a reference name.
-- git fetch <remote>: Fetches changes from a remote repository but does not merge them.
-- git pull <remote>: Fetches changes from a remote repository and merges them into the current branch.
-- git push <remote> <branch>: Pushes your local commits to the specified remote repository and branch.
-- git branch: Lists all branches in the repository and shows the current branch.
-
-## Git Merging
-
-Merging in Git is the process of combining two branches. If you have a main branch and a feature branch, and you have
-completed implementing your new updates in the feature branch, you can merge it into the main branch using the following
-Git commands:
-
-- Switch to the main branch using the command: `git checkout main`
-- Merge the feature branch into the main branch using the command: `git merge feature`
-
-This will merge the feature branch into the main branch without affecting the feature branch itself.
-
-On the other hand, if you are working on a feature branch and the main branch is updated with new changes, it is
-recommended to merge the main branch into your feature branch. To achieve this, switch to the feature branch and enter
-the command: `git merge main`. This will merge the new updates in main into the feature branch you are working on,
-without affecting the main branch. It is a good practice to perform this operation whenever the main branch is updated,
-as it helps to minimize merge conflicts.
-
-## Git Rules
-
-1. Don't commit directly to master
-2. Don't merge your own commits
+# Images of Project
+![alt text](images\IMG_0991.jpeg)
+![alt text](images\IMG_1010.jpeg)
+![alt text](images\IMG_1011.jpeg)
 
 # Raspberry Pi
 
