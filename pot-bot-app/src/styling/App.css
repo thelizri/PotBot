@@ -34,7 +34,7 @@ body {
 }
 
 .module {
-  background: linear-gradient(135deg, #fdecef, #ecdbde);
+  background: linear-gradient(135deg, #fdedef, #ecdbde);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,13 +47,6 @@ body {
   box-shadow: 2px 4px 6px 8px #000;
 }
 
-.module *:not(.circle *) {
-  color: #000;
-}
-
-h2{
-  color: white;
-}
 h3{
   color: rgb(192, 192, 192);
 }
@@ -61,7 +54,6 @@ h3{
 p {
   font-size: 0.875rem; /* Change the value to adjust the size */
   text-align: center; /* Optional: center the text horizontally */
-  color: white;
 }
 
 input:focus {
@@ -116,5 +108,4 @@ a, button[type="button"] {
   border-style: none none none none;
   margin: auto;
   padding: 15px;
-  color: white;
 }

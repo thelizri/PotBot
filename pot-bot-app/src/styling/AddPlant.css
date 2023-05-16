@@ -17,17 +17,6 @@
   margin: auto;
 }
 
-/* Moved to App.css */
-/* .back-btn {
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  border-style: none none none none;
-  margin: auto;
-  padding: 15px;
-  color: white;
-} */
-
 h2, p {
   display: block;
   text-align: center;

@@ -29,7 +29,6 @@ export function UserAuthContextProvider({children}) {
       console.error(err)
     });
   }
-
   async function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
