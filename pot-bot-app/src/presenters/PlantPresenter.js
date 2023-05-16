@@ -159,7 +159,7 @@ export default function PlantPresenter() {
                        style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>
                     <b>{latest.soilMoisture}{'%'}</b></div>
                   <p style={{color: 'black'}}
-                     title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}>Moisture</p>
+                     title={'Optimal: '+`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}>Moisture</p>
                 </div>
                 <div className="col">
                   <div className="circle"
@@ -170,7 +170,7 @@ export default function PlantPresenter() {
                                      title={(latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? `Light in optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}` : `Light outside optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}/>
                   </div>
                   <p
-                    title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}
+                    title={'Optimal: '+`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}
                     style={{color: 'black'}}>Light
                   </p>
                 </div>
@@ -178,7 +178,7 @@ export default function PlantPresenter() {
                   <div className="circle"
                        style={{color: getTemperatureColor(latest.temperature)}}>
                     <b>{latest.temperature}{"\u00B0" + "C"}</b></div>
-                  <p style={{color: 'black'}} title={'Optimal 10\u00B0C - 30\u00B0C'}>Temperature
+                  <p style={{color: 'black'}} title={'Optimal: 10\u00B0C - 30\u00B0C'}>Temperature
                   </p>
                 </div>
                 <div className="col">
