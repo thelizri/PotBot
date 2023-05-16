@@ -40,7 +40,7 @@ Below is a 3D model of what the first prototype PotBot is imagined to look like.
 Raspberry Pi with an attatched screen as well as an Arduino. The bigger piece is both pot and water reservoir, the
 smaller container inside being the pot and the surronding area being the reservoir.
 
-![alt text](https://github.com/thelizri/PotBot/tree/main/images/PotBotProtoype.png)
+![alt text](https://github.com/thelizri/PotBot/blob/main/images/PotBotProtoype.png)
 
 ## Developers
 
@@ -53,9 +53,9 @@ Veronica: nadler@kth.se
 William: wcar@kth.se
 
 # Images of Project
-![alt text](https://github.com/thelizri/PotBot/tree/main/images/IMG_0991.jpeg)
-![alt text](https://github.com/thelizri/PotBot/tree/main/images/IMG_1010.jpeg)
-![alt text](https://github.com/thelizri/PotBot/tree/main/images/IMG_1011.jpeg)
+![alt text](https://github.com/thelizri/PotBot/blob/main/images/IMG_0991.jpeg)
+![alt text](https://github.com/thelizri/PotBot/blob/main/images/IMG_1010.jpeg)
+![alt text](https://github.com/thelizri/PotBot/blob/main/images/IMG_1011.jpeg)
 
 # Raspberry Pi
 
