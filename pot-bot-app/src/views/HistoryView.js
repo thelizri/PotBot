@@ -21,18 +21,18 @@ export default function HistoryView({plantName, soilMoistureData, uvData, temper
   };
 
   return (
-    <div className="graphs">
+    <div className="graphs module">
       <h2>Measurement history for {plantName}</h2>
       <p>Your plants soil moisture values over time</p>
-      <div className="moisture-graph">
+      <div className="graph">
         {Object.keys(soilMoistureData).length > 0 && <Line options={options} data={soilMoistureData}/>}
       </div>
       <p>Your plants exposure to sunlight over time</p>
-      <div className="uv-graph">
+      <div className="graph">
         {Object.keys(uvData).length > 0 && <Line options={options} data={uvData}/>}
       </div>
       <p>Your plants temperature exposure over time</p>
-      <div className="temperature-graph">
+      <div className="graph">
         {Object.keys(temperatureData).length > 0 && <Line options={options} data={temperatureData}/>}
       </div>
       <Link to="/home">Back</Link>

@@ -206,7 +206,7 @@ export default function PlantPresenter() {
                   state={plants}>
                   <FontAwesomeIcon icon={faSliders} size='xl' style={{color: 'black'}}/>
                 </Link></div>
-                <button id="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
+                <button alt="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
                         style={{verticalAlign: 'super'}}
                         onClick={(event) => removePlant(name).then(() => {
                           window.location.reload();
@@ -231,15 +231,15 @@ export default function PlantPresenter() {
               <span style={{padding: "0.5em", textTransform: 'capitalize'}}>
                 <b>{name}</b>
                 <p>
-                  <Link className='expandable-div unconnected' to='/connect'
-                        state={{plantName: name}}> <FontAwesomeIcon
-                    icon={faLink}
-                    title='Delete'
-                    size='xl'
-                    title='Connect to PotBot'
-                  />
+                    <Link 
+                      alt="Connect" className='connect icon--small' to='/connect'
+                      state={{plantName: name}}> <FontAwesomeIcon
+                      icon={faLink}
+                      size='xl'
+                      title='Connect to PotBot'
+                    />
                    </Link>
-                  <button className='connect' type={"button"}
+                  <button alt="Delete" className='connect icon--small' type={"button"}
                           onClick={(event) =>
                             removePlant(name).then(() => {
                               window.location.reload();

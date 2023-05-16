@@ -43,7 +43,7 @@ function SettingsView({
           </select>
         )}
       </div>
-      <p className="notifications" style={{fontSize: '1.2rem'}}>Upload your own photo of your PotBot <Link id="upload"
+      <p className="notifications" style={{fontSize: '1.2rem'}}>Upload your own photo of your plant <Link id="upload"
                                                                                                            to='/image'
                                                                                                            state={{plantName: plantName}}>
         <FontAwesomeIcon icon={faCloudUpload}
