@@ -192,17 +192,18 @@ export default function PlantPresenter() {
               </div>
 
               <div id="icons__row" className="row">
-                <Link to={`/history/${name}`} state={data} id="graph" className={"icon--small tooltip"}
+                <Link alt="History" to={`/history/${name}`} state={data} id="graph" className={"icon--small tooltip"}
                       title={'History'}>{
                   <FontAwesomeIcon
                     icon={faChartLine} style={{color: 'black'}} size='xl'/>}</Link>
 
-                <button id="waterdrop" className={"icon--small tooltip"} type={"button"} title='Water your plant'
-                        onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'black'}}
-                                                                     size='xl'/>}
+                <button alt="Water your plant" id="waterdrop" className={"icon--small tooltip"} type={"button"}
+                        title='Water your plant'
+                        onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'black'}} size='xl'/>}
                 </button>
-                <div id="settings-icon" className="icon--small tooltip" title='Settings'><Link to={`/settings/${name}`}
-                                                                                               state={plants}>
+                <div alt="Settings" id="settings-icon" className="icon--small tooltip" title='Settings'><Link
+                  to={`/settings/${name}`}
+                  state={plants}>
                   <FontAwesomeIcon icon={faSliders} size='xl' style={{color: 'black'}}/>
                 </Link></div>
                 <button id="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
@@ -212,7 +213,8 @@ export default function PlantPresenter() {
                         })}>
                   {<FontAwesomeIcon icon={faTrashAlt} size='xl'
                                     style={{color: 'black'}}/>}</button>
-                <button id="Update" className={"icon--small tooltip"} title='Disconnect plant' type={"button"}
+                <button alt="Disconnect plant" id="Update" className={"icon--small tooltip"} title='Disconnect plant'
+                        type={"button"}
                         style={{verticalAlign: 'super'}}
                         onClick={(event) => disconnectPlant(user, name).then(() => {
                           window.location.reload();

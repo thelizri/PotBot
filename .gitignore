@@ -128,14 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#Config files
-firebase-key.json
-
 #Measured data
-last_measurement.json
-settings.json
-token.json
-credentials.json
+RasberryPi/*.json
+RasberryPi/*.txt
 
 #User network password
 networkUserAndPassword.txt
