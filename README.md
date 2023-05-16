@@ -36,6 +36,10 @@ Overall, the smart plant pot will provide a convenient way to ensure that plants
 need for constant monitoring and manual intervention. The data collected by the various sensors can also be used to
 analyze and optimize plant growth over time.
 
+Below is a 3D model of what the first prototype PotBot is imagined to look like. The smaller container will house a Raspberry Pi with an attatched screen as well as an Arduino. The bigger piece is both pot and water reservoir, the smaller container inside being the pot and the surronding area being the reservoir.
+
+![alt text](https://github.com/thelizri/PotBot/blob/prototype-image/PotBotProtoype.png?raw=true)
+
 ## Developers
 
 Andreas: afranke@kth.se  
