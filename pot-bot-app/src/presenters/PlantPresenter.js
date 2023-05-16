@@ -9,7 +9,6 @@ import {
   faCheckCircle,
   faCloud,
   faCloudSun,
-  faCloudUpload,
   faExclamationCircle,
   faLink,
   faSliders,
@@ -159,7 +158,8 @@ export default function PlantPresenter() {
                   <div className="circle"
                        style={{color: getMoistureColor(latest.soilMoisture, wateringValue)}}>
                     <b>{latest.soilMoisture}{'%'}</b></div>
-                  <p title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}>Moisture</p>
+                  <p style={{color: 'black'}}
+                     title={`${watering} ${wateringValue.min}% - ${wateringValue.max}%`}>Moisture</p>
                 </div>
                 <div className="col">
                   <div className="circle"
@@ -170,14 +170,15 @@ export default function PlantPresenter() {
                                      title={(latest.uvIntensity >= sunlightValue.min && latest.uvIntensity <= sunlightValue.max) ? `Light in optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}` : `Light outside optimal range: ${latest.uvIntensity + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}/>
                   </div>
                   <p
-                    title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}>Light
+                    title={`${sunlight.join(', ') + ' [' + sunlightValue.max + ', ' + sunlightValue.min + ']'}`}
+                    style={{color: 'black'}}>Light
                   </p>
                 </div>
                 <div className="col">
                   <div className="circle"
                        style={{color: getTemperatureColor(latest.temperature)}}>
                     <b>{latest.temperature}{"\u00B0" + "C"}</b></div>
-                  <p title={'Optimal 10\u00B0C - 30\u00B0C'}>Temperature
+                  <p style={{color: 'black'}} title={'Optimal 10\u00B0C - 30\u00B0C'}>Temperature
                   </p>
                 </div>
                 <div className="col">
@@ -186,7 +187,7 @@ export default function PlantPresenter() {
                     icon={latest.waterLevel ? faCheckCircle : faExclamationCircle} size='2xl'
                     title={latest.waterLevel ? 'Full' : 'Refill water tank'}/>
                   </div>
-                  <p>Waterlevel</p>
+                  <p style={{color: 'black'}}>Waterlevel</p>
                 </div>
               </div>
 
@@ -196,26 +197,24 @@ export default function PlantPresenter() {
                   <FontAwesomeIcon
                     icon={faChartLine} style={{color: 'black'}} size='xl'/>}</Link>
 
-                <button alt="Water your plant" id="waterdrop" className={"icon--small tooltip"} type={"button"} title='Water your plant'
+                <button alt="Water your plant" id="waterdrop" className={"icon--small tooltip"} type={"button"}
+                        title='Water your plant'
                         onClick={handleWaterClick}>{<FontAwesomeIcon icon={faTint} style={{color: 'black'}} size='xl'/>}
                 </button>
-                <div alt="Settings" id="settings-icon" className="icon--small tooltip" title='Settings'><Link to={`/settings/${name}`}
-                                                                                               state={plants}>
+                <div alt="Settings" id="settings-icon" className="icon--small tooltip" title='Settings'><Link
+                  to={`/settings/${name}`}
+                  state={plants}>
                   <FontAwesomeIcon icon={faSliders} size='xl' style={{color: 'black'}}/>
                 </Link></div>
-                <div alt="Change picture" id="picture-icon" className="icon--small tooltip" title='Change picture'>
-                  <Link to="/image" state={name}><FontAwesomeIcon icon={faCloudUpload} size="xl"></FontAwesomeIcon>
-                  </Link>
-                </div>
-
-                <button alt="Delete plant" id="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
+                <button id="Delete" className={"icon--small tooltip"} title='Delete plant' type={"button"}
                         style={{verticalAlign: 'super'}}
                         onClick={(event) => removePlant(name).then(() => {
                           window.location.reload();
                         })}>
                   {<FontAwesomeIcon icon={faTrashAlt} size='xl'
                                     style={{color: 'black'}}/>}</button>
-                <button alt="Disconnect plant" id="Update" className={"icon--small tooltip"} title='Disconnect plant' type={"button"}
+                <button alt="Disconnect plant" id="Update" className={"icon--small tooltip"} title='Disconnect plant'
+                        type={"button"}
                         style={{verticalAlign: 'super'}}
                         onClick={(event) => disconnectPlant(user, name).then(() => {
                           window.location.reload();
@@ -238,18 +237,15 @@ export default function PlantPresenter() {
                     title='Delete'
                     size='xl'
                     title='Connect to PotBot'
-                    style={{color: 'white'}}/>
+                  />
                    </Link>
                   <button className='connect' type={"button"}
                           onClick={(event) =>
                             removePlant(name).then(() => {
                               window.location.reload();
                             })}><FontAwesomeIcon icon={faTrashAlt} size='xl'
-                                                 title='Delete plant' style={{color: 'white'}}/>
+                                                 title='Delete plant'/>
                   </button>
-                  <Link to='/image' state={{plantName: name}}><FontAwesomeIcon icon={faCloudUpload}
-                                                                               title={"Upload your own picture"}
-                                                                               size="xl"></FontAwesomeIcon> </Link>
                 </p>
               </span>
             </div>

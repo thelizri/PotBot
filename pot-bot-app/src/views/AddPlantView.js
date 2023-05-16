@@ -91,7 +91,6 @@ export default function AddPlantView({addPlantToPersonalList}) {
         />
         <button type="submit">Search</button>
         <Link to="/home"> Back to your plants
-          {/* <button className="back-btn">Back to your plants</button> */}
         </Link>
       </form>
       {isLoading && (
@@ -120,9 +119,9 @@ export default function AddPlantView({addPlantToPersonalList}) {
             </div>
             {expandedPlantId === plant.id && (
               <div className="plant-dropdown">
-                <button
-                  className="add-plant-button"
-                  onClick={() => handleAddPlantButtonClick(plant)}
+                <button type='submit'
+                        className="add-plant-button"
+                        onClick={() => handleAddPlantButtonClick(plant)}
                 >
                   Add to my plants
                 </button>

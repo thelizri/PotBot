@@ -1,19 +1,4 @@
 
-.Home {
-  background: linear-gradient(135deg, #fdecef, #ecdbde);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: 45vw;
-  margin: auto;
-  /* margin: 0 auto; */
-  /* background-color: rgba(32, 41, 31, 0.835);*/
-  border-radius: 10px;
-  -webkit-box-shadow: 2px 4px 6px 8px #000;
-  -moz-box-shadow: 2px 4px 6px 8px #000;
-  box-shadow: 2px 4px 6px 8px #000;
-}
 
 
 
@@ -22,6 +7,7 @@
   bottom: 0;
   right: 0;
   margin: 20px;
+  color: white !important;
 }
 
 .change-username {
