@@ -15,7 +15,7 @@ body {
     rgba(0, 0, 0, 0.350)
   ), url("./images/pexels-markus-spiske-1268129.jpg");
   background-size: cover;
-  min-height: 100vh; /* this line har a flaw: if you have several plants and expand every card,
+  min-height: 115vh; /* this line har a flaw: if you have several plants and expand every card,
   the background will at some point move. There must be a way to make it dynamic*/
   /* background-color: rgba(255, 255, 255, 0.794); */
 }
@@ -34,7 +34,7 @@ body {
 }
 
 .module {
-  background: linear-gradient(135deg, #fdecef, #ecdbde);
+  background: linear-gradient(135deg, #ffffff, #f6fff7);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,13 +47,6 @@ body {
   box-shadow: 2px 4px 6px 8px #000;
 }
 
-.module *:not(.circle *) {
-  color: #000;
-}
-
-h2{
-  color: white;
-}
 h3{
   color: rgb(192, 192, 192);
 }
@@ -61,7 +54,6 @@ h3{
 p {
   font-size: 0.875rem; /* Change the value to adjust the size */
   text-align: center; /* Optional: center the text horizontally */
-  color: white;
 }
 
 input:focus {
@@ -87,12 +79,12 @@ a, button[type="button"] {
 .graphs {
   display: flex;
   flex-direction: column;
+  max-width: unset;
 }
 
-/* .moisture-graph, .uv-graph, .temperature-graph{
-  width: 700px;
-  height: auto;
-} */
+.graph {
+  width: 60%;
+}
 
 .about {
   background-color: rgba(32, 41, 31, 0.835);
@@ -116,5 +108,4 @@ a, button[type="button"] {
   border-style: none none none none;
   margin: auto;
   padding: 15px;
-  color: white;
 }

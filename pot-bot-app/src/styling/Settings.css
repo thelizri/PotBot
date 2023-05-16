@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 100px;
-    background-color: rgba(32, 41, 31, 0.835);
     border-radius: 10px;
   }
 
@@ -19,5 +18,4 @@
 
 label {
   font-size: 1.2rem;
-  color: rgb(194, 194, 194);
 }

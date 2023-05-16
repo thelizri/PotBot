@@ -17,17 +17,6 @@
   margin: auto;
 }
 
-/* Moved to App.css */
-/* .back-btn {
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  border-style: none none none none;
-  margin: auto;
-  padding: 15px;
-  color: white;
-} */
-
 h2, p {
   display: block;
   text-align: center;
@@ -55,12 +44,9 @@ h2, p {
 .plant-card p {
   text-align: center;
   margin-top: 0.5rem;
+  color: white;
 }
 
-.moisture-graph {
-  height: 25%;
-  width: auto;
-}
 
 .loading {
   display: flex;

@@ -4,14 +4,17 @@ import React from "react";
 import "firebase/database";
 import '../styling/homeView.css';
 import PlantPresenter from "../presenters/PlantPresenter";
-/*TODO: bestämma layout så alla är med på samma logik */
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSignOut} from "@fortawesome/free-solid-svg-icons";
+
 export default function HomeView() {
   const {user, logOut} = useAuth();
 
   return (
     <div className="Home module">
       {user && <PlantPresenter/>}
-      {user && <LogoutBtn/>}
+      <div className="logout-btn">
+        {user && <LogoutBtn/>}</div>
       {!user && <Login/>}
     </div>
   );
@@ -26,11 +29,12 @@ export default function HomeView() {
 
   function LogoutBtn() {
     return (
-      <div className="logout">
-        <Link to="/">
-          <button type="button" className="logout-btn" onClick={logOut}>Logout</button>
-        </Link>
-      </div>
+      <Link className="logout-btn" to="/">
+        <button className="logout-btn" type="button" onClick={logOut}><FontAwesomeIcon icon={faSignOut}
+                                                                                       style={{color: 'white !important'}}
+                                                                                       size='2xl'/></button>
+        {/**/}
+      </Link>
     )
   }
 

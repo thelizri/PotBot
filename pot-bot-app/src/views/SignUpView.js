@@ -48,13 +48,12 @@ function SignUpView({username, setUsername, password, setPassword, handleSubmit,
 
   return (
     <div>
-      <div className="container">
-        <h1 className="h1SignIN">Create an account</h1>
+      <div className="container module">
+        <h1 className="h1SignIN" style={{color: 'black'}}>Create an account</h1>
         <div className={`error ${showError ? '' : 'errorhidden'}`}>
           {errorHandling()}
         </div>
         <form onSubmit={handleFormSubmit}>
-
           <input
             className="signup-input"
             type="text"
