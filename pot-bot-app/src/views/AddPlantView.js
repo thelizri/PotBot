@@ -76,7 +76,8 @@ export default function AddPlantView({addPlantToPersonalList}) {
   }, [searchResults]);
 
   return (
-    <div className="add-plant">
+    <>
+    <div className="add-plant addPlant module">
       <div className="addPlantDescr">
         <h2>Connect your plant to the PotBot</h2>
         <p>First choose what kind of plant you have and we will calibrate the optimal conditions for it</p>
@@ -93,6 +94,7 @@ export default function AddPlantView({addPlantToPersonalList}) {
         <Link to="/home"> Back to your plants
         </Link>
       </form>
+    </div>
       {isLoading && (
               <div className="loading">
                 <ThreeDots type="ThreeDots" color="#2BAD60" height={200} width={200}/>
@@ -135,6 +137,6 @@ export default function AddPlantView({addPlantToPersonalList}) {
           </div>
         ))}
       </div>
-    </div>
+      </>
   );
 }
